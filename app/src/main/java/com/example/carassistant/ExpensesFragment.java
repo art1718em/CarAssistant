@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,29 +26,36 @@ public class ExpensesFragment extends Fragment {
     private FragmentExpensesBinding binding;
     Disposable expenseListDisposable;
 
+    public static final String key = "carIdKey";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentExpensesBinding.inflate(inflater, container, false);
+
+        Bundle carBundle = requireArguments();
+
 
 
     ExpenseDB expenseDB = ExpenseDB.getInstance(requireContext());
     ExpenseDao expenseDao = expenseDB.expenseDao();
 
     expenseListDisposable = expenseDao
-            .getAllExpenses()
+            .getALLThisId(carBundle.getInt(key))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(this::onExpensesLoaded);
+            .subscribe(this::onExpensesLoaded, throwable -> {
+                Log.wtf("error", throwable.toString());
+            });
 
 
         binding.actionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_expensesFragment_to_addExpenseFragment);
+
+                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_expensesFragment_to_addExpenseFragment,
+                        carBundle);
             }
         });
-
-
 
         return binding.getRoot();
     }

@@ -5,9 +5,11 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.carassistant.databinding.FragmentAddExpenseBinding;
 import com.example.carassistant.databinding.FragmentExpensesBinding;
@@ -24,6 +26,8 @@ public class AddExpenseFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentAddExpenseBinding.inflate(inflater, container, false);
+        Bundle carBundle = requireArguments();
+        Toast.makeText(getContext(), String.valueOf(carBundle.getInt(ExpensesFragment.key)), Toast.LENGTH_SHORT).show();
 
         ExpenseDB expenseDB = ExpenseDB.getInstance(requireContext());
         ExpenseDao expenseDao = expenseDB.expenseDao();
@@ -34,6 +38,7 @@ public class AddExpenseFragment extends Fragment {
                 disposable = expenseDao
                         .addExpense(
                                 new Expense(
+                                        carBundle.getInt(ExpensesFragment.key),
                                         binding.etExpense.getText().toString(),
                                         binding.spinner.getSelectedItem().toString(),
                                         binding.etData.getText().toString(),
@@ -45,11 +50,31 @@ public class AddExpenseFragment extends Fragment {
                         )
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(this::onExpenseAdded);
+                        .subscribe(this::onExpenseAdded, throwable -> {
+                            Log.wtf("Error", throwable.toString());
+                        });
+//                ExpenseDB.databaseWriteExecutor.execute(() -> {
+//                    expenseDao
+//                            .addExpense(
+//                                    new Expense(
+//                                            //carBundle.getInt(ExpensesFragment.key),
+//                                            binding.etExpense.getText().toString(),
+//                                            binding.spinner.getSelectedItem().toString(),
+//                                            binding.etData.getText().toString(),
+//                                            binding.etComment.getText().toString(),
+//                                            Integer.parseInt(binding.etMileage.getText().toString())
+//
+//
+//                                    )
+//                            );
+//                });
+//                onExpenseAdded();
             }
 
             private void onExpenseAdded(){
-                Navigation.findNavController(binding.getRoot()).popBackStack();
+                //Toast.makeText(getContext(), String.valueOf(carBundle.getInt(ExpensesFragment.key)), Toast.LENGTH_SHORT).show();
+                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_addExpenseFragment_to_expensesFragment,
+                        carBundle);
             }
         });
 
@@ -61,6 +86,6 @@ public class AddExpenseFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        disposable.dispose();
+       disposable.dispose();
     }
 }

@@ -16,11 +16,14 @@ public interface ExpenseDao {
 
 
     @Query("SELECT * FROM expense_table WHERE id = :id")
-    Observable<Expense> getTaskById(int id);
+    Observable<Expense> getCarById(int id);
 
     // Метод чтения всех задач из таблицы
     @Query("SELECT * FROM expense_table")
     Observable<List<Expense>> getAllExpenses();
+
+    @Query("SELECT * FROM expense_table WHERE idCar = :id")
+    Observable<List<Expense>> getALLThisId(int id);
 
     // Метод изменения значения isCompleted (статус выполнения текущей задачи) в имеющейся записи по id
 //    @Query("UPDATE expense_table SET isCompleted = :isCompleted WHERE id = :id")

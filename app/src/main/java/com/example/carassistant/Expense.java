@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey;
 public class Expense {
     @PrimaryKey(autoGenerate = true)
     int id;
+    int idCar;
     private String expense;
     private String category;
     private String data;
@@ -14,12 +15,17 @@ public class Expense {
     private int mileage;
 
 
-    public Expense(String expense, String category, String data, String comment, int mileage){
+    public Expense(int idCar, String expense, String category, String data, String comment, int mileage){
+        this.idCar = idCar;
         this.expense = expense;
         this.category = category;
         this.data = data;
         this.comment = comment;
         this.mileage = mileage;
+    }
+
+    public int getIdCar() {
+        return idCar;
     }
 
     public int getId() {
@@ -35,6 +41,8 @@ public class Expense {
     public int getMileage() {return mileage;}
 
     public String getComment() {return comment;}
+
+
 
     @Override
     public String toString() {

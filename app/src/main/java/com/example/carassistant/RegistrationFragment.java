@@ -30,7 +30,7 @@ public class RegistrationFragment extends Fragment {
         binding.btnreg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_registrationFragment_to_addCarFragment);
+                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_registrationFragment_to_carsFragment);
             }
         });
 
