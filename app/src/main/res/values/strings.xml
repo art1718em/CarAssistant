@@ -8,6 +8,7 @@
         <item>"Шины"</item>
         <item>"Диски"</item>
         <item>"Работа сервиса"</item>
-        <item>"Шиномонтаж"</item>
+        <item>"Автомойка"</item>
+        <item>"Другое"</item>
     </string-array>
 </resources>

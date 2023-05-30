@@ -41,6 +41,7 @@ public class CarsFragment extends Fragment {
         binding.ButtonAddCar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Navigation.findNavController(binding.getRoot()).navigate(R.id.action_carsFragment_to_addCarFragment);
             }
         });
@@ -49,7 +50,7 @@ public class CarsFragment extends Fragment {
     }
 
     private void onCarsLoaded(List<Car> cars) {
-        CarAdapter carAdapter =new CarAdapter((ArrayList<Car>) cars, binding);
+        CarAdapter carAdapter =new CarAdapter((ArrayList<Car>) cars, binding, this);
         binding.recyclerview.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.recyclerview.setAdapter(carAdapter);
 

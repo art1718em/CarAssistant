@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/entranceFragment">
+    app:startDestination="@id/carsFragment">
 
     <fragment
         android:id="@+id/entranceFragment"
@@ -32,28 +32,8 @@
         android:label="fragment_add_car"
         tools:layout="@layout/fragment_add_car" >
         <action
-            android:id="@+id/action_addCarFragment_to_expensesFragment"
-            app:destination="@id/expensesFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/expensesFragment"
-        android:name="com.example.carassistant.ExpensesFragment"
-        android:label="fragment_expenses"
-        tools:layout="@layout/fragment_expenses" >
-        <action
-            android:id="@+id/action_expensesFragment_to_addExpenseFragment"
-            app:destination="@id/addExpenseFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/addExpenseFragment"
-        android:name="com.example.carassistant.AddExpenseFragment"
-        android:label="fragment_add_expense"
-        tools:layout="@layout/fragment_add_expense" >
-        <action
-            android:id="@+id/action_addExpenseFragment_to_expensesFragment"
-            app:destination="@id/expensesFragment"
-            app:popUpTo="@id/expensesFragment"
-            app:popUpToInclusive="true" />
+            android:id="@+id/action_addCarFragment_to_panelFragment"
+            app:destination="@id/panelFragment" />
     </fragment>
     <fragment
         android:id="@+id/carsFragment"
@@ -64,10 +44,12 @@
             android:id="@+id/action_carsFragment_to_addCarFragment"
             app:destination="@id/addCarFragment" />
         <action
-            android:id="@+id/action_carsFragment_to_expensesFragment"
-            app:destination="@id/expensesFragment" />
-        <action
-            android:id="@+id/action_carsFragment_to_expensesFragment2"
-            app:destination="@id/expensesFragment" />
+            android:id="@+id/action_carsFragment_to_panelFragment"
+            app:destination="@id/panelFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/panelFragment"
+        android:name="com.example.carassistant.PanelFragment"
+        android:label="fragment_panel"
+        tools:layout="@layout/fragment_panel" />
 </navigation>

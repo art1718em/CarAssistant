@@ -1,11 +1,13 @@
 package com.example.carassistant;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,8 +23,9 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
 
     private final ArrayList<Car> data;
     private FragmentCarsBinding binding;
-    public CarAdapter(ArrayList<Car> data, FragmentCarsBinding binding) {this.data = data;
-    this.binding=binding;};
+    private Fragment fragment;
+    public CarAdapter(ArrayList<Car> data, FragmentCarsBinding binding, Fragment fragment) {this.data = data;
+    this.binding=binding; this.fragment = fragment;};
 
     @NonNull
     @Override
@@ -44,7 +47,8 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
             public void onClick(View v) {
                 Bundle carBundle = new Bundle();
                 carBundle.putInt(ExpensesFragment.key, position+1);
-                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_carsFragment_to_expensesFragment,
+                fragment.getActivity().getSharedPreferences("id", Context.MODE_PRIVATE).edit().putInt(ExpensesFragment.key, position+1).apply();
+                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_carsFragment_to_panelFragment,
                         carBundle);
             }
         });

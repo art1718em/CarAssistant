@@ -8,11 +8,20 @@
 
     <EditText
         android:id="@+id/etExpense"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:hint="Добавить расход"
+        android:layout_width="240dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/default_border_white"
+        android:hint="Добавьте сумму расхода"
+        android:inputType="numberDecimal"
+        android:maxLength="20"
+        android:maxLines="1"
+        android:padding="10dp"
+        android:scrollbars="horizontal"
+        android:textColor="@color/black"
+        android:textColorHint="#616161"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -41,41 +50,65 @@
 
     <EditText
         android:id="@+id/etData"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_width="240dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/default_border_white"
         android:hint="Добавьте дату"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner" />
-
-    <EditText
-        android:id="@+id/etComment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:hint="Добавьте комментарий"
+        android:maxLength="20"
+        android:maxLines="1"
+        android:padding="10dp"
+        android:scrollbars="horizontal"
+        android:textColor="@color/black"
+        android:textColorHint="#616161"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etData" />
+        app:layout_constraintTop_toBottomOf="@+id/spinner"  />
+
+    <EditText
+        android:id="@+id/etComment"
+        android:layout_width="240dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/default_border_white"
+        android:hint="Добавьте комментарий"
+        android:maxLength="20"
+        android:maxLines="1"
+        android:padding="10dp"
+        android:scrollbars="horizontal"
+        android:textColor="@color/black"
+        android:textColorHint="#616161"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etData"  />
 
     <EditText
         android:id="@+id/etMileage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:hint="Добавить пробег"
+        android:layout_width="240dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/default_border_white"
+        android:inputType="numberDecimal"
+        android:hint="Добавьте пробег"
+        android:maxLength="20"
+        android:maxLines="1"
+        android:padding="10dp"
+        android:scrollbars="horizontal"
+        android:textColor="@color/black"
+        android:textColorHint="#616161"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etComment" />
+        app:layout_constraintTop_toBottomOf="@+id/etComment"  />
 
     <Button
         android:id="@+id/btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/button"
         android:text="Добавить"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

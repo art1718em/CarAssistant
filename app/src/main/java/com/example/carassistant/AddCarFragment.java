@@ -1,5 +1,6 @@
 package com.example.carassistant;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -35,6 +36,7 @@ public class AddCarFragment extends Fragment {
 
 
         binding.btn1.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 new Thread(()->{
@@ -47,31 +49,25 @@ public class AddCarFragment extends Fragment {
                         .addCar(
                                 new Car(
                                         timeID,
-                                         binding.etMark.getText().toString(),
+                                        binding.etMark.getText().toString(),
                                         binding.etModel.getText().toString(),
                                         binding.etYear.getText().toString(),
                                         Integer.parseInt(binding.etMileage.getText().toString()),
                                         Integer.parseInt(binding.etCost.getText().toString()),
                                         binding.etColor.getText().toString()
                                         )
-
-
-
                         )
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(this::onCarAdded);
-
-
-
-
             }
 
 
             private void onCarAdded(){
                 Bundle bundle = new Bundle();
                 bundle.putInt(ExpensesFragment.key,timeID);
-                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_addCarFragment_to_expensesFragment,
+                getActivity().getSharedPreferences("id", Context.MODE_PRIVATE).edit().putInt(ExpensesFragment.key,timeID).apply();
+                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_addCarFragment_to_panelFragment,
                 bundle);
             }
         });
@@ -82,6 +78,7 @@ public class AddCarFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        disposable.dispose();
+        if (disposable != null)
+            disposable.dispose();
     }
 }

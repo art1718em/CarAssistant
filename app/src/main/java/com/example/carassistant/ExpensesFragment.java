@@ -1,5 +1,6 @@
 package com.example.carassistant;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -32,7 +33,7 @@ public class ExpensesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentExpensesBinding.inflate(inflater, container, false);
 
-        Bundle carBundle = requireArguments();
+       // Bundle carBundle = requireArguments();
 
 
 
@@ -40,7 +41,7 @@ public class ExpensesFragment extends Fragment {
     ExpenseDao expenseDao = expenseDB.expenseDao();
 
     expenseListDisposable = expenseDao
-            .getALLThisId(carBundle.getInt(key))
+            .getALLThisId(getActivity().getSharedPreferences("id", Context.MODE_PRIVATE).getInt(DiagramFragment.key, -1))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(this::onExpensesLoaded, throwable -> {
@@ -52,8 +53,15 @@ public class ExpensesFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_expensesFragment_to_addExpenseFragment,
-                        carBundle);
+                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_expensesFragment_to_addExpenseFragment);
+            }
+        });
+
+        binding.image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //carBundle.putInt("key_car", carBundle.getInt(DiagramFragment.key));
+                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_expensesFragment_to_diagramFragment);
             }
         });
 
@@ -70,6 +78,7 @@ public class ExpensesFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        expenseListDisposable.dispose();
+        if(expenseListDisposable != null)
+            expenseListDisposable.dispose();
     }
 }

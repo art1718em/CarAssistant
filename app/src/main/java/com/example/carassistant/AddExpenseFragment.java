@@ -1,5 +1,6 @@
 package com.example.carassistant;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -26,8 +27,7 @@ public class AddExpenseFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentAddExpenseBinding.inflate(inflater, container, false);
-        Bundle carBundle = requireArguments();
-        Toast.makeText(getContext(), String.valueOf(carBundle.getInt(ExpensesFragment.key)), Toast.LENGTH_SHORT).show();
+        //Bundle carBundle = requireArguments();
 
         ExpenseDB expenseDB = ExpenseDB.getInstance(requireContext());
         ExpenseDao expenseDao = expenseDB.expenseDao();
@@ -38,7 +38,7 @@ public class AddExpenseFragment extends Fragment {
                 disposable = expenseDao
                         .addExpense(
                                 new Expense(
-                                        carBundle.getInt(ExpensesFragment.key),
+                                        getActivity().getSharedPreferences("id", Context.MODE_PRIVATE).getInt(DiagramFragment.key, -1),
                                         binding.etExpense.getText().toString(),
                                         binding.spinner.getSelectedItem().toString(),
                                         binding.etData.getText().toString(),
@@ -73,8 +73,7 @@ public class AddExpenseFragment extends Fragment {
 
             private void onExpenseAdded(){
                 //Toast.makeText(getContext(), String.valueOf(carBundle.getInt(ExpensesFragment.key)), Toast.LENGTH_SHORT).show();
-                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_addExpenseFragment_to_expensesFragment,
-                        carBundle);
+                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_addExpenseFragment_to_diagramFragment);
             }
         });
 
@@ -86,6 +85,7 @@ public class AddExpenseFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-       disposable.dispose();
+        if (disposable != null)
+            disposable.dispose();
     }
 }

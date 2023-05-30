@@ -7,16 +7,20 @@
     android:layout_marginTop="8dp"
     android:layout_marginStart="16dp"
     android:layout_marginEnd="16dp"
-    android:layout_marginBottom="8dp">
+    android:layout_marginBottom="8dp"
+    >
     <TextView
+        android:textColor="@color/black"
         android:id="@+id/tv_mark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:textSize="20sp"
         android:text="Марка"/>
     <TextView
+        android:textColor="@color/black"
         android:layout_marginStart="8dp"
         android:id="@+id/tv_model"
         android:layout_width="wrap_content"
@@ -24,17 +28,22 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_mark"
         app:layout_constraintTop_toTopOf="parent"
+        android:textSize="20sp"
+
         android:text="Марка"/>
 
 
 
     <TextView
+        android:textColor="@color/black"
         android:id="@+id/tv_color"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:textSize="20sp"
+
         android:text="Цвет"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
