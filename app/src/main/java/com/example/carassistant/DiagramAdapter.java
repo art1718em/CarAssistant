@@ -53,25 +53,25 @@ public class DiagramAdapter extends RecyclerView.Adapter<DiagramAdapter.DiagramV
         String local_key  = (String) keys.toArray()[position];
         switch (local_key){
             case "Топливо":
-                holder.binding.imageView.setImageResource(R.drawable.gasoline_pump);
+                holder.binding.iconCategory.setImageResource(R.drawable.gasoline_pump);
                 break;
             case "Запчасти":
-                holder.binding.imageView.setImageResource(R.drawable.spare_parts);
+                holder.binding.iconCategory.setImageResource(R.drawable.spare_parts);
                 break;
             case "Шины":
-                holder.binding.imageView.setImageResource(R.drawable.tire);
+                holder.binding.iconCategory.setImageResource(R.drawable.tire);
                 break;
             case "Диски":
-                holder.binding.imageView.setImageResource(R.drawable.rim);
+                holder.binding.iconCategory.setImageResource(R.drawable.rim);
                 break;
             case "Работа сервиса":
-                holder.binding.imageView.setImageResource(R.drawable.mechanical);
+                holder.binding.iconCategory.setImageResource(R.drawable.mechanical);
                 break;
             case "Автомойка":
-                holder.binding.imageView.setImageResource(R.drawable.car_wash);
+                holder.binding.iconCategory.setImageResource(R.drawable.car_wash);
                 break;
             case "Другое":
-                holder.binding.imageView.setImageResource(R.drawable.question);
+                holder.binding.iconCategory.setImageResource(R.drawable.question);
                 break;
         }
 

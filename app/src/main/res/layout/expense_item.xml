@@ -10,7 +10,7 @@
     android:layout_marginBottom="8dp">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/icon_category"
         android:layout_width="24dp"
         android:layout_height="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -21,14 +21,12 @@
         android:id="@+id/tv_category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Категория"
+        android:text="@string/category"
         android:textSize="16sp"
         android:layout_marginLeft="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintStart_toEndOf="@+id/icon_category"
         app:layout_constraintTop_toTopOf="parent" />
-
-
 
     <TextView
         android:id="@+id/tv_cost"
@@ -39,7 +37,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:textSize="16sp"
 
-        android:text="Стоимость"/>
+        android:text="@string/price"/>
 
 
 

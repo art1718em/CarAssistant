@@ -8,7 +8,7 @@
     android:layout_marginEnd="16dp"
     android:layout_marginBottom="8dp">
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/icon_category"
         android:layout_width="24dp"
         android:layout_height="24dp"
 
@@ -22,12 +22,9 @@
         android:layout_marginLeft="8dp"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintStart_toEndOf="@+id/icon_category"
         app:layout_constraintTop_toTopOf="parent"
-        android:text="Категория"/>
-
-
-
+        android:text="@string/category"/>
     <TextView
         android:id="@+id/tv_cost"
         android:layout_width="wrap_content"
@@ -36,7 +33,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:text="Сумма"/>
+        android:text="@string/price"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

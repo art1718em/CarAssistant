@@ -44,14 +44,16 @@ public class ExpenseDescriptionFragment extends Fragment {
                 .subscribe(this::onExpensesLoaded, throwable -> {
                     Log.wtf("error", throwable.toString());
                 });
-        binding.image.setOnClickListener(new View.OnClickListener() {
+        binding.iconBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //carBundle.putInt("key_car", carBundle.getInt(DiagramFragment.key));
-                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_expenseDescriptionFragment_to_expensesFragment);
+                //Navigation.findNavController(binding.getRoot()).navigate(R.id.action_expenseDescriptionFragment_to_expensesFragment);
+                Navigation.findNavController(binding.getRoot()).popBackStack();
+
             }
         });
-        binding.image2.setOnClickListener(new View.OnClickListener() {
+        binding.iconDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 expenseListDisposable = expenseDao
@@ -63,7 +65,7 @@ public class ExpenseDescriptionFragment extends Fragment {
             }
         });
 
-        binding.btn1.setOnClickListener(new View.OnClickListener() {
+        binding.buttonRedaction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Navigation.findNavController(binding.getRoot()).navigate(R.id.action_expenseDescriptionFragment_to_redactionExpenseFragment, expenseBundle);
@@ -73,10 +75,10 @@ public class ExpenseDescriptionFragment extends Fragment {
         return binding.getRoot();
     }
     private void onExpensesLoaded(Expense expense) {
-        binding.tvCategory1.setText(expense.getCategory());
-        binding.tvCost1.setText(expense.getExpense());
-        binding.tvComment1.setText(expense.getComment());
-        binding.tvData1.setText(expense.getData());
-        binding.tvMileage1.setText(String.valueOf(expense.getMileage()));
+        binding.tvCategoryData.setText(expense.getCategory());
+        binding.tvCostData.setText(expense.getExpense());
+        binding.tvCommentData.setText(expense.getComment());
+        binding.tvDateData.setText(expense.getData());
+        binding.tvMileageData.setText(String.valueOf(expense.getMileage()));
     }
 }

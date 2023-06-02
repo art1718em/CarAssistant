@@ -85,7 +85,7 @@ public class DiagramFragment extends Fragment {
         binding = FragmentDiagramBinding.inflate(inflater, container, false);
 
         pieChart = binding.pieChart;
-        binding.image.setOnClickListener(new View.OnClickListener() {
+        binding.iconExpenses.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Navigation.findNavController(binding.getRoot()).navigate(R.id.action_diagramFragment_to_expensesFragment,

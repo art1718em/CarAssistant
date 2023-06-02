@@ -18,7 +18,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Список автомобилей"
+            android:text="@string/list_cars"
             android:textSize="24sp"
             android:layout_gravity="center"
             android:gravity="center"
@@ -47,7 +47,7 @@
 
     <Button
         android:id="@+id/ButtonAddCar"
-        android:text="Добавить авто"
+        android:text="@string/add_car"
         android:background="@drawable/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

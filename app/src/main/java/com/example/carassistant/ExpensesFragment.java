@@ -12,7 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.carassistant.databinding.FragmentEntranceBinding;
+
 import com.example.carassistant.databinding.FragmentExpensesBinding;
 
 import java.util.ArrayList;
@@ -57,11 +57,12 @@ public class ExpensesFragment extends Fragment {
             }
         });
 
-        binding.image.setOnClickListener(new View.OnClickListener() {
+        binding.iconBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //carBundle.putInt("key_car", carBundle.getInt(DiagramFragment.key));
-                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_expensesFragment_to_diagramFragment);
+                //Navigation.findNavController(binding.getRoot()).navigate(R.id.action_expensesFragment_to_diagramFragment);
+                Navigation.findNavController(binding.getRoot()).popBackStack();
             }
         });
 

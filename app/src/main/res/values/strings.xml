@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">CarAssistant</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string-array name="expense_categories">
         <item>"Топливо"</item>
@@ -11,4 +10,34 @@
         <item>"Автомойка"</item>
         <item>"Другое"</item>
     </string-array>
+
+    <string name="mark">Марка</string>
+    <string name="model">Модель</string>
+    <string name="color">Цвет</string>
+    <string name="category">Категория</string>
+    <string name="price">Цена</string>
+    <string name="add_mark">Введите марку</string>
+    <string name="add_model">Введите модель</string>
+    <string name="add_year">Введите год</string>
+    <string name="add_mileage">Введите пробег</string>
+    <string name="add_color">Введите цвет</string>
+    <string name="add_price">Введите стоимость</string>
+    <string name="add_car">Добавить авто</string>
+    <string name="add_cost">Добавьте сумму расхода</string>
+    <string name="add_category">Выберите категорию</string>
+    <string name="add_date">Добавьте дату</string>
+    <string name="add_comment">Добавьте комментарий</string>
+    <string name="add_mileage_expense">Добавьте пробег</string>
+    <string name="add_expense">Добавить</string>
+    <string name="list_cars">Список автомобилей</string>
+    <string name="operation_details">Детали операции</string>
+    <string name="cost">Сумма</string>
+    <string name="date">Дата</string>
+    <string name="mileage">Пробег</string>
+    <string name="comment">Комментарий</string>
+    <string name="redaction">Редактировать</string>
+    <string name="operations">Операции</string>
+    <string name="statistics">Статистика</string>
+
+
 </resources>

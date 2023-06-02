@@ -40,7 +40,7 @@ public class AddCarFragment extends Fragment {
         ExpenseDao expenseDao = expenseDB.expenseDao();
 
 
-        binding.btn1.setOnClickListener(new View.OnClickListener() {
+        binding.buttonAddCar.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -107,6 +107,7 @@ public class AddCarFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putInt(ExpensesFragment.key,timeID);
                 getActivity().getSharedPreferences("id", Context.MODE_PRIVATE).edit().putInt(ExpensesFragment.key,timeID).apply();
+                //Navigation.findNavController(binding.getRoot()).clearBackStack(R.id.action_addCarFragment_to_panelFragment);
                 Navigation.findNavController(binding.getRoot()).navigate(R.id.action_addCarFragment_to_panelFragment,
                 bundle);
             }

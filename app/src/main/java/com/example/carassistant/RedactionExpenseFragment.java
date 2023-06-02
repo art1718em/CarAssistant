@@ -78,14 +78,14 @@ public class RedactionExpenseFragment extends Fragment {
                 String selectedDate = new StringBuilder().append(mDay)
                         .append("-").append(mMonth + 1).append("-").append(mYear)
                         .append(" ").toString();
-                binding.etData.setText(selectedDate);
+                binding.etDate.setText(selectedDate);
             }
         };
 
 
 
 
-        binding.btn.setOnClickListener(new View.OnClickListener() {
+        binding.buttonRedaction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 boolean flag = true;
@@ -97,12 +97,12 @@ public class RedactionExpenseFragment extends Fragment {
                 }
                 else
                     binding.etExpense.setBackgroundTintList(primalColor);
-                if(binding.etData.getText().toString().equals("")) {
+                if(binding.etDate.getText().toString().equals("")) {
                     flag = false;
-                    binding.etData.setBackgroundTintList(colorStateList);
+                    binding.etDate.setBackgroundTintList(colorStateList);
                 }
                 else
-                    binding.etData.setBackgroundTintList(primalColor);
+                    binding.etDate.setBackgroundTintList(primalColor);
                 if(binding.etComment.getText().toString().equals("")) {
                     flag = false;
                     binding.etComment.setBackgroundTintList(colorStateList);
@@ -121,7 +121,7 @@ public class RedactionExpenseFragment extends Fragment {
                                     expenseBundle.getInt("expenseIdKey", -1),
                                     binding.etExpense.getText().toString(),
                                     binding.spinner.getSelectedItem().toString(),
-                                    binding.etData.getText().toString(),
+                                    binding.etDate.getText().toString(),
                                     binding.etComment.getText().toString(),
                                     Integer.parseInt(binding.etMileage.getText().toString())
                             )
@@ -171,7 +171,7 @@ public class RedactionExpenseFragment extends Fragment {
         }
         binding.etExpense.setText(expense.getExpense());
         binding.etComment.setText(expense.getComment());
-        binding.etData.setText(expense.getData());
+        binding.etDate.setText(expense.getData());
         binding.etMileage.setText(String.valueOf(expense.getMileage()));
     }
 

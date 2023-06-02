@@ -51,7 +51,7 @@ public class CarsFragment extends Fragment {
 
     private void onCarsLoaded(List<Car> cars) {
         CarAdapter carAdapter =new CarAdapter((ArrayList<Car>) cars, binding, this);
-        binding.recyclerview.setLayoutManager(new LinearLayoutManager(requireContext()));
+        binding.recyclerview.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.recyclerview.setAdapter(carAdapter);
 
     }

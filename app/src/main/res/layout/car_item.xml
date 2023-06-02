@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:textSize="20sp"
-        android:text="Марка"/>
+        android:text="@string/mark"/>
     <TextView
         android:textColor="@color/black"
         android:layout_marginStart="8dp"
@@ -29,8 +29,7 @@
         app:layout_constraintStart_toEndOf="@+id/tv_mark"
         app:layout_constraintTop_toTopOf="parent"
         android:textSize="20sp"
-
-        android:text="Марка"/>
+        android:text="@string/model"/>
 
 
 
@@ -43,7 +42,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:textSize="20sp"
-
-        android:text="Цвет"/>
+        android:text="@string/color"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

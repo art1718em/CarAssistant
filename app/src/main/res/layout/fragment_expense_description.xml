@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/image"
+            android:id="@+id/icon_back"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@drawable/back"
@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="Детали операции"
+            android:text="@string/operation_details"
             android:textColor="@color/black"
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -40,12 +40,12 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/image2"
+            android:id="@+id/icon_delete"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@drawable/delete"
             android:layout_marginRight="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/image"
+            app:layout_constraintBottom_toBottomOf="@+id/icon_back"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -55,14 +55,14 @@
         android:id="@+id/tvCost"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Сумма"
+        android:text="@string/cost"
         android:layout_marginTop="48dp"
         android:layout_marginLeft="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layout" />
     <TextView
-        android:id="@+id/tv_cost1"
+        android:id="@+id/tv_cost_data"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
@@ -76,14 +76,14 @@
         android:id="@+id/tvCategory"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Категория"
+        android:text="@string/category"
         android:layout_marginTop="24dp"
         android:layout_marginLeft="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_cost1" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_cost_data" />
     <TextView
-        android:id="@+id/tv_category1"
+        android:id="@+id/tv_category_data"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
@@ -93,17 +93,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvCategory" />
     <TextView
-        android:id="@+id/tvData"
+        android:id="@+id/tvDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Дата"
+        android:text="@string/date"
         android:layout_marginTop="24dp"
         android:layout_marginLeft="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_category1" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_category_data" />
     <TextView
-        android:id="@+id/tv_data1"
+        android:id="@+id/tv_date_data"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
@@ -111,20 +111,20 @@
         android:layout_marginLeft="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvData" />
+        app:layout_constraintTop_toBottomOf="@+id/tvDate" />
 
     <TextView
         android:id="@+id/tvMileage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Пробег"
+        android:text="@string/mileage"
         android:layout_marginTop="24dp"
         android:layout_marginLeft="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_data1" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_date_data" />
     <TextView
-        android:id="@+id/tv_mileage1"
+        android:id="@+id/tv_mileage_data"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
@@ -137,14 +137,14 @@
         android:id="@+id/tvComment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Комментарий"
+        android:text="@string/comment"
         android:layout_marginTop="24dp"
         android:layout_marginLeft="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_mileage1" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_mileage_data" />
     <TextView
-        android:id="@+id/tv_comment1"
+        android:id="@+id/tv_comment_data"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
@@ -154,16 +154,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvComment" />
     <Button
-        android:id="@+id/btn1"
+        android:id="@+id/button_redaction"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/button"
         android:layout_marginTop="32dp"
-        android:text="Редактировать"
+        android:text="@string/redaction"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_comment1" />
-
-
-
+        app:layout_constraintTop_toBottomOf="@+id/tv_comment_data" />
 </androidx.constraintlayout.widget.ConstraintLayout>
