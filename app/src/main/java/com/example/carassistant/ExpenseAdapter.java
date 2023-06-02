@@ -2,9 +2,11 @@ package com.example.carassistant;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.navigation.Navigation;
@@ -13,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.carassistant.databinding.ExpenseItemBinding;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseViewHolder> {
 
@@ -20,6 +23,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
 
     private final ArrayList<Expense> data;
     private ExpenseItemBinding binding;
+    private List<Integer> index = new ArrayList<>();
     public ExpenseAdapter(ArrayList<Expense> data) {this.data = data;};
 
     @NonNull
@@ -33,6 +37,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
     @Override
     public void onBindViewHolder(@NonNull ExpenseAdapter.ExpenseViewHolder holder, int position) {
         Expense item  = data.get(position);
+        index.add(item.getId());
         switch (item.getCategory()){
             case "Топливо":
                 holder.binding.imageView.setImageResource(R.drawable.gasoline_pump);
@@ -62,10 +67,12 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
         holder.binding.expenseItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Bundle carBundle = new Bundle();
-                //carBundle.putInt(ExpensesFragment.key, position+1);
+                Bundle carBundle = new Bundle();
+                carBundle.putInt(ExpenseDescriptionFragment.key, index.get(position));
+                Log.d("carAssWork", "index " + String.valueOf(position));
+                Log.d("carAssWork", "idExpense " + String.valueOf(index.get(position)));
                 //fragment.getActivity().getSharedPreferences("id", Context.MODE_PRIVATE).edit().putInt(ExpensesFragment.key, position+1).apply();
-                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_expensesFragment_to_expenseDescriptionFragment);
+                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_expensesFragment_to_expenseDescriptionFragment, carBundle);
             }
         });
 

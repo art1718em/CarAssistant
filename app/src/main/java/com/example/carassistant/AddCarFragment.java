@@ -1,8 +1,10 @@
 package com.example.carassistant;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -21,6 +23,7 @@ public class AddCarFragment extends Fragment {
     private FragmentAddCarBinding binding;
     Disposable disposable;
     Disposable ExpenseDisposable;
+    public static final String key = "expenseIdKey";
 
     private int timeID;
 
@@ -31,6 +34,8 @@ public class AddCarFragment extends Fragment {
         CarDB carDB = CarDB.getInstance(requireContext());
         CarDao carDao = carDB.carDao();
 
+
+
         ExpenseDB expenseDB = ExpenseDB.getInstance(requireContext());
         ExpenseDao expenseDao = expenseDB.expenseDao();
 
@@ -39,27 +44,62 @@ public class AddCarFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                new Thread(()->{
+                new Thread(() -> {
                     if (carDao.getListCar().isEmpty())
                         timeID = 1;
                     else
-                        timeID = carDao.getListCar().get(carDao.getListCar().size()-1).getId() + 1;
+                        timeID = carDao.getListCar().get(carDao.getListCar().size() - 1).getId() + 1;
                 }).start();
-                disposable = carDao
-                        .addCar(
-                                new Car(
-                                        timeID,
-                                        binding.etMark.getText().toString(),
-                                        binding.etModel.getText().toString(),
-                                        binding.etYear.getText().toString(),
-                                        Integer.parseInt(binding.etMileage.getText().toString()),
-                                        Integer.parseInt(binding.etCost.getText().toString()),
-                                        binding.etColor.getText().toString()
-                                        )
-                        )
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(this::onCarAdded);
+                boolean flag = true;
+                ColorStateList colorStateList = ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.red));
+                ColorStateList primalColor = ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.background_edittext));
+                if (binding.etMark.getText().toString().equals("")) {
+                    flag = false;
+                    binding.etMark.setBackgroundTintList(colorStateList);
+                } else
+                    binding.etMark.setBackgroundTintList(primalColor);
+                if (binding.etModel.getText().toString().equals("")) {
+                    flag = false;
+                    binding.etModel.setBackgroundTintList(colorStateList);
+                } else
+                    binding.etModel.setBackgroundTintList(primalColor);
+                if (binding.etYear.getText().toString().equals("")) {
+                    flag = false;
+                    binding.etYear.setBackgroundTintList(colorStateList);
+                } else
+                    binding.etYear.setBackgroundTintList(primalColor);
+                if (binding.etMileage.getText().toString().equals("")) {
+                    flag = false;
+                    binding.etMileage.setBackgroundTintList(colorStateList);
+                } else
+                    binding.etMileage.setBackgroundTintList(primalColor);
+                if (binding.etCost.getText().toString().equals("")) {
+                    flag = false;
+                    binding.etCost.setBackgroundTintList(colorStateList);
+                } else
+                    binding.etCost.setBackgroundTintList(primalColor);
+                if (binding.etColor.getText().toString().equals("")) {
+                    flag = false;
+                    binding.etColor.setBackgroundTintList(colorStateList);
+                } else
+                    binding.etColor.setBackgroundTintList(primalColor);
+                if (flag) {
+                    disposable = carDao
+                            .addCar(
+                                    new Car(
+                                            timeID,
+                                            binding.etMark.getText().toString(),
+                                            binding.etModel.getText().toString(),
+                                            binding.etYear.getText().toString(),
+                                            Integer.parseInt(binding.etMileage.getText().toString()),
+                                            Integer.parseInt(binding.etCost.getText().toString()),
+                                            binding.etColor.getText().toString()
+                                    )
+                            )
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(this::onCarAdded);
+                }
             }
 
 

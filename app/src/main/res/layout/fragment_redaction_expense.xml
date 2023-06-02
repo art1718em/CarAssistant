@@ -4,15 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddCarFragment">
+    tools:context=".AddExpenseFragment">
 
     <EditText
-        android:id="@+id/etMark"
+        android:id="@+id/etExpense"
         android:layout_width="240dp"
         android:layout_height="48dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/default_border_white"
-        android:hint="Введите марку"
+        android:inputType="numberDecimal"
         android:maxLength="20"
         android:maxLines="1"
         android:padding="10dp"
@@ -24,32 +24,35 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/etModel"
-        android:layout_width="240dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="32dp"
-        android:background="@drawable/default_border_white"
-        android:hint="Введите модель"
-        android:maxLength="20"
-        android:maxLines="1"
-        android:padding="10dp"
-        android:scrollbars="horizontal"
-        android:textColor="@color/black"
-        android:textColorHint="#616161"
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Выберите категорию"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etMark" />
+        app:layout_constraintTop_toBottomOf="@+id/etExpense" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:entries="@array/expense_categories"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <EditText
-        android:id="@+id/etYear"
+        android:id="@+id/etData"
         android:layout_width="240dp"
         android:layout_height="48dp"
         android:layout_marginTop="32dp"
         android:background="@drawable/default_border_white"
-        android:hint="Введите год"
-        android:inputType="number"
         android:maxLength="20"
         android:maxLines="1"
         android:padding="10dp"
@@ -59,7 +62,24 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etModel" />
+        app:layout_constraintTop_toBottomOf="@+id/spinner"  />
+
+    <EditText
+        android:id="@+id/etComment"
+        android:layout_width="240dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/default_border_white"
+        android:maxLength="20"
+        android:maxLines="1"
+        android:padding="10dp"
+        android:scrollbars="horizontal"
+        android:textColor="@color/black"
+        android:textColorHint="#616161"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etData"  />
 
     <EditText
         android:id="@+id/etMileage"
@@ -67,8 +87,7 @@
         android:layout_height="48dp"
         android:layout_marginTop="32dp"
         android:background="@drawable/default_border_white"
-        android:inputType="number"
-        android:hint="Введите пробег"
+        android:inputType="numberDecimal"
         android:maxLength="20"
         android:maxLines="1"
         android:padding="10dp"
@@ -78,54 +97,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etYear" />
-
-    <EditText
-        android:id="@+id/etColor"
-        android:layout_width="240dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="32dp"
-        android:background="@drawable/default_border_white"
-        android:hint="Введите цвет"
-        android:maxLength="20"
-        android:maxLines="1"
-        android:padding="10dp"
-        android:scrollbars="horizontal"
-        android:textColor="@color/black"
-        android:textColorHint="#616161"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etMileage" />
-
-    <EditText
-        android:id="@+id/etCost"
-        android:layout_width="240dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="32dp"
-        android:background="@drawable/default_border_white"
-        android:inputType="number"
-        android:hint="Введите цену"
-        android:maxLength="20"
-        android:maxLines="1"
-        android:padding="10dp"
-        android:scrollbars="horizontal"
-        android:textColor="@color/black"
-        android:textColorHint="#616161"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etColor" />
+        app:layout_constraintTop_toBottomOf="@+id/etComment"  />
 
     <Button
-        android:id="@+id/btn1"
+        android:id="@+id/btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/button"
         android:layout_marginTop="32dp"
-        android:text="Добавить авто"
+        android:background="@drawable/button"
+        android:text="Редактировать"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etCost" />
+        app:layout_constraintTop_toBottomOf="@+id/etMileage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

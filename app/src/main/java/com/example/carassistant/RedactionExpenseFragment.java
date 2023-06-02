@@ -2,7 +2,6 @@ package com.example.carassistant;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 
 import androidx.core.content.ContextCompat;
@@ -13,28 +12,38 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.example.carassistant.databinding.FragmentAddExpenseBinding;
-import com.example.carassistant.databinding.FragmentExpensesBinding;
+import com.example.carassistant.databinding.FragmentRedactionExpenseBinding;
 
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class AddExpenseFragment extends Fragment {
 
-    private FragmentAddExpenseBinding binding;
+public class RedactionExpenseFragment extends Fragment {
+
+    private FragmentRedactionExpenseBinding binding;
     Disposable disposable;
+    Disposable expenseListDisposable;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentAddExpenseBinding.inflate(inflater, container, false);
-
+        binding = FragmentRedactionExpenseBinding.inflate(inflater, container, false);
 
         ExpenseDB expenseDB = ExpenseDB.getInstance(requireContext());
         ExpenseDao expenseDao = expenseDB.expenseDao();
+        Bundle expenseBundle = requireArguments();
+        if (expenseBundle.getInt("expenseIdKey", -1) != -1){
+            expenseListDisposable = expenseDao
+                    .getExpenseById(expenseBundle.getInt("expenseIdKey", -1))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(this::onExpensesLoaded, throwable -> {
+                        Log.wtf("error", throwable.toString());
+                    });
+        }
 
         binding.btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,54 +77,63 @@ public class AddExpenseFragment extends Fragment {
                     binding.etMileage.setBackgroundTintList(primalColor);
                 if(flag) {
                     disposable = expenseDao
-                            .addExpense(
-                                    new Expense(
-                                            getActivity().getSharedPreferences("id", Context.MODE_PRIVATE).getInt(DiagramFragment.key, -1),
-                                            binding.etExpense.getText().toString(),
-                                            binding.spinner.getSelectedItem().toString(),
-                                            binding.etData.getText().toString(),
-                                            binding.etComment.getText().toString(),
-                                            Integer.parseInt(binding.etMileage.getText().toString())
-
-
-                                    )
+                            .updateExpense(
+                                    expenseBundle.getInt("expenseIdKey", -1),
+                                    binding.etExpense.getText().toString(),
+                                    binding.spinner.getSelectedItem().toString(),
+                                    binding.etData.getText().toString(),
+                                    binding.etComment.getText().toString(),
+                                    Integer.parseInt(binding.etMileage.getText().toString())
                             )
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(this::onExpenseAdded, throwable -> {
                                 Log.wtf("Error", throwable.toString());
                             });
-//                ExpenseDB.databaseWriteExecutor.execute(() -> {
-//                    expenseDao
-//                            .addExpense(
-//                                    new Expense(
-//                                            //carBundle.getInt(ExpensesFragment.key),
-//                                            binding.etExpense.getText().toString(),
-//                                            binding.spinner.getSelectedItem().toString(),
-//                                            binding.etData.getText().toString(),
-//                                            binding.etComment.getText().toString(),
-//                                            Integer.parseInt(binding.etMileage.getText().toString())
 //
-//
-//                                    )
-//                            );
-//                });
-//                onExpenseAdded();
                 }
             }
 
             private void onExpenseAdded(){
-                //Toast.makeText(getContext(), String.valueOf(carBundle.getInt(ExpensesFragment.key)), Toast.LENGTH_SHORT).show();
-                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_addExpenseFragment_to_diagramFragment);
+                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_redactionExpenseFragment_to_expenseDescriptionFragment,
+                        expenseBundle);
             }
 
         });
 
 
-
         return binding.getRoot();
     }
 
+    private void onExpensesLoaded(Expense expense) {
+        switch (expense.getCategory()){
+            case "Топливо":
+                binding.spinner.setSelection(0);
+                break;
+            case "Запчасти":
+                binding.spinner.setSelection(1);
+                break;
+            case "Шины":
+                binding.spinner.setSelection(2);
+                break;
+            case "Диски":
+                binding.spinner.setSelection(3);
+                break;
+            case "Работа сервиса":
+                binding.spinner.setSelection(4);
+                break;
+            case "Автомойка":
+                binding.spinner.setSelection(5);
+                break;
+            case "Другое":
+                binding.spinner.setSelection(6);
+                break;
+        }
+        binding.etExpense.setText(expense.getExpense());
+        binding.etComment.setText(expense.getComment());
+        binding.etData.setText(expense.getData());
+        binding.etMileage.setText(String.valueOf(expense.getMileage()));
+    }
 
     @Override
     public void onDestroy() {
