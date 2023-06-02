@@ -1,5 +1,6 @@
 package com.example.carassistant;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
@@ -13,10 +14,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CalendarView;
+import android.widget.DatePicker;
 import android.widget.Toast;
 
 import com.example.carassistant.databinding.FragmentAddExpenseBinding;
 import com.example.carassistant.databinding.FragmentExpensesBinding;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -27,6 +34,8 @@ public class AddExpenseFragment extends Fragment {
     private FragmentAddExpenseBinding binding;
     Disposable disposable;
 
+    DatePickerDialog.OnDateSetListener dateSetListener;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -35,6 +44,39 @@ public class AddExpenseFragment extends Fragment {
 
         ExpenseDB expenseDB = ExpenseDB.getInstance(requireContext());
         ExpenseDao expenseDao = expenseDB.expenseDao();
+
+
+        binding.iconCalendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar calendar = Calendar.getInstance();
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH);
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), dateSetListener,
+                        year,        month,
+                        day);
+                datePickerDialog.getDatePicker().setMaxDate(new Date().getTime());
+                datePickerDialog.show();
+
+            }
+        });
+
+        dateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                int mYear = year;
+                int mMonth = month;
+                int mDay = dayOfMonth;
+                String selectedDate = new StringBuilder().append(mDay)
+                        .append("-").append(mMonth + 1).append("-").append(mYear)
+                        .append(" ").toString();
+                binding.etData.setText(selectedDate);
+            }
+        };
+
+
+
 
         binding.btn.setOnClickListener(new View.OnClickListener() {
             @Override
