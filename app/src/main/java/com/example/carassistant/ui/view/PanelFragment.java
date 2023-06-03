@@ -1,4 +1,4 @@
-package com.example.carassistant;
+package com.example.carassistant.ui.view;
 
 import android.os.Bundle;
 
@@ -14,7 +14,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.carassistant.R;
 import com.example.carassistant.databinding.FragmentPanelBinding;
+import com.example.carassistant.ui.view.DiagramFragment;
 
 public class PanelFragment extends Fragment {
 

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/expensesFragment"
-        android:name="com.example.carassistant.ExpensesFragment"
+        android:name="com.example.carassistant.ui.view.ExpensesFragment"
         tools:layout="@layout/fragment_expenses"
         android:label="fragment_expenses">
         <action
@@ -24,7 +24,7 @@
     </fragment>
     <fragment
         android:id="@+id/addExpenseFragment"
-        android:name="com.example.carassistant.AddExpenseFragment"
+        android:name="com.example.carassistant.ui.view.AddExpenseFragment"
         tools:layout="@layout/fragment_add_expense"
         android:label="fragment_add_expense">
         <action
@@ -40,7 +40,7 @@
     </fragment>
     <fragment
         android:id="@+id/diagramFragment"
-        android:name="com.example.carassistant.DiagramFragment"
+        android:name="com.example.carassistant.ui.view.DiagramFragment"
         tools:layout="@layout/fragment_diagram"
         android:label="fragment_diagram" >
         <action
@@ -56,7 +56,7 @@
     </fragment>
     <fragment
         android:id="@+id/expenseDescriptionFragment"
-        android:name="com.example.carassistant.ExpenseDescriptionFragment"
+        android:name="com.example.carassistant.ui.view.ExpenseDescriptionFragment"
         android:label="fragment_expense_description"
         tools:layout="@layout/fragment_expense_description" >
         <action
@@ -70,7 +70,7 @@
     </fragment>
     <fragment
         android:id="@+id/redactionExpenseFragment"
-        android:name="com.example.carassistant.RedactionExpenseFragment"
+        android:name="com.example.carassistant.ui.view.RedactionExpenseFragment"
         android:label="RedactionExpenseFragment" >
         <action
             android:id="@+id/action_redactionExpenseFragment_to_expenseDescriptionFragment"

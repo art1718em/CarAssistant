@@ -1,4 +1,4 @@
-package com.example.carassistant;
+package com.example.carassistant.ui.adapters;
 
 
 import android.os.Bundle;
@@ -12,6 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.carassistant.data.models.Expense;
+import com.example.carassistant.ui.view.ExpenseDescriptionFragment;
+import com.example.carassistant.R;
 import com.example.carassistant.databinding.ExpenseItemBinding;
 
 import java.util.ArrayList;

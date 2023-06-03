@@ -1,4 +1,4 @@
-package com.example.carassistant;
+package com.example.carassistant.data.models;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "expense_table")
 public class Expense {
     @PrimaryKey(autoGenerate = true)
-    int id;
+    public int id;
     int idCar;
     private String expense;
     private String category;

@@ -1,4 +1,4 @@
-package com.example.carassistant;
+package com.example.carassistant.ui.view;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -16,7 +16,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
+import com.example.carassistant.data.models.Expense;
+import com.example.carassistant.data.room.root.ExpenseDB;
+import com.example.carassistant.data.room.dao.ExpenseDao;
+import com.example.carassistant.R;
 import com.example.carassistant.databinding.FragmentDiagramBinding;
+import com.example.carassistant.ui.adapters.DiagramAdapter;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;

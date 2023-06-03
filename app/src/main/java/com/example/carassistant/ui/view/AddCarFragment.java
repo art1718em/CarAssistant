@@ -1,4 +1,4 @@
-package com.example.carassistant;
+package com.example.carassistant.ui.view;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -12,6 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.carassistant.data.models.Car;
+import com.example.carassistant.data.room.root.CarDB;
+import com.example.carassistant.data.room.dao.CarDao;
+import com.example.carassistant.R;
 import com.example.carassistant.databinding.FragmentAddCarBinding;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;

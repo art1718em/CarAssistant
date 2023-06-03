@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/addCarFragment"
-        android:name="com.example.carassistant.AddCarFragment"
+        android:name="com.example.carassistant.ui.view.AddCarFragment"
         android:label="fragment_add_car"
         tools:layout="@layout/fragment_add_car" >
         <action
@@ -18,7 +18,7 @@
     </fragment>
     <fragment
         android:id="@+id/carsFragment"
-        android:name="com.example.carassistant.CarsFragment"
+        android:name="com.example.carassistant.ui.view.CarsFragment"
         android:label="fragment_cars"
         tools:layout="@layout/fragment_cars" >
         <action
@@ -30,7 +30,7 @@
     </fragment>
     <fragment
         android:id="@+id/panelFragment"
-        android:name="com.example.carassistant.PanelFragment"
+        android:name="com.example.carassistant.ui.view.PanelFragment"
         android:label="fragment_panel"
         tools:layout="@layout/fragment_panel" />
 </navigation>

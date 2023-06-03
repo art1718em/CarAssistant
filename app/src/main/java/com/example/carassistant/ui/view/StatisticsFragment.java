@@ -1,4 +1,4 @@
-package com.example.carassistant;
+package com.example.carassistant.ui.view;
 
 import android.os.Bundle;
 

@@ -1,4 +1,4 @@
-package com.example.carassistant;
+package com.example.carassistant.data.room.root;
 
 
 import android.content.Context;
@@ -6,6 +6,9 @@ import android.content.Context;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+
+import com.example.carassistant.data.models.Expense;
+import com.example.carassistant.data.room.dao.ExpenseDao;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

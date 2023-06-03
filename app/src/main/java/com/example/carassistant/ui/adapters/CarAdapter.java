@@ -1,4 +1,4 @@
-package com.example.carassistant;
+package com.example.carassistant.ui.adapters;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -12,6 +12,9 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.example.carassistant.data.models.Car;
+import com.example.carassistant.ui.view.ExpensesFragment;
+import com.example.carassistant.R;
 import com.example.carassistant.databinding.CarItemBinding;
 import com.example.carassistant.databinding.FragmentCarsBinding;
 

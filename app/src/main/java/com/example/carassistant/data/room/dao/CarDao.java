@@ -1,8 +1,10 @@
-package com.example.carassistant;
+package com.example.carassistant.data.room.dao;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
+
+import com.example.carassistant.data.models.Car;
 
 import java.util.List;
 

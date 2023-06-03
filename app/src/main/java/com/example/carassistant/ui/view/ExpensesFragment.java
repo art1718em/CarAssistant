@@ -1,4 +1,4 @@
-package com.example.carassistant;
+package com.example.carassistant.ui.view;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -13,6 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
+import com.example.carassistant.data.models.Expense;
+import com.example.carassistant.ui.adapters.ExpenseAdapter;
+import com.example.carassistant.data.room.root.ExpenseDB;
+import com.example.carassistant.data.room.dao.ExpenseDao;
+import com.example.carassistant.R;
 import com.example.carassistant.databinding.FragmentExpensesBinding;
 
 import java.util.ArrayList;

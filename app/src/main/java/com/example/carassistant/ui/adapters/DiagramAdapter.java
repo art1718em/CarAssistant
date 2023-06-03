@@ -1,4 +1,4 @@
-package com.example.carassistant;
+package com.example.carassistant.ui.adapters;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.carassistant.data.models.Expense;
+import com.example.carassistant.R;
 import com.example.carassistant.databinding.DiagramItemBinding;
 
 

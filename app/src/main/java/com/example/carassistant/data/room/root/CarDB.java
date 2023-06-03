@@ -1,10 +1,13 @@
-package com.example.carassistant;
+package com.example.carassistant.data.room.root;
 
 import android.content.Context;
 
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+
+import com.example.carassistant.data.models.Car;
+import com.example.carassistant.data.room.dao.CarDao;
 
 @Database(entities = {Car.class}, version = 1)
 public abstract class CarDB extends RoomDatabase {

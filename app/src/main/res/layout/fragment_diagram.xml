@@ -8,7 +8,7 @@
     android:padding="16dp"
     android:orientation="vertical"
     android:layout_gravity="center"
-    tools:context=".DiagramFragment">
+    tools:context=".ui.view.DiagramFragment">
 
 
 

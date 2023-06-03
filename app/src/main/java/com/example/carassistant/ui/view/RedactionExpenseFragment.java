@@ -1,15 +1,12 @@
-package com.example.carassistant;
+package com.example.carassistant.ui.view;
 
 import android.app.DatePickerDialog;
-import android.content.Context;
+
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import android.util.Log;
@@ -18,8 +15,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 
-import com.example.carassistant.databinding.FragmentAddExpenseBinding;
-
+import com.example.carassistant.data.models.Expense;
+import com.example.carassistant.data.room.root.ExpenseDB;
+import com.example.carassistant.data.room.dao.ExpenseDao;
+import com.example.carassistant.R;
+import com.example.carassistant.databinding.FragmentRedactionExpenseBinding;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -29,27 +29,32 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class AddExpenseFragment extends Fragment {
 
-    private FragmentAddExpenseBinding binding;
+public class RedactionExpenseFragment extends Fragment {
+
+    private FragmentRedactionExpenseBinding binding;
     Disposable disposable;
-    private NavController navController;
+    Disposable expenseListDisposable;
 
     DatePickerDialog.OnDateSetListener dateSetListener;
 
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        navController = Navigation.findNavController(binding.getRoot());
-        super.onViewCreated(view, savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentAddExpenseBinding.inflate(inflater, container, false);
+        binding = FragmentRedactionExpenseBinding.inflate(inflater, container, false);
 
         ExpenseDB expenseDB = ExpenseDB.getInstance(requireContext());
         ExpenseDao expenseDao = expenseDB.expenseDao();
+        Bundle expenseBundle = requireArguments();
+        if (expenseBundle.getInt("expenseIdKey", -1) != -1){
+            expenseListDisposable = expenseDao
+                    .getExpenseById(expenseBundle.getInt("expenseIdKey", -1))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(this::onExpensesLoaded, throwable -> {
+                        Log.wtf("error", throwable.toString());
+                    });
+        }
 
 
         binding.iconCalendar.setOnClickListener(new View.OnClickListener() {
@@ -68,8 +73,6 @@ public class AddExpenseFragment extends Fragment {
             }
         });
 
-
-
         dateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -86,7 +89,7 @@ public class AddExpenseFragment extends Fragment {
 
 
 
-        binding.buttonAddExpense.setOnClickListener(new View.OnClickListener() {
+        binding.buttonRedaction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 boolean flag = true;
@@ -118,43 +121,73 @@ public class AddExpenseFragment extends Fragment {
                     binding.etMileage.setBackgroundTintList(primalColor);
                 if(flag) {
                     disposable = expenseDao
-                            .addExpense(
-                                    new Expense(
-                                            getActivity().getSharedPreferences("id", Context.MODE_PRIVATE).getInt(DiagramFragment.key, -1),
-                                            binding.etExpense.getText().toString(),
-                                            binding.spinner.getSelectedItem().toString(),
-                                            binding.etDate.getText().toString(),
-                                            binding.etComment.getText().toString(),
-                                            Integer.parseInt(binding.etMileage.getText().toString())
-
-
-                                    )
+                            .updateExpense(
+                                    expenseBundle.getInt("expenseIdKey", -1),
+                                    binding.etExpense.getText().toString(),
+                                    binding.spinner.getSelectedItem().toString(),
+                                    binding.etDate.getText().toString(),
+                                    binding.etComment.getText().toString(),
+                                    Integer.parseInt(binding.etMileage.getText().toString())
                             )
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(this::onExpenseAdded, throwable -> {
                                 Log.wtf("Error", throwable.toString());
                             });
+//
                 }
             }
 
             private void onExpenseAdded(){
-                if(navController.getBackQueue().get(navController.getBackQueue().getSize()-2).getDestination().getId() == R.id.diagramFragment)
-                    Navigation.findNavController(binding.getRoot()).navigate(R.id.action_addExpenseFragment_to_diagramFragment);
-                else
-                    Navigation.findNavController(binding.getRoot()).navigate(R.id.action_addExpenseFragment_to_expensesFragment);
-
+                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_redactionExpenseFragment_to_expenseDescriptionFragment,
+                        expenseBundle);
             }
 
         });
+
+
         return binding.getRoot();
     }
 
+    private void onExpensesLoaded(Expense expense) {
+        switch (expense.getCategory()){
+            case "Топливо":
+                binding.spinner.setSelection(0);
+                break;
+            case "Запчасти":
+                binding.spinner.setSelection(1);
+                break;
+            case "Шины":
+                binding.spinner.setSelection(2);
+                break;
+            case "Диски":
+                binding.spinner.setSelection(3);
+                break;
+            case "Работа сервиса":
+                binding.spinner.setSelection(4);
+                break;
+            case "Автомойка":
+                binding.spinner.setSelection(5);
+                break;
+            case "Другое":
+                binding.spinner.setSelection(6);
+                break;
+        }
+        binding.etExpense.setText(expense.getExpense());
+        binding.etComment.setText(expense.getComment());
+        binding.etDate.setText(expense.getData());
+        binding.etMileage.setText(String.valueOf(expense.getMileage()));
+        binding.layout.setVisibility(View.VISIBLE);
+        binding.progressBar.setVisibility(View.GONE);
+
+    }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         if (disposable != null)
             disposable.dispose();
+        if (expenseListDisposable != null)
+            expenseListDisposable.dispose();
     }
 }

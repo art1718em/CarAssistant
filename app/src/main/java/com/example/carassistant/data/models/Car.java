@@ -1,4 +1,4 @@
-package com.example.carassistant;
+package com.example.carassistant.data.models;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;

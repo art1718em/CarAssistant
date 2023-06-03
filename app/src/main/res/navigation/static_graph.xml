@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/statisticsFragment"
-        android:name="com.example.carassistant.StatisticsFragment"
+        android:name="com.example.carassistant.ui.view.StatisticsFragment"
         android:label="fragment_statistics"
         tools:layout="@layout/fragment_statistics" />
 </navigation>
