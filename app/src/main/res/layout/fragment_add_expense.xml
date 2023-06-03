@@ -81,12 +81,10 @@
         <EditText
             android:id="@+id/etComment"
             android:layout_width="240dp"
-            android:layout_height="48dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:background="@drawable/default_border_white"
             android:hint="@string/add_comment"
-            android:maxLength="20"
-            android:maxLines="1"
             android:padding="10dp"
             android:scrollbars="horizontal"
             android:textColor="@color/black"

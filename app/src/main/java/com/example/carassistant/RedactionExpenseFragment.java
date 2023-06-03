@@ -1,7 +1,7 @@
 package com.example.carassistant;
 
 import android.app.DatePickerDialog;
-import android.content.Context;
+
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 
@@ -20,7 +20,7 @@ import com.example.carassistant.databinding.FragmentRedactionExpenseBinding;
 import java.util.Calendar;
 import java.util.Date;
 
-import io.reactivex.Observable;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -173,6 +173,9 @@ public class RedactionExpenseFragment extends Fragment {
         binding.etComment.setText(expense.getComment());
         binding.etDate.setText(expense.getData());
         binding.etMileage.setText(String.valueOf(expense.getMileage()));
+        binding.layout.setVisibility(View.VISIBLE);
+        binding.progressBar.setVisibility(View.GONE);
+
     }
 
     @Override
@@ -180,5 +183,7 @@ public class RedactionExpenseFragment extends Fragment {
         super.onDestroy();
         if (disposable != null)
             disposable.dispose();
+        if (expenseListDisposable != null)
+            expenseListDisposable.dispose();
     }
 }

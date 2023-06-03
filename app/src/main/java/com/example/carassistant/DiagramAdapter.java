@@ -2,29 +2,26 @@ package com.example.carassistant;
 
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
+
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.carassistant.databinding.DiagramItemBinding;
-import com.example.carassistant.databinding.ExpenseItemBinding;
-import com.github.mikephil.charting.data.PieEntry;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+
 import java.util.Set;
 
 public class DiagramAdapter extends RecyclerView.Adapter<DiagramAdapter.DiagramViewHolder> {
 
 
     private HashMap<String, Integer> map;
-    //private final ArrayList<Expense> data;
     private Set<String> keys;
     public DiagramAdapter(ArrayList<Expense> data) {
-        //this.data = data;
         map = new HashMap<>();
         for (Expense i: data
         ) {

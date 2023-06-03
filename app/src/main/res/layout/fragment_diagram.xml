@@ -25,6 +25,7 @@
 
 
             <ImageView
+                android:visibility="invisible"
                 android:elevation="10dp"
                 android:id="@+id/icon_expenses"
                 android:layout_width="40dp"
@@ -51,6 +52,7 @@
                 app:layout_constraintVertical_bias="0.0" />
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/actionButton"
+                android:visibility="invisible"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="32dp"

@@ -1,11 +1,11 @@
 package com.example.carassistant;
 
-import android.content.Context;
+
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.LinearLayoutManager;
+
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,10 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.carassistant.databinding.FragmentExpenseDescriptionBinding;
-import com.example.carassistant.databinding.FragmentExpensesBinding;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -36,19 +32,16 @@ public class ExpenseDescriptionFragment extends Fragment {
         Bundle expenseBundle = requireArguments();
         ExpenseDB expenseDB = ExpenseDB.getInstance(requireContext());
         ExpenseDao expenseDao = expenseDB.expenseDao();
-        Log.d("CarAssWork", "idKeyExpense " + String.valueOf(expenseBundle.getInt("expenseIdKey", -1)));
         expenseListDisposable = expenseDao
                 .getExpenseById(expenseBundle.getInt("expenseIdKey", -1))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::onExpensesLoaded, throwable -> {
+                .subscribe(this::onExpenseDescriptionLoaded, throwable -> {
                     Log.wtf("error", throwable.toString());
                 });
         binding.iconBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //carBundle.putInt("key_car", carBundle.getInt(DiagramFragment.key));
-                //Navigation.findNavController(binding.getRoot()).navigate(R.id.action_expenseDescriptionFragment_to_expensesFragment);
                 Navigation.findNavController(binding.getRoot()).popBackStack();
 
             }
@@ -74,7 +67,7 @@ public class ExpenseDescriptionFragment extends Fragment {
 
         return binding.getRoot();
     }
-    private void onExpensesLoaded(Expense expense) {
+    private void onExpenseDescriptionLoaded(Expense expense) {
         binding.tvCategoryData.setText(expense.getCategory());
         binding.tvCostData.setText(expense.getExpense());
         binding.tvCommentData.setText(expense.getComment());

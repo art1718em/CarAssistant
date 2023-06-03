@@ -7,8 +7,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentResultListener;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -16,8 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.Toast;
+
 
 import com.example.carassistant.databinding.FragmentDiagramBinding;
 import com.github.mikephil.charting.charts.PieChart;
@@ -49,7 +46,6 @@ public class DiagramFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         getParentFragmentManager().setFragmentResultListener(key, getViewLifecycleOwner(), (requestKey, carBundle) -> {
             bundle = carBundle;
-            Log.d("carasswork", carBundle.toString());
             ExpenseDB expenseDB = ExpenseDB.getInstance(requireContext());
             ExpenseDao expenseDao = expenseDB.expenseDao();
             if (bundle != null) {
@@ -57,21 +53,21 @@ public class DiagramFragment extends Fragment {
                         .getALLThisId(bundle.getInt(key))
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(this::onExpensesLoaded, throwable -> {
+                        .subscribe(this::onDiagramLoaded, throwable -> {
                             Log.wtf("error", throwable.toString());
                         });
             }
 
         });
 
-        Log.d("carasswork", String.valueOf(getActivity().getSharedPreferences("id", Context.MODE_PRIVATE).getInt(key, -1)));
+
         ExpenseDB expenseDB = ExpenseDB.getInstance(requireContext());
         ExpenseDao expenseDao = expenseDB.expenseDao();
             expenseListDisposable = expenseDao
                     .getALLThisId(getActivity().getSharedPreferences("id", Context.MODE_PRIVATE).getInt(key, -1))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(this::onExpensesLoaded, throwable -> {
+                    .subscribe(this::onDiagramLoaded, throwable -> {
                         Log.wtf("error", throwable.toString());
                     });
 
@@ -107,7 +103,7 @@ public class DiagramFragment extends Fragment {
     }
 
 
-    private void onExpensesLoaded(List<Expense> expenses) {
+    private void onDiagramLoaded(List<Expense> expenses) {
         HashMap<String, Integer> map = new HashMap<>();
         int sum = 0;
         for (Expense i: expenses
@@ -151,6 +147,8 @@ public class DiagramFragment extends Fragment {
 
         binding.pieChart.setVisibility(View.VISIBLE);
         binding.recyclerview.setVisibility(View.VISIBLE);
+        binding.actionButton.setVisibility(View.VISIBLE);
+        binding.iconExpenses.setVisibility(View.VISIBLE);
         binding.progressBar.setVisibility(View.GONE);
     }
 }

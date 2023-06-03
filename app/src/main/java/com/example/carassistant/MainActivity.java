@@ -25,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     private NavController navController;
-    private NavController parentNavController;
     private long back_pressed;
 
     @Override

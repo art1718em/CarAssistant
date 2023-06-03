@@ -6,12 +6,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
-import androidx.navigation.NavHostController;
-import androidx.navigation.Navigation;
+
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +36,6 @@ public class PanelFragment extends Fragment {
         NavigationUI.setupWithNavController(binding.bottomNavigationView, navController);
 
         Bundle carBundle = requireArguments();
-        Log.d("carasswork", carBundle.toString());
         getChildFragmentManager().findFragmentById(R.id.nav_view_container).getChildFragmentManager().setFragmentResult(DiagramFragment.key, carBundle);
     }
 

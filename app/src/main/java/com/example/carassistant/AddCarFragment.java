@@ -22,8 +22,6 @@ public class AddCarFragment extends Fragment {
 
     private FragmentAddCarBinding binding;
     Disposable disposable;
-    Disposable ExpenseDisposable;
-    public static final String key = "expenseIdKey";
 
     private int timeID;
 
@@ -33,12 +31,6 @@ public class AddCarFragment extends Fragment {
 
         CarDB carDB = CarDB.getInstance(requireContext());
         CarDao carDao = carDB.carDao();
-
-
-
-        ExpenseDB expenseDB = ExpenseDB.getInstance(requireContext());
-        ExpenseDao expenseDao = expenseDB.expenseDao();
-
 
         binding.buttonAddCar.setOnClickListener(new View.OnClickListener() {
 
@@ -107,7 +99,6 @@ public class AddCarFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putInt(ExpensesFragment.key,timeID);
                 getActivity().getSharedPreferences("id", Context.MODE_PRIVATE).edit().putInt(ExpensesFragment.key,timeID).apply();
-                //Navigation.findNavController(binding.getRoot()).clearBackStack(R.id.action_addCarFragment_to_panelFragment);
                 Navigation.findNavController(binding.getRoot()).navigate(R.id.action_addCarFragment_to_panelFragment,
                 bundle);
             }

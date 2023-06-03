@@ -5,126 +5,145 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AddExpenseFragment">
-
-    <EditText
-        android:id="@+id/etExpense"
-        android:layout_width="240dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="16dp"
-        android:hint="@string/add_cost"
-        android:background="@drawable/default_border_white"
-        android:inputType="numberDecimal"
-        android:maxLength="20"
-        android:maxLines="1"
-        android:padding="10dp"
-        android:scrollbars="horizontal"
-        android:textColor="@color/black"
-        android:textColorHint="#616161"
+    <ProgressBar
+        android:visibility="visible"
+        android:id="@+id/progress_bar"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="@string/add_category"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout"
+        android:visibility="invisible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etExpense" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <Spinner
-        android:id="@+id/spinner"
-        android:gravity="center"
-        android:textAlignment="center"
-        android:entries="@array/expense_categories"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-    <ImageView
-        android:id="@+id/iconCalendar"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginLeft="16dp"
-        android:src="@drawable/calendar"
-        app:layout_constraintBottom_toBottomOf="@+id/etDate"
-        app:layout_constraintStart_toEndOf="@+id/etDate"
-        app:layout_constraintTop_toTopOf="@+id/etDate" />
+        <EditText
+            android:id="@+id/etExpense"
+            android:layout_width="240dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/default_border_white"
+            android:hint="@string/add_cost"
+            android:inputType="number"
+            android:maxLength="20"
+            android:maxLines="1"
+            android:padding="10dp"
+            android:scrollbars="horizontal"
+            android:textColor="@color/black"
+            android:textColorHint="#616161"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/etDate"
-        android:layout_width="200dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="32dp"
-        android:background="@drawable/default_border_white"
-        android:maxLength="20"
-        android:focusable="false"
-        android:hint="@string/add_date"
-        android:clickable="false"
-        android:focusableInTouchMode="false"
-        android:maxLines="1"
-        android:padding="10dp"
-        android:scrollbars="horizontal"
-        android:textColor="@color/black"
-        android:textColorHint="#616161"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner"  />
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/add_category"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etExpense" />
 
-    <EditText
-        android:id="@+id/etComment"
-        android:layout_width="240dp"
-        android:layout_height="48dp"
-        android:hint="@string/add_comment"
-        android:layout_marginTop="32dp"
-        android:background="@drawable/default_border_white"
-        android:maxLength="20"
-        android:maxLines="1"
-        android:padding="10dp"
-        android:scrollbars="horizontal"
-        android:textColor="@color/black"
-        android:textColorHint="#616161"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etDate"  />
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:entries="@array/expense_categories"
+            android:gravity="center"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-    <EditText
-        android:id="@+id/etMileage"
-        android:layout_width="240dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="32dp"
-        android:hint="@string/add_mileage_expense"
-        android:background="@drawable/default_border_white"
-        android:inputType="numberDecimal"
-        android:maxLength="20"
-        android:maxLines="1"
-        android:padding="10dp"
-        android:scrollbars="horizontal"
-        android:textColor="@color/black"
-        android:textColorHint="#616161"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etComment"  />
+        <ImageView
+            android:id="@+id/iconCalendar"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginLeft="16dp"
+            android:src="@drawable/calendar"
+            app:layout_constraintBottom_toBottomOf="@+id/etDate"
+            app:layout_constraintStart_toEndOf="@+id/etDate"
+            app:layout_constraintTop_toTopOf="@+id/etDate" />
 
-    <Button
-        android:id="@+id/button_redaction"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:background="@drawable/button"
-        android:text="Редактировать"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etMileage" />
+        <EditText
+            android:id="@+id/etDate"
+            android:layout_width="200dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/default_border_white"
+            android:clickable="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:hint="@string/add_date"
+            android:maxLength="20"
+            android:maxLines="1"
+            android:padding="10dp"
+            android:scrollbars="horizontal"
+            android:textColor="@color/black"
+            android:textColorHint="#616161"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spinner" />
 
+        <EditText
+            android:id="@+id/etComment"
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/default_border_white"
+            android:hint="@string/add_comment"
+            android:padding="10dp"
+            android:scrollbars="horizontal"
+            android:textColor="@color/black"
+            android:textColorHint="#616161"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etDate" />
+
+        <EditText
+            android:id="@+id/etMileage"
+            android:layout_width="240dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/default_border_white"
+            android:hint="@string/add_mileage_expense"
+            android:inputType="numberDecimal"
+            android:maxLength="20"
+            android:maxLines="1"
+            android:padding="10dp"
+            android:scrollbars="horizontal"
+            android:textColor="@color/black"
+            android:textColorHint="#616161"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etComment" />
+
+        <Button
+            android:id="@+id/button_redaction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/button"
+            android:text="Редактировать"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etMileage" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

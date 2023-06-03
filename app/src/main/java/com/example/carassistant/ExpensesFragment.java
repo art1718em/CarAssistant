@@ -33,7 +33,6 @@ public class ExpensesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentExpensesBinding.inflate(inflater, container, false);
 
-       // Bundle carBundle = requireArguments();
 
 
 
@@ -60,8 +59,6 @@ public class ExpensesFragment extends Fragment {
         binding.iconBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //carBundle.putInt("key_car", carBundle.getInt(DiagramFragment.key));
-                //Navigation.findNavController(binding.getRoot()).navigate(R.id.action_expensesFragment_to_diagramFragment);
                 Navigation.findNavController(binding.getRoot()).popBackStack();
             }
         });

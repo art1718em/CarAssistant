@@ -3,7 +3,6 @@ package com.example.carassistant;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,16 +16,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CalendarView;
 import android.widget.DatePicker;
-import android.widget.Toast;
 
 import com.example.carassistant.databinding.FragmentAddExpenseBinding;
-import com.example.carassistant.databinding.FragmentExpensesBinding;
+
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.TimeZone;
+
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -138,27 +135,10 @@ public class AddExpenseFragment extends Fragment {
                             .subscribe(this::onExpenseAdded, throwable -> {
                                 Log.wtf("Error", throwable.toString());
                             });
-//                ExpenseDB.databaseWriteExecutor.execute(() -> {
-//                    expenseDao
-//                            .addExpense(
-//                                    new Expense(
-//                                            //carBundle.getInt(ExpensesFragment.key),
-//                                            binding.etExpense.getText().toString(),
-//                                            binding.spinner.getSelectedItem().toString(),
-//                                            binding.etData.getText().toString(),
-//                                            binding.etComment.getText().toString(),
-//                                            Integer.parseInt(binding.etMileage.getText().toString())
-//
-//
-//                                    )
-//                            );
-//                });
-//                onExpenseAdded();
                 }
             }
 
             private void onExpenseAdded(){
-                //Toast.makeText(getContext(), String.valueOf(carBundle.getInt(ExpensesFragment.key)), Toast.LENGTH_SHORT).show();
                 if(navController.getBackQueue().get(navController.getBackQueue().getSize()-2).getDestination().getId() == R.id.diagramFragment)
                     Navigation.findNavController(binding.getRoot()).navigate(R.id.action_addExpenseFragment_to_diagramFragment);
                 else
@@ -167,9 +147,6 @@ public class AddExpenseFragment extends Fragment {
             }
 
         });
-
-
-
         return binding.getRoot();
     }
 

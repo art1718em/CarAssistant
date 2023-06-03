@@ -1,12 +1,12 @@
 package com.example.carassistant;
 
-import android.content.Context;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+
 
 import androidx.annotation.NonNull;
 import androidx.navigation.Navigation;
@@ -71,7 +71,6 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
                 carBundle.putInt(ExpenseDescriptionFragment.key, index.get(position));
                 Log.d("carAssWork", "index " + String.valueOf(position));
                 Log.d("carAssWork", "idExpense " + String.valueOf(index.get(position)));
-                //fragment.getActivity().getSharedPreferences("id", Context.MODE_PRIVATE).edit().putInt(ExpensesFragment.key, position+1).apply();
                 Navigation.findNavController(binding.getRoot()).navigate(R.id.action_expensesFragment_to_expenseDescriptionFragment, carBundle);
             }
         });
