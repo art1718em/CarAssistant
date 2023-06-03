@@ -14,11 +14,16 @@ import com.example.carassistant.databinding.FragmentStatisticsBinding;
 public class StatisticsFragment extends Fragment {
 
     private FragmentStatisticsBinding binding;
+    private int mileage;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentStatisticsBinding.inflate(inflater, container, false);
+
+
+
+
         return binding.getRoot();
     }
 }

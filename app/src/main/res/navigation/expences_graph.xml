@@ -30,7 +30,7 @@
         <action
             android:id="@+id/action_addExpenseFragment_to_expensesFragment"
             app:destination="@id/expensesFragment"
-            app:popUpTo="@id/addExpenseFragment"
+            app:popUpTo="@id/expensesFragment"
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_addExpenseFragment_to_diagramFragment"
@@ -62,7 +62,7 @@
         <action
             android:id="@+id/action_expenseDescriptionFragment_to_expensesFragment"
             app:destination="@id/expensesFragment"
-            app:popUpTo="@id/expenseDescriptionFragment"
+            app:popUpTo="@id/expensesFragment"
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_expenseDescriptionFragment_to_redactionExpenseFragment"
