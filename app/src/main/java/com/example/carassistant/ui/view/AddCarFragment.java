@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
@@ -11,12 +12,17 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.carassistant.data.models.Car;
 import com.example.carassistant.data.room.root.CarDB;
 import com.example.carassistant.data.room.dao.CarDao;
 import com.example.carassistant.R;
 import com.example.carassistant.databinding.FragmentAddCarBinding;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -29,14 +35,22 @@ public class AddCarFragment extends Fragment {
 
     private int timeID;
 
+    FirebaseAuth mAuth;
+    FirebaseUser user;
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,  Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentAddCarBinding.inflate(inflater, container, false);
+
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+        Toast.makeText(container.getContext(), user.getEmail(), Toast.LENGTH_SHORT).show();
+
 
         CarDB carDB = CarDB.getInstance(requireContext());
         CarDao carDao = carDB.carDao();
 
-        binding.buttonAddCar.setOnClickListener(new View.OnClickListener() {
+        binding.btnAddCar.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -47,38 +61,17 @@ public class AddCarFragment extends Fragment {
                         timeID = carDao.getListCar().get(carDao.getListCar().size() - 1).getId() + 1;
                 }).start();
                 boolean flag = true;
-                ColorStateList colorStateList = ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.red));
-                ColorStateList primalColor = ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.background_edittext));
-                if (binding.etMark.getText().toString().equals("")) {
-                    flag = false;
-                    binding.etMark.setBackgroundTintList(colorStateList);
-                } else
-                    binding.etMark.setBackgroundTintList(primalColor);
-                if (binding.etModel.getText().toString().equals("")) {
-                    flag = false;
-                    binding.etModel.setBackgroundTintList(colorStateList);
-                } else
-                    binding.etModel.setBackgroundTintList(primalColor);
-                if (binding.etYear.getText().toString().equals("")) {
-                    flag = false;
-                    binding.etYear.setBackgroundTintList(colorStateList);
-                } else
-                    binding.etYear.setBackgroundTintList(primalColor);
-                if (binding.etMileage.getText().toString().equals("")) {
-                    flag = false;
-                    binding.etMileage.setBackgroundTintList(colorStateList);
-                } else
-                    binding.etMileage.setBackgroundTintList(primalColor);
-                if (binding.etCost.getText().toString().equals("")) {
-                    flag = false;
-                    binding.etCost.setBackgroundTintList(colorStateList);
-                } else
-                    binding.etCost.setBackgroundTintList(primalColor);
-                if (binding.etColor.getText().toString().equals("")) {
-                    flag = false;
-                    binding.etColor.setBackgroundTintList(colorStateList);
-                } else
-                    binding.etColor.setBackgroundTintList(primalColor);
+                ColorStateList colorStateList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.red));
+                ColorStateList primalColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.background_edittext));
+                EditText[] arrayEditText = new EditText[]{binding.etMark, binding.etModel, binding.etYear,
+                        binding.etMileage, binding.etCost, binding.etColor};
+                for (EditText editText: arrayEditText){
+                    if (editText.getText().toString().isEmpty()) {
+                        flag = false;
+                        editText.setBackgroundTintList(colorStateList);
+                    } else
+                        editText.setBackgroundTintList(primalColor);
+                }
                 if (flag) {
                     disposable = carDao
                             .addCar(
@@ -102,7 +95,7 @@ public class AddCarFragment extends Fragment {
             private void onCarAdded(){
                 Bundle bundle = new Bundle();
                 bundle.putInt(ExpensesFragment.key,timeID);
-                getActivity().getSharedPreferences("id", Context.MODE_PRIVATE).edit().putInt(ExpensesFragment.key,timeID).apply();
+                requireActivity().getSharedPreferences("id", Context.MODE_PRIVATE).edit().putInt(ExpensesFragment.key,timeID).apply();
                 Navigation.findNavController(binding.getRoot()).navigate(R.id.action_addCarFragment_to_panelFragment,
                 bundle);
             }

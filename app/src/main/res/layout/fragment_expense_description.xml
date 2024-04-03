@@ -7,7 +7,7 @@
     tools:context=".ui.view.ExpenseDescriptionFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layout"
+        android:id="@+id/constraintLayout_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -21,10 +21,11 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@drawable/back"
-            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/icon_back" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -44,117 +45,126 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@drawable/delete"
-            android:layout_marginRight="8dp"
+            android:layout_marginEnd="8dp"
             app:layout_constraintBottom_toBottomOf="@+id/icon_back"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/icon_delete" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
-        android:id="@+id/tvCost"
+        android:id="@+id/tv_cost_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/cost"
         android:layout_marginTop="48dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout" />
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout_header" />
+
     <TextView
         android:id="@+id/tv_cost_data"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
         android:layout_marginTop="8dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvCost" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_cost_text" />
 
     <TextView
-        android:id="@+id/tvCategory"
+        android:id="@+id/tv_category_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/category"
         android:layout_marginTop="24dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_cost_data" />
+
     <TextView
         android:id="@+id/tv_category_data"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
         android:layout_marginTop="8dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvCategory" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_category_text" />
+
     <TextView
-        android:id="@+id/tvDate"
+        android:id="@+id/tv_date_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/date"
         android:layout_marginTop="24dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_category_data" />
+
     <TextView
         android:id="@+id/tv_date_data"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
         android:layout_marginTop="8dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvDate" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_date_text" />
 
     <TextView
-        android:id="@+id/tvMileage"
+        android:id="@+id/tv_mileage_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/mileage"
         android:layout_marginTop="24dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_date_data" />
+
     <TextView
         android:id="@+id/tv_mileage_data"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
         android:layout_marginTop="8dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvMileage" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_mileage_text" />
+
     <TextView
-        android:id="@+id/tvComment"
+        android:id="@+id/tv_comment_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/comment"
         android:layout_marginTop="24dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_mileage_data" />
+
     <TextView
         android:id="@+id/tv_comment_data"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
         android:layout_marginTop="8dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvComment" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_comment_text" />
+
     <Button
-        android:id="@+id/button_redaction"
+        android:id="@+id/btn_redaction"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/button"

@@ -1,5 +1,6 @@
 package com.example.carassistant.ui.view;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -16,7 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
+import android.widget.EditText;
 
 import com.example.carassistant.data.models.Expense;
 import com.example.carassistant.data.room.root.ExpenseDB;
@@ -49,84 +50,58 @@ public class AddExpenseFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentAddExpenseBinding.inflate(inflater, container, false);
 
         ExpenseDB expenseDB = ExpenseDB.getInstance(requireContext());
         ExpenseDao expenseDao = expenseDB.expenseDao();
 
 
-        binding.iconCalendar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar calendar = Calendar.getInstance();
-                int year = calendar.get(Calendar.YEAR);
-                int month = calendar.get(Calendar.MONTH);
-                int day = calendar.get(Calendar.DAY_OF_MONTH);
-                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), dateSetListener,
-                        year,        month,
-                        day);
-                datePickerDialog.getDatePicker().setMaxDate(new Date().getTime());
-                datePickerDialog.show();
+        binding.iconCalendar.setOnClickListener(v -> {
+            Calendar calendar = Calendar.getInstance();
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+            DatePickerDialog datePickerDialog = new DatePickerDialog(requireContext(), dateSetListener,
+                    year, month, day);
+            datePickerDialog.getDatePicker().setMaxDate(new Date().getTime());
+            datePickerDialog.show();
 
-            }
         });
 
 
 
-        dateSetListener = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                int mYear = year;
-                int mMonth = month;
-                int mDay = dayOfMonth;
-                String selectedDate = new StringBuilder().append(mDay)
-                        .append("-").append(mMonth + 1).append("-").append(mYear)
-                        .append(" ").toString();
-                binding.etDate.setText(selectedDate);
-            }
+        dateSetListener = (view, year, month, dayOfMonth) -> {
+            String selectedDate = dayOfMonth + "-" + (month + 1) + "-" + year + " ";
+            binding.etDate.setText(selectedDate);
         };
 
 
 
 
-        binding.buttonAddExpense.setOnClickListener(new View.OnClickListener() {
+        binding.btnAddExpense.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 boolean flag = true;
-                ColorStateList colorStateList = ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.red));
-                ColorStateList primalColor = ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.background_edittext));
-                if (binding.etExpense.getText().toString().equals("")) {
-                    flag = false;
-                    binding.etExpense.setBackgroundTintList(colorStateList);
+                ColorStateList colorStateList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.red));
+                ColorStateList primalColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.background_edittext));
+                EditText[] arrayEditText = new EditText[]{binding.etSumExpense, binding.etDate, binding.etComment,
+                        binding.etMileage};
+                for (EditText editText: arrayEditText){
+                    if (editText.getText().toString().isEmpty()) {
+                        flag = false;
+                        editText.setBackgroundTintList(colorStateList);
+                    }
+                    else
+                        binding.etSumExpense.setBackgroundTintList(primalColor);
                 }
-                else
-                    binding.etExpense.setBackgroundTintList(primalColor);
-                if(binding.etDate.getText().toString().equals("")) {
-                    flag = false;
-                    binding.etDate.setBackgroundTintList(colorStateList);
-                }
-                else
-                    binding.etDate.setBackgroundTintList(primalColor);
-                if(binding.etComment.getText().toString().equals("")) {
-                    flag = false;
-                    binding.etComment.setBackgroundTintList(colorStateList);
-                }
-                else
-                    binding.etComment.setBackgroundTintList(primalColor);
-                if(binding.etMileage.getText().toString().equals("")) {
-                    flag = false;
-                    binding.etMileage.setBackgroundTintList(colorStateList);
-                }
-                else
-                    binding.etMileage.setBackgroundTintList(primalColor);
                 if(flag) {
                     disposable = expenseDao
                             .addExpense(
                                     new Expense(
-                                            getActivity().getSharedPreferences("id", Context.MODE_PRIVATE).getInt(DiagramFragment.key, -1),
-                                            binding.etExpense.getText().toString(),
-                                            binding.spinner.getSelectedItem().toString(),
+                                            requireActivity().getSharedPreferences("id", Context.MODE_PRIVATE).getInt(DiagramFragment.key, -1),
+                                            binding.etSumExpense.getText().toString(),
+                                            binding.spinnerChoiceCategory.getSelectedItem().toString(),
                                             binding.etDate.getText().toString(),
                                             binding.etComment.getText().toString(),
                                             Integer.parseInt(binding.etMileage.getText().toString())
@@ -136,12 +111,11 @@ public class AddExpenseFragment extends Fragment {
                             )
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(this::onExpenseAdded, throwable -> {
-                                Log.wtf("Error", throwable.toString());
-                            });
+                            .subscribe(this::onExpenseAdded, throwable -> Log.wtf("Error", throwable.toString()));
                 }
             }
 
+            @SuppressLint("RestrictedApi")
             private void onExpenseAdded(){
                 if(navController.getBackQueue().get(navController.getBackQueue().getSize()-2).getDestination().getId() == R.id.diagramFragment)
                     Navigation.findNavController(binding.getRoot()).navigate(R.id.action_addExpenseFragment_to_diagramFragment);

@@ -14,51 +14,48 @@
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
 
-    android:layout_height="match_parent"
-
-    android:gravity="center"
-    android:orientation="vertical">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
 
             <ImageView
+                android:elevation="1dp"
                 android:visibility="invisible"
-                android:elevation="10dp"
-                android:id="@+id/icon_expenses"
+                android:id="@+id/icon_go_to_list_expenses"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:src="@drawable/notes"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="@string/icon_expenses" />
 
 
             <com.github.mikephil.charting.charts.PieChart
                 android:visibility="invisible"
-
                 android:id="@+id/pieChart"
-
                 android:layout_width="match_parent"
-
-                android:layout_height="450dp"
-
+                android:layout_height="448dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
+                />
+
             <ImageView
-                android:id="@+id/actionButton"
+                android:id="@+id/icon_add_expense"
                 android:visibility="invisible"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
                 android:layout_marginBottom="32dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:src="@drawable/add" />
+                android:src="@drawable/add"
+                android:contentDescription="@string/icon_add" />
 
             <ProgressBar
                 android:visibility="visible"
@@ -76,17 +73,11 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:visibility="invisible"
-
-
-        android:id="@+id/recyclerview"
-
+        android:id="@+id/recyclerview_list_category_expenses"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"/>
 
-    android:layout_height="wrap_content"
-
-
-
-    android:orientation="vertical"/>
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

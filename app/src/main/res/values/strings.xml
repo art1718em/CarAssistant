@@ -38,6 +38,23 @@
     <string name="redaction">Редактировать</string>
     <string name="operations">Операции</string>
     <string name="statistics">Статистика</string>
+    <string name="icon_category">Иконка категории</string>
+    <string name="icon_calendar">Иконка календаря</string>
+    <string name="icon_car">Иконка автомобиля</string>
+    <string name="icon_expenses">Иконка операций</string>
+    <string name="icon_add">Иконка добавления</string>
+    <string name="icon_back">Иконка назад</string>
+    <string name="icon_delete">Иконка удаления</string>
+    <string name="edit">Редактировать</string>
+    <string name="login">Логин</string>
+    <string name="input_login">Введите логин</string>
+    <string name="password">Пароль</string>
+    <string name="input_password">Введите пароль</string>
+    <string name="register">Зарегистрироваться</string>
+    <string name="log_in">Вход</string>
+    <string name="input_again_password">Повторите пароль</string>
+    <string name="go_back">Вернуться назад</string>
+    <string name="registration">Регистрация</string>
 
 
 </resources>

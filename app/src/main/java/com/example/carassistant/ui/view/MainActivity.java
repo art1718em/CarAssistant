@@ -11,6 +11,7 @@ import androidx.navigation.NavDestination;
 import androidx.navigation.NavGraph;
 import androidx.navigation.Navigation;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,19 +20,19 @@ import android.widget.Toast;
 import com.example.carassistant.R;
 import com.example.carassistant.databinding.ActivityMainBinding;
 
-import java.util.Arrays;
+
+import java.util.Collections;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ActivityMainBinding binding;
     private NavController navController;
     private long back_pressed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         getSupportFragmentManager().registerFragmentLifecycleCallbacks(fragmentListener, true);
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().unregisterFragmentLifecycleCallbacks(fragmentListener);
     }
 
-    private FragmentManager.FragmentLifecycleCallbacks fragmentListener = new FragmentManager.FragmentLifecycleCallbacks() {
+    private final FragmentManager.FragmentLifecycleCallbacks fragmentListener = new FragmentManager.FragmentLifecycleCallbacks() {
         @Override
         public void onFragmentViewCreated(@NonNull FragmentManager fm, @NonNull Fragment f, @NonNull View v, @Nullable Bundle savedInstanceState) {
             super.onFragmentViewCreated(fm, f, v, savedInstanceState);
@@ -57,10 +58,11 @@ public class MainActivity extends AppCompatActivity {
         if (destination == null) return false;
         NavGraph graph = destination.getParent();
         if (graph == null) return false;
-        List<Integer> startDestinations = Arrays.asList(R.id.carsFragment);
+        List<Integer> startDestinations = Collections.singletonList(R.id.carsFragment);
         return startDestinations.contains(destination.getId());
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     public void onBackPressed() {
 
@@ -75,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else{
             if(navController.getBackQueue().getSize() > 3) {
-                Log.d("CarAssWork", "pop " + String.valueOf(navController.getBackQueue().getSize()));
+                Log.d("CarAssWork", "pop " + navController.getBackQueue().getSize());
                 navController.popBackStack();
                 return;
             }

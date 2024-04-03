@@ -1,10 +1,11 @@
 plugins {
+    id 'com.google.gms.google-services'
     id 'com.android.application'
 }
 
 android {
     namespace 'com.example.carassistant'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.example.carassistant"
@@ -34,6 +35,13 @@ android {
 
 
 dependencies {
+
+    implementation platform('com.google.firebase:firebase-bom:32.8.0')
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-firestore")
+
+
     def room_version = "2.5.0"
 
     // Room ORM (библиотека локальной бд)
@@ -54,7 +62,7 @@ dependencies {
     implementation "androidx.navigation:navigation-ui:$nav_version"
 
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'com.google.android.material:material:1.11.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'

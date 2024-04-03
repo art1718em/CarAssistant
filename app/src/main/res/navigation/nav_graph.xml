@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/carsFragment">
+    app:startDestination="@id/loginFragment">
 
     <fragment
         android:id="@+id/addCarFragment"
@@ -33,4 +33,28 @@
         android:name="com.example.carassistant.ui.view.PanelFragment"
         android:label="fragment_panel"
         tools:layout="@layout/fragment_panel" />
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.carassistant.ui.view.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_registrationFragment"
+            app:destination="@id/registrationFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_carsFragment"
+            app:destination="@id/carsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registrationFragment"
+        android:name="com.example.carassistant.ui.view.RegistrationFragment"
+        android:label="fragment_registation"
+        tools:layout="@layout/fragment_registation" >
+        <action
+            android:id="@+id/action_registrationFragment_to_carsFragment"
+            app:destination="@id/carsFragment" />
+        <action
+            android:id="@+id/action_registrationFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
 </navigation>

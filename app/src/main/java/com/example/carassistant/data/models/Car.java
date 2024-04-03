@@ -1,5 +1,6 @@
 package com.example.carassistant.data.models;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -7,12 +8,12 @@ import androidx.room.PrimaryKey;
 public class Car {
     @PrimaryKey(autoGenerate = true)
     int id;
-    private String mark;
-    private String model;
-    private String year;
-    private int mileage;
-    private int cost;
-    private String color;
+    private final String mark;
+    private final String model;
+    private final String year;
+    private final int mileage;
+    private final int cost;
+    private final String color;
 
 
 
@@ -40,6 +41,7 @@ public class Car {
 
     public String getColor() {return color;}
 
+    @NonNull
     @Override
     public String toString() {
         return "Car{" +

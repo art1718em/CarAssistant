@@ -24,9 +24,6 @@ public interface ExpenseDao {
     Completable updateExpense(int id, String expense,String category,String data, String comment, int mileage);
 
 
-    @Query("SELECT * FROM expense_table")
-    Observable<List<Expense>> getAllExpenses();
-
     @Query("SELECT * FROM expense_table WHERE idCar = :id")
     Observable<List<Expense>> getALLThisId(int id);
 

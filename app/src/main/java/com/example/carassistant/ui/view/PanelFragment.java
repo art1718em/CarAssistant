@@ -16,7 +16,8 @@ import android.view.ViewGroup;
 
 import com.example.carassistant.R;
 import com.example.carassistant.databinding.FragmentPanelBinding;
-import com.example.carassistant.ui.view.DiagramFragment;
+
+import java.util.Objects;
 
 public class PanelFragment extends Fragment {
 
@@ -24,7 +25,7 @@ public class PanelFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentPanelBinding.inflate(inflater, container, false);
         return binding.getRoot();
@@ -33,12 +34,12 @@ public class PanelFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        NavController navController = ((NavHostFragment)getChildFragmentManager().findFragmentById(R.id.nav_view_container)).getNavController();
+        NavController navController = ((NavHostFragment) Objects.requireNonNull(getChildFragmentManager().findFragmentById(R.id.fragment_view_container))).getNavController();
 
         NavigationUI.setupWithNavController(binding.bottomNavigationView, navController);
 
         Bundle carBundle = requireArguments();
-        getChildFragmentManager().findFragmentById(R.id.nav_view_container).getChildFragmentManager().setFragmentResult(DiagramFragment.key, carBundle);
+        Objects.requireNonNull(getChildFragmentManager().findFragmentById(R.id.fragment_view_container)).getChildFragmentManager().setFragmentResult(DiagramFragment.key, carBundle);
     }
 
 }

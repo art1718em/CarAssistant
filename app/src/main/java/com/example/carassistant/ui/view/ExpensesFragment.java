@@ -3,6 +3,7 @@ package com.example.carassistant.ui.view;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -35,7 +36,7 @@ public class ExpensesFragment extends Fragment {
     public static final String key = "carIdKey";
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentExpensesBinding.inflate(inflater, container, false);
 
 
@@ -45,36 +46,24 @@ public class ExpensesFragment extends Fragment {
     ExpenseDao expenseDao = expenseDB.expenseDao();
 
     expenseListDisposable = expenseDao
-            .getALLThisId(getActivity().getSharedPreferences("id", Context.MODE_PRIVATE).getInt(DiagramFragment.key, -1))
+            .getALLThisId(requireActivity().getSharedPreferences("id", Context.MODE_PRIVATE).getInt(DiagramFragment.key, -1))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(this::onExpensesLoaded, throwable -> {
-                Log.wtf("error", throwable.toString());
-            });
+            .subscribe(this::onExpensesLoaded, throwable -> Log.wtf("error", throwable.toString()));
 
 
-        binding.actionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        binding.iconAddExpense.setOnClickListener(v -> Navigation.findNavController(binding.getRoot())
+                .navigate(R.id.action_expensesFragment_to_addExpenseFragment));
 
-                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_expensesFragment_to_addExpenseFragment);
-            }
-        });
-
-        binding.iconBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(binding.getRoot()).popBackStack();
-            }
-        });
+        binding.iconBack.setOnClickListener(v -> Navigation.findNavController(binding.getRoot()).popBackStack());
 
         return binding.getRoot();
     }
 
     private void onExpensesLoaded(List<Expense> expenses) {
         ExpenseAdapter expenseAdapter =new ExpenseAdapter((ArrayList<Expense>) expenses);
-        binding.recyclerview.setLayoutManager(new LinearLayoutManager(requireContext()));
-        binding.recyclerview.setAdapter(expenseAdapter);
+        binding.recyclerviewListExpenses.setLayoutManager(new LinearLayoutManager(requireContext()));
+        binding.recyclerviewListExpenses.setAdapter(expenseAdapter);
 
     }
 

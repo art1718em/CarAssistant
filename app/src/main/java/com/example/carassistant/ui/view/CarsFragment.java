@@ -2,6 +2,7 @@ package com.example.carassistant.ui.view;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -31,7 +32,7 @@ public class CarsFragment extends Fragment {
     Disposable carListDisposable;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentCarsBinding.inflate(inflater, container, false);
 
         CarDB carDB = CarDB.getInstance(requireContext());
@@ -43,21 +44,16 @@ public class CarsFragment extends Fragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::onCarsLoaded);
 
-        binding.ButtonAddCar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_carsFragment_to_addCarFragment);
-            }
-        });
+        binding.btnAddCarFragmentCars.setOnClickListener(v -> Navigation.findNavController(binding.getRoot())
+                .navigate(R.id.action_carsFragment_to_addCarFragment));
 
         return binding.getRoot();
     }
 
     private void onCarsLoaded(List<Car> cars) {
         CarAdapter carAdapter =new CarAdapter((ArrayList<Car>) cars, binding, this);
-        binding.recyclerview.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.recyclerview.setAdapter(carAdapter);
+        binding.recyclerviewListCars.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.recyclerviewListCars.setAdapter(carAdapter);
 
     }
 

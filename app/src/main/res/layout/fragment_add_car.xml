@@ -7,7 +7,7 @@
     tools:context=".ui.view.AddCarFragment">
 
     <EditText
-        android:id="@+id/etMark"
+        android:id="@+id/et_mark"
         android:layout_width="240dp"
         android:layout_height="48dp"
         android:layout_marginTop="16dp"
@@ -20,12 +20,13 @@
         android:textColor="@color/black"
         android:textColorHint="#616161"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:inputType="text"
+        android:importantForAutofill="no" />
 
     <EditText
-        android:id="@+id/etModel"
+        android:id="@+id/et_model"
         android:layout_width="240dp"
         android:layout_height="48dp"
         android:layout_marginTop="32dp"
@@ -38,12 +39,13 @@
         android:textColor="@color/black"
         android:textColorHint="#616161"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etMark" />
+        app:layout_constraintTop_toBottomOf="@+id/et_mark"
+        android:inputType="text"
+        android:importantForAutofill="no" />
 
     <EditText
-        android:id="@+id/etYear"
+        android:id="@+id/et_year"
         android:layout_width="240dp"
         android:layout_height="48dp"
         android:layout_marginTop="32dp"
@@ -57,12 +59,12 @@
         android:textColor="@color/black"
         android:textColorHint="#616161"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etModel" />
+        app:layout_constraintTop_toBottomOf="@+id/et_model"
+        android:importantForAutofill="no" />
 
     <EditText
-        android:id="@+id/etMileage"
+        android:id="@+id/et_mileage"
         android:layout_width="240dp"
         android:layout_height="48dp"
         android:layout_marginTop="32dp"
@@ -76,12 +78,12 @@
         android:textColor="@color/black"
         android:textColorHint="#616161"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etYear" />
+        app:layout_constraintTop_toBottomOf="@+id/et_year"
+        android:importantForAutofill="no" />
 
     <EditText
-        android:id="@+id/etColor"
+        android:id="@+id/et_color"
         android:layout_width="240dp"
         android:layout_height="48dp"
         android:layout_marginTop="32dp"
@@ -94,12 +96,13 @@
         android:textColor="@color/black"
         android:textColorHint="#616161"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etMileage" />
+        app:layout_constraintTop_toBottomOf="@+id/et_mileage"
+        android:inputType="text"
+        android:importantForAutofill="no" />
 
     <EditText
-        android:id="@+id/etCost"
+        android:id="@+id/et_cost"
         android:layout_width="240dp"
         android:layout_height="48dp"
         android:layout_marginTop="32dp"
@@ -113,12 +116,12 @@
         android:textColor="@color/black"
         android:textColorHint="#616161"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etColor" />
+        app:layout_constraintTop_toBottomOf="@+id/et_color"
+        android:importantForAutofill="no" />
 
     <Button
-        android:id="@+id/button_add_car"
+        android:id="@+id/btn_add_car"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/button"
@@ -126,6 +129,6 @@
         android:text="@string/add_car"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etCost" />
+        app:layout_constraintTop_toBottomOf="@+id/et_cost" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -17,8 +17,7 @@ public interface CarDao {
     Completable addCar(Car car);
 
 
-    @Query("SELECT * FROM car_table WHERE id = :id")
-    Observable<Car> getCarById(int id);
+
 
     // Метод чтения всех задач из таблицы
     @Query("SELECT * FROM car_table")

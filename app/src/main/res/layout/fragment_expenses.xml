@@ -5,25 +5,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.view.ExpensesFragment">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="100dp">
+        android:layout_height="wrap_content">
+
         <LinearLayout
-            android:id="@+id/layout"
+            android:id="@+id/layout_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            tools:ignore="UseCompoundDrawables">
+
             <ImageView
                 android:id="@+id/icon_back"
-                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/back" />
+                android:src="@drawable/back"
+                android:contentDescription="@string/icon_back" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -31,34 +35,33 @@
                 android:text="@string/operations"
                 android:textSize="24sp"
                 android:layout_gravity="center"
-                android:layout_marginRight="56dp"
+                android:layout_marginEnd="56dp"
                 android:gravity="center"
                 android:textColor="@color/black"/>
         </LinearLayout>
 
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerview"
+            android:id="@+id/recyclerview_list_expenses"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layout"
-            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintTop_toBottomOf="@+id/layout_header"
             tools:listitem="@layout/expense_item" />
 
         <ImageView
-            android:id="@+id/actionButton"
+            android:id="@+id/icon_add_expense"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@drawable/add"
-            android:layout_marginRight="8dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/icon_add" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

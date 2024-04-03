@@ -58,9 +58,7 @@ public class DiagramFragment extends Fragment {
                         .getALLThisId(bundle.getInt(key))
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(this::onDiagramLoaded, throwable -> {
-                            Log.wtf("error", throwable.toString());
-                        });
+                        .subscribe(this::onDiagramLoaded, throwable -> Log.wtf("error", throwable.toString()));
             }
 
         });
@@ -69,12 +67,10 @@ public class DiagramFragment extends Fragment {
         ExpenseDB expenseDB = ExpenseDB.getInstance(requireContext());
         ExpenseDao expenseDao = expenseDB.expenseDao();
             expenseListDisposable = expenseDao
-                    .getALLThisId(getActivity().getSharedPreferences("id", Context.MODE_PRIVATE).getInt(key, -1))
+                    .getALLThisId(requireActivity().getSharedPreferences("id", Context.MODE_PRIVATE).getInt(key, -1))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(this::onDiagramLoaded, throwable -> {
-                        Log.wtf("error", throwable.toString());
-                    });
+                    .subscribe(this::onDiagramLoaded, throwable -> Log.wtf("error", throwable.toString()));
 
 
 
@@ -82,26 +78,17 @@ public class DiagramFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentDiagramBinding.inflate(inflater, container, false);
 
         pieChart = binding.pieChart;
-        binding.iconExpenses.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_diagramFragment_to_expensesFragment,
-                        bundle);
-            }
-        });
 
-        binding.actionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_diagramFragment_to_addExpenseFragment,
-                        bundle);
-            }
-        });
+        binding.iconAddExpense.setOnClickListener(v -> Navigation.findNavController(binding.getRoot())
+                .navigate(R.id.action_diagramFragment_to_addExpenseFragment, bundle));
+
+        binding.iconGoToListExpenses.setOnClickListener(v -> Navigation.findNavController(binding.getRoot())
+                .navigate(R.id.action_diagramFragment_to_expensesFragment, bundle));
 
 
         return binding.getRoot();
@@ -121,8 +108,7 @@ public class DiagramFragment extends Fragment {
 
         ArrayList<PieEntry> entries = new ArrayList<>();
 
-        for (String str: map.keySet()
-             ) {
+        for (String str: map.keySet()) {
             sum += map.get(str);
             entries.add(new PieEntry(map.get(str), str));
         }
@@ -142,18 +128,19 @@ public class DiagramFragment extends Fragment {
         pieChart.setDrawEntryLabels(false);
         pieChart.setCenterTextSize(24f);
         pieChart.setEntryLabelTextSize(24f);
-        pieChart.setCenterText(String.valueOf(sum) + " ₽");
+        pieChart.setCenterText(sum + " ₽");
         pieChart.animate();
         pieChart.invalidate();
 
         DiagramAdapter diagramAdapter =new DiagramAdapter((ArrayList<Expense>) expenses);
-        binding.recyclerview.setLayoutManager(new LinearLayoutManager(requireContext()));
-        binding.recyclerview.setAdapter(diagramAdapter);
+        binding.recyclerviewListCategoryExpenses.setLayoutManager(new LinearLayoutManager(requireContext()));
+        binding.recyclerviewListCategoryExpenses.setAdapter(diagramAdapter);
 
         binding.pieChart.setVisibility(View.VISIBLE);
-        binding.recyclerview.setVisibility(View.VISIBLE);
-        binding.actionButton.setVisibility(View.VISIBLE);
-        binding.iconExpenses.setVisibility(View.VISIBLE);
+        binding.recyclerviewListCategoryExpenses.setVisibility(View.VISIBLE);
+        binding.iconAddExpense.setVisibility(View.VISIBLE);
+        binding.iconGoToListExpenses.setVisibility(View.VISIBLE);
         binding.progressBar.setVisibility(View.GONE);
+        binding.iconGoToListExpenses.setClickable(true);
     }
 }

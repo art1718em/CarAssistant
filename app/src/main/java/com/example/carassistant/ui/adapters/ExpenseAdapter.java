@@ -1,10 +1,10 @@
 package com.example.carassistant.ui.adapters;
 
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 
@@ -26,8 +26,8 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
 
     private final ArrayList<Expense> data;
     private ExpenseItemBinding binding;
-    private List<Integer> index = new ArrayList<>();
-    public ExpenseAdapter(ArrayList<Expense> data) {this.data = data;};
+    private final List<Integer> index = new ArrayList<>();
+    public ExpenseAdapter(ArrayList<Expense> data) {this.data = data;}
 
     @NonNull
     @Override
@@ -37,6 +37,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
         return new ExpenseViewHolder(binding);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ExpenseAdapter.ExpenseViewHolder holder, int position) {
         Expense item  = data.get(position);
@@ -67,15 +68,12 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
         holder.binding.tvCategory.setText(item.getCategory());
         holder.binding.tvCost.setText(item.getExpense()+ " ₽");
 
-        holder.binding.expenseItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle carBundle = new Bundle();
-                carBundle.putInt(ExpenseDescriptionFragment.key, index.get(position));
-                Log.d("carAssWork", "index " + String.valueOf(position));
-                Log.d("carAssWork", "idExpense " + String.valueOf(index.get(position)));
-                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_expensesFragment_to_expenseDescriptionFragment, carBundle);
-            }
+        holder.binding.constantLayoutExpenseItem.setOnClickListener(v -> {
+            Bundle carBundle = new Bundle();
+            carBundle.putInt(ExpenseDescriptionFragment.key, index.get(position));
+            Log.d("carAssWork", "index " + position);
+            Log.d("carAssWork", "idExpense " + index.get(position));
+            Navigation.findNavController(binding.getRoot()).navigate(R.id.action_expensesFragment_to_expenseDescriptionFragment, carBundle);
         });
 
 
@@ -84,7 +82,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
     @Override
     public int getItemCount() {return data.size();}
 
-    public class ExpenseViewHolder extends RecyclerView.ViewHolder {
+    public static class ExpenseViewHolder extends RecyclerView.ViewHolder {
         ExpenseItemBinding binding;
         public ExpenseViewHolder(@NonNull ExpenseItemBinding binding) {
             super(binding.getRoot());

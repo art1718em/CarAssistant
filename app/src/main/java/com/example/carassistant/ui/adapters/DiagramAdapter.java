@@ -21,8 +21,8 @@ import java.util.Set;
 public class DiagramAdapter extends RecyclerView.Adapter<DiagramAdapter.DiagramViewHolder> {
 
 
-    private HashMap<String, Integer> map;
-    private Set<String> keys;
+    private final HashMap<String, Integer> map;
+    private final Set<String> keys;
     public DiagramAdapter(ArrayList<Expense> data) {
         map = new HashMap<>();
         for (Expense i: data
@@ -36,7 +36,7 @@ public class DiagramAdapter extends RecyclerView.Adapter<DiagramAdapter.DiagramV
 
 
         Log.d("CarAssWork", keys.toString());
-    };
+    }
 
 
     @NonNull
@@ -82,7 +82,7 @@ public class DiagramAdapter extends RecyclerView.Adapter<DiagramAdapter.DiagramV
     @Override
     public int getItemCount() {return map.size();}
 
-    public class DiagramViewHolder extends RecyclerView.ViewHolder {
+    public static class DiagramViewHolder extends RecyclerView.ViewHolder {
         DiagramItemBinding binding;
         public DiagramViewHolder(@NonNull DiagramItemBinding binding) {
             super(binding.getRoot());

@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layout"
+        android:id="@+id/constantLayout"
         android:visibility="invisible"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -26,7 +26,7 @@
 
 
         <EditText
-            android:id="@+id/etExpense"
+            android:id="@+id/et_sum_of_expense"
             android:layout_width="240dp"
             android:layout_height="48dp"
             android:layout_marginTop="16dp"
@@ -40,22 +40,22 @@
             android:textColor="@color/black"
             android:textColorHint="#616161"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:importantForAutofill="no" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/tv_category_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="24dp"
             android:text="@string/add_category"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etExpense" />
+            app:layout_constraintTop_toBottomOf="@+id/et_sum_of_expense" />
 
         <Spinner
-            android:id="@+id/spinner"
+            android:id="@+id/spinner_choice_category"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
@@ -63,22 +63,22 @@
             android:gravity="center"
             android:textAlignment="center"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_category_text" />
 
         <ImageView
-            android:id="@+id/iconCalendar"
+            android:id="@+id/icon_calendar"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
             android:src="@drawable/calendar"
-            app:layout_constraintBottom_toBottomOf="@+id/etDate"
-            app:layout_constraintStart_toEndOf="@+id/etDate"
-            app:layout_constraintTop_toTopOf="@+id/etDate" />
+            app:layout_constraintBottom_toBottomOf="@+id/et_date"
+            app:layout_constraintStart_toEndOf="@+id/et_date"
+            app:layout_constraintTop_toTopOf="@+id/et_date"
+            android:contentDescription="@string/icon_calendar" />
 
         <EditText
-            android:id="@+id/etDate"
+            android:id="@+id/et_date"
             android:layout_width="200dp"
             android:layout_height="48dp"
             android:layout_marginTop="32dp"
@@ -96,26 +96,29 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinner" />
+            app:layout_constraintTop_toBottomOf="@+id/spinner_choice_category"
+            android:importantForAutofill="no"
+            android:inputType="date" />
 
         <EditText
-            android:id="@+id/etComment"
+            android:id="@+id/et_comment"
             android:layout_width="240dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:background="@drawable/default_border_white"
             android:hint="@string/add_comment"
-            android:padding="10dp"
+            android:padding="8dp"
             android:scrollbars="horizontal"
             android:textColor="@color/black"
             android:textColorHint="#616161"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etDate" />
+            app:layout_constraintTop_toBottomOf="@+id/et_date"
+            android:importantForAutofill="no"
+            android:inputType="text" />
 
         <EditText
-            android:id="@+id/etMileage"
+            android:id="@+id/et_mileage"
             android:layout_width="240dp"
             android:layout_height="48dp"
             android:layout_marginTop="32dp"
@@ -129,20 +132,20 @@
             android:textColor="@color/black"
             android:textColorHint="#616161"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etComment" />
+            app:layout_constraintTop_toBottomOf="@+id/et_comment"
+            android:importantForAutofill="no" />
 
         <Button
-            android:id="@+id/button_redaction"
+            android:id="@+id/btn_redaction"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:background="@drawable/button"
-            android:text="Редактировать"
+            android:text="@string/edit"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etMileage" />
+            app:layout_constraintTop_toBottomOf="@+id/et_mileage" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
