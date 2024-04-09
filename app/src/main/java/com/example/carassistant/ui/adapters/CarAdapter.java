@@ -11,22 +11,32 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-import com.example.carassistant.data.models.Car;
-import com.example.carassistant.ui.view.ExpensesFragment;
+
 import com.example.carassistant.R;
+import com.example.carassistant.data.models.CarDto;
+import com.example.carassistant.data.models.User;
 import com.example.carassistant.databinding.CarItemBinding;
 import com.example.carassistant.databinding.FragmentCarsBinding;
 
-import java.util.ArrayList;
+import com.google.firebase.auth.FirebaseAuth;
+
+import com.google.firebase.firestore.FirebaseFirestore;
+
+
+import java.util.List;
 
 public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
 
 
+    private final FirebaseAuth auth = FirebaseAuth.getInstance();
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    private final ArrayList<Car> data;
+
+
+    private final List<CarDto> data;
     private final FragmentCarsBinding binding;
     private final Fragment fragment;
-    public CarAdapter(ArrayList<Car> data, FragmentCarsBinding binding, Fragment fragment) {
+    public CarAdapter(List<CarDto> data, FragmentCarsBinding binding, Fragment fragment) {
         this.data = data;
         this.binding=binding;
         this.fragment = fragment;
@@ -42,17 +52,24 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull CarAdapter.CarViewHolder holder, int position) {
-        Car item  = data.get(position);
+        CarDto item  = data.get(position);
         holder.binding.tvMark.setText(item.getMark());
         holder.binding.tvModel.setText(item.getModel());
         holder.binding.tvColor.setText(item.getColor());
 
         holder.binding.constraintLayoutCarItem.setOnClickListener(v -> {
             Bundle carBundle = new Bundle();
-            carBundle.putInt(ExpensesFragment.key, position+1);
-            fragment.requireActivity().getSharedPreferences("id", Context.MODE_PRIVATE).edit().putInt(ExpensesFragment.key, position+1).apply();
-            Navigation.findNavController(binding.getRoot()).navigate(R.id.action_carsFragment_to_panelFragment,
-                    carBundle);
+            db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()){
+                    User user = task.getResult().toObject(User.class);
+                    carBundle.putString("carId", user.getListCars().get(position).getId());
+                    fragment.requireActivity().getSharedPreferences("id", Context.MODE_PRIVATE).edit()
+                            .putString("carId", user.getListCars().get(position).getId()).apply();
+                    Navigation.findNavController(binding.getRoot()).navigate(R.id.action_carsFragment_to_panelFragment,
+                            carBundle);
+                }
+            });
+
         });
 
 

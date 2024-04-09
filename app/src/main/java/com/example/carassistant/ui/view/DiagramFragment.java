@@ -5,83 +5,77 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+
 import androidx.fragment.app.Fragment;
+
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 
-import com.example.carassistant.data.models.Expense;
-import com.example.carassistant.data.room.root.ExpenseDB;
-import com.example.carassistant.data.room.dao.ExpenseDao;
+
 import com.example.carassistant.R;
+import com.example.carassistant.core.Error;
+
+import com.example.carassistant.core.Success;
+
+import com.example.carassistant.data.models.ExpenseDto;
 import com.example.carassistant.databinding.FragmentDiagramBinding;
+
 import com.example.carassistant.ui.adapters.DiagramAdapter;
+import com.example.carassistant.ui.viewModels.DiagramViewModel;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
+
 
 public class DiagramFragment extends Fragment {
 
     private FragmentDiagramBinding binding;
-    Disposable expenseListDisposable;
+
     private PieChart pieChart;
     private Bundle bundle;
 
-    public static final String key = "carIdKey";
+    public static final String key = "carId";
 
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        getParentFragmentManager().setFragmentResultListener(key, getViewLifecycleOwner(), (requestKey, carBundle) -> {
-            bundle = carBundle;
-            ExpenseDB expenseDB = ExpenseDB.getInstance(requireContext());
-            ExpenseDao expenseDao = expenseDB.expenseDao();
-            if (bundle != null) {
-                expenseListDisposable = expenseDao
-                        .getALLThisId(bundle.getInt(key))
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(this::onDiagramLoaded, throwable -> Log.wtf("error", throwable.toString()));
-            }
-
-        });
-
-
-        ExpenseDB expenseDB = ExpenseDB.getInstance(requireContext());
-        ExpenseDao expenseDao = expenseDB.expenseDao();
-            expenseListDisposable = expenseDao
-                    .getALLThisId(requireActivity().getSharedPreferences("id", Context.MODE_PRIVATE).getInt(key, -1))
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(this::onDiagramLoaded, throwable -> Log.wtf("error", throwable.toString()));
-
-
-
-
-    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentDiagramBinding.inflate(inflater, container, false);
 
+        DiagramViewModel diagramViewModel = new ViewModelProvider(this).get(DiagramViewModel.class);
+
+        getParentFragmentManager().setFragmentResultListener(
+                key, getViewLifecycleOwner(), (requestKey, carBundle) -> bundle = carBundle);
+
+        String s = requireActivity().getSharedPreferences("id", Context.MODE_PRIVATE).getString(key, "");
+
         pieChart = binding.pieChart;
+
+        diagramViewModel.getListExpenses(s);
+
+        diagramViewModel.resultOfExpenses.observe(getViewLifecycleOwner(), result -> {
+            if (result instanceof Success){
+                onDiagramLoaded(((Success<List<ExpenseDto>>) result).getData());
+            }else
+                Toast.makeText(container.getContext(), ((Error)result).getMessage(), Toast.LENGTH_SHORT).show();
+        });
+
+
 
 
         binding.iconAddExpense.setOnClickListener(v -> Navigation.findNavController(binding.getRoot())
@@ -95,22 +89,22 @@ public class DiagramFragment extends Fragment {
     }
 
 
-    private void onDiagramLoaded(List<Expense> expenses) {
-        HashMap<String, Integer> map = new HashMap<>();
+    private void onDiagramLoaded(List<ExpenseDto> expenses) {
+        HashMap<String, Double> map = new HashMap<>();
         int sum = 0;
-        for (Expense i: expenses
+        for (ExpenseDto i: expenses
              ) {
             if (map.containsKey(i.getCategory()))
-                map.put(i.getCategory(), map.get(i.getCategory()) + Integer.parseInt(i.getExpense()));
+                map.put(i.getCategory(), map.get(i.getCategory()) + i.getExpense());
             else
-                map.put(i.getCategory(), Integer.parseInt(i.getExpense()));
+                map.put(i.getCategory(), i.getExpense());
         }
 
         ArrayList<PieEntry> entries = new ArrayList<>();
 
         for (String str: map.keySet()) {
             sum += map.get(str);
-            entries.add(new PieEntry(map.get(str), str));
+            entries.add(new PieEntry(map.get(str).floatValue(), str));
         }
 
 
@@ -132,7 +126,7 @@ public class DiagramFragment extends Fragment {
         pieChart.animate();
         pieChart.invalidate();
 
-        DiagramAdapter diagramAdapter =new DiagramAdapter((ArrayList<Expense>) expenses);
+        DiagramAdapter diagramAdapter =new DiagramAdapter((ArrayList<ExpenseDto>) expenses);
         binding.recyclerviewListCategoryExpenses.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.recyclerviewListCategoryExpenses.setAdapter(diagramAdapter);
 

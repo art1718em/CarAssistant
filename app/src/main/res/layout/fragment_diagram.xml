@@ -25,7 +25,7 @@
 
             <ImageView
                 android:elevation="1dp"
-                android:visibility="invisible"
+                android:visibility="visible"
                 android:id="@+id/icon_go_to_list_expenses"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
@@ -36,7 +36,7 @@
 
 
             <com.github.mikephil.charting.charts.PieChart
-                android:visibility="invisible"
+                android:visibility="visible"
                 android:id="@+id/pieChart"
                 android:layout_width="match_parent"
                 android:layout_height="448dp"
@@ -48,7 +48,7 @@
 
             <ImageView
                 android:id="@+id/icon_add_expense"
-                android:visibility="invisible"
+                android:visibility="visible"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
                 android:layout_marginBottom="32dp"
@@ -58,7 +58,7 @@
                 android:contentDescription="@string/icon_add" />
 
             <ProgressBar
-                android:visibility="visible"
+                android:visibility="invisible"
                 android:id="@+id/progress_bar"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
@@ -72,7 +72,7 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:visibility="invisible"
+        android:visibility="visible"
         android:id="@+id/recyclerview_list_category_expenses"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

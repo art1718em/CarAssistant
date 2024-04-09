@@ -1,57 +1,75 @@
 package com.example.carassistant.data.models;
 
-import androidx.annotation.NonNull;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
-@Entity(tableName = "car_table")
+import java.util.ArrayList;
+import java.util.List;
+
+
 public class Car {
-    @PrimaryKey(autoGenerate = true)
-    int id;
-    private final String mark;
-    private final String model;
-    private final String year;
-    private final int mileage;
-    private final int cost;
-    private final String color;
+    private String mark;
+    private String model;
+    private int year;
+    private int mileage;
+    private int cost;
+    private String color;
+
+    private List<ExpenseDto> listExpenses;
 
 
-
-    public Car(int id, String mark, String model, String year, int mileage, int cost, String color){
-        this.id = id;
+    public Car(String mark, String model, int year, int mileage, int cost, String color, ArrayList<ExpenseDto> listExpenses) {
         this.mark = mark;
         this.model = model;
         this.year = year;
         this.mileage = mileage;
         this.cost = cost;
         this.color = color;
+        this.listExpenses = listExpenses;
     }
 
-    public int getId() {return id;}
+    public List<ExpenseDto> getListExpenses() {
+        return listExpenses;
+    }
 
-    public String getMark() {return mark;}
+    public void setListExpenses(List<ExpenseDto> listExpenses) {
+        this.listExpenses = listExpenses;
+    }
 
-    public String getModel() {return model;}
+    public String getMark() {
+        return mark;
+    }
 
-    public String getYear() {return year;}
+    public String getModel() {
+        return model;
+    }
 
-    public int getMileage() {return mileage;}
+    public int getYear() {
+        return year;
+    }
 
-    public int getCost() {return cost;}
+    public int getMileage() {
+        return mileage;
+    }
 
-    public String getColor() {return color;}
+    public int getCost() {
+        return cost;
+    }
 
-    @NonNull
-    @Override
-    public String toString() {
-        return "Car{" +
-                "id=" + id +
-                ", mark='" + mark + '\'' +
-                ", model='" + model + '\'' +
-                ", year='" + year + '\'' +
-                ", mileage=" + mileage +
-                ", cost=" + cost +
-                ", color='" + color + '\'' +
-                '}';
+    public String getColor() {
+        return color;
+    }
+
+    public void addExpense(ExpenseDto expenseDto){
+        listExpenses.add(expenseDto);
+    }
+
+    public void deleteExpense(ExpenseDto expenseDto){
+        listExpenses.remove(expenseDto);
+    }
+
+    public void setExpense(ExpenseDto expenseDto, int index){
+        listExpenses.set(index, expenseDto);
+    }
+
+    public Car() {
     }
 }

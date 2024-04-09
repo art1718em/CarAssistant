@@ -1,6 +1,5 @@
 package com.example.carassistant.ui.adapters;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 
 import android.view.ViewGroup;
@@ -8,8 +7,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.carassistant.data.models.Expense;
 import com.example.carassistant.R;
+import com.example.carassistant.data.models.ExpenseDto;
 import com.example.carassistant.databinding.DiagramItemBinding;
 
 
@@ -21,21 +20,19 @@ import java.util.Set;
 public class DiagramAdapter extends RecyclerView.Adapter<DiagramAdapter.DiagramViewHolder> {
 
 
-    private final HashMap<String, Integer> map;
+    private final HashMap<String, Double> map;
     private final Set<String> keys;
-    public DiagramAdapter(ArrayList<Expense> data) {
+    public DiagramAdapter(ArrayList<ExpenseDto> data) {
         map = new HashMap<>();
-        for (Expense i: data
+        for (ExpenseDto i: data
         ) {
             if (map.containsKey(i.getCategory()))
-                map.put(i.getCategory(), map.get(i.getCategory()) + Integer.parseInt(i.getExpense()));
+                map.put(i.getCategory(), map.get(i.getCategory()) + i.getExpense());
             else
-                map.put(i.getCategory(), Integer.parseInt(i.getExpense()));
+                map.put(i.getCategory(), i.getExpense());
         }
         keys = map.keySet();
 
-
-        Log.d("CarAssWork", keys.toString());
     }
 
 

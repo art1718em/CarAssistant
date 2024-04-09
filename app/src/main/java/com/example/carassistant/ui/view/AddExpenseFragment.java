@@ -10,37 +10,41 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
-import com.example.carassistant.data.models.Expense;
-import com.example.carassistant.data.room.root.ExpenseDB;
-import com.example.carassistant.data.room.dao.ExpenseDao;
+import com.example.carassistant.core.Error;
+import com.example.carassistant.core.Success;
+
 import com.example.carassistant.R;
 import com.example.carassistant.databinding.FragmentAddExpenseBinding;
+import com.example.carassistant.ui.viewModels.AddExpenseViewModel;
 
 
 import java.util.Calendar;
 import java.util.Date;
 
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
+
+
 
 public class AddExpenseFragment extends Fragment {
 
     private FragmentAddExpenseBinding binding;
-    Disposable disposable;
+
     private NavController navController;
 
     DatePickerDialog.OnDateSetListener dateSetListener;
+
+    private AddExpenseViewModel addExpenseViewModel;
 
 
     @Override
@@ -49,12 +53,30 @@ public class AddExpenseFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentAddExpenseBinding.inflate(inflater, container, false);
 
-        ExpenseDB expenseDB = ExpenseDB.getInstance(requireContext());
-        ExpenseDao expenseDao = expenseDB.expenseDao();
+        addExpenseViewModel = new ViewModelProvider(this).get(AddExpenseViewModel.class);
+
+        addExpenseViewModel.resultAddExpense.observe(getViewLifecycleOwner(), result -> {
+            if(result instanceof Error)
+                Toast.makeText(container.getContext(), ((Error)result).getMessage(), Toast.LENGTH_SHORT).show();
+        });
+
+        addExpenseViewModel.resultAddExpenseDto.observe(getViewLifecycleOwner(), result -> {
+            if(result instanceof Success){
+                if(navController.getBackQueue().get(navController.getBackQueue().getSize()-2).getDestination().getId() == R.id.diagramFragment)
+                    Navigation.findNavController(binding.getRoot()).navigate(R.id.action_addExpenseFragment_to_diagramFragment);
+                else
+                    Navigation.findNavController(binding.getRoot()).navigate(R.id.action_addExpenseFragment_to_expensesFragment);
+            }
+
+            else
+                Toast.makeText(container.getContext(), ((Error)result).getMessage(), Toast.LENGTH_SHORT).show();
+        });
+
 
 
         binding.iconCalendar.setOnClickListener(v -> {
@@ -79,60 +101,33 @@ public class AddExpenseFragment extends Fragment {
 
 
 
-        binding.btnAddExpense.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean flag = true;
-                ColorStateList colorStateList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.red));
-                ColorStateList primalColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.background_edittext));
-                EditText[] arrayEditText = new EditText[]{binding.etSumExpense, binding.etDate, binding.etComment,
-                        binding.etMileage};
-                for (EditText editText: arrayEditText){
-                    if (editText.getText().toString().isEmpty()) {
-                        flag = false;
-                        editText.setBackgroundTintList(colorStateList);
-                    }
-                    else
-                        binding.etSumExpense.setBackgroundTintList(primalColor);
-                }
-                if(flag) {
-                    disposable = expenseDao
-                            .addExpense(
-                                    new Expense(
-                                            requireActivity().getSharedPreferences("id", Context.MODE_PRIVATE).getInt(DiagramFragment.key, -1),
-                                            binding.etSumExpense.getText().toString(),
-                                            binding.spinnerChoiceCategory.getSelectedItem().toString(),
-                                            binding.etDate.getText().toString(),
-                                            binding.etComment.getText().toString(),
-                                            Integer.parseInt(binding.etMileage.getText().toString())
-
-
-                                    )
-                            )
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(this::onExpenseAdded, throwable -> Log.wtf("Error", throwable.toString()));
-                }
+        binding.btnAddExpense.setOnClickListener(v -> {
+            boolean flag = true;
+            ColorStateList colorStateList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.red));
+            ColorStateList primalColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.background_edittext));
+            EditText[] arrayEditText = new EditText[]{binding.etSumExpense, binding.etDate, binding.etComment,
+                    binding.etMileage};
+            for (EditText editText : arrayEditText) {
+                if (editText.getText().toString().isEmpty()) {
+                    flag = false;
+                    editText.setBackgroundTintList(colorStateList);
+                } else
+                    binding.etSumExpense.setBackgroundTintList(primalColor);
             }
-
-            @SuppressLint("RestrictedApi")
-            private void onExpenseAdded(){
-                if(navController.getBackQueue().get(navController.getBackQueue().getSize()-2).getDestination().getId() == R.id.diagramFragment)
-                    Navigation.findNavController(binding.getRoot()).navigate(R.id.action_addExpenseFragment_to_diagramFragment);
-                else
-                    Navigation.findNavController(binding.getRoot()).navigate(R.id.action_addExpenseFragment_to_expensesFragment);
+            if (flag) {
+                addExpenseViewModel.addExpense(
+                        requireActivity().getSharedPreferences("id", Context.MODE_PRIVATE).getString("carId", ""),
+                        Double.parseDouble(binding.etSumExpense.getText().toString()),
+                        binding.spinnerChoiceCategory.getSelectedItem().toString(),
+                        binding.etDate.getText().toString(),
+                        binding.etComment.getText().toString(),
+                        Integer.parseInt(binding.etMileage.getText().toString())
+                );
 
             }
-
         });
         return binding.getRoot();
     }
 
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (disposable != null)
-            disposable.dispose();
-    }
 }

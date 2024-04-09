@@ -1,23 +1,18 @@
 package com.example.carassistant.data.models;
 
 import androidx.annotation.NonNull;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
-@Entity(tableName = "expense_table")
+
+
 public class Expense {
-    @PrimaryKey(autoGenerate = true)
-    public int id;
-    int idCar;
-    private final String expense;
-    private final String category;
-    private final String data;
-    private final String comment;
-    private final int mileage;
+    private double expense;
+    private String category;
+    private String data;
+    private String comment;
+    private int mileage;
 
 
-    public Expense(int idCar, String expense, String category, String data, String comment, int mileage){
-        this.idCar = idCar;
+    public Expense(double expense, String category, String data, String comment, int mileage){
         this.expense = expense;
         this.category = category;
         this.data = data;
@@ -25,15 +20,10 @@ public class Expense {
         this.mileage = mileage;
     }
 
-    public int getIdCar() {
-        return idCar;
+    public Expense() {
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public String getExpense() {return expense;}
+    public double getExpense() {return expense;}
 
     public String getCategory() {return category;}
 
@@ -49,8 +39,7 @@ public class Expense {
     @Override
     public String toString() {
         return "Expense{" +
-                "id=" + id +
-                ", expense='" + expense + '\'' +
+                "expense='" + expense + '\'' +
                 ", category='" + category + '\'' +
                 ", data='" + data + '\'' +
                 ", mileage=" + mileage +

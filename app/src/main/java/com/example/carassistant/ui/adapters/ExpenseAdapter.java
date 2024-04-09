@@ -3,7 +3,7 @@ package com.example.carassistant.ui.adapters;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -12,22 +12,23 @@ import androidx.annotation.NonNull;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.carassistant.data.models.Expense;
-import com.example.carassistant.ui.view.ExpenseDescriptionFragment;
 import com.example.carassistant.R;
+import com.example.carassistant.data.models.ExpenseDto;
 import com.example.carassistant.databinding.ExpenseItemBinding;
+import com.example.carassistant.ui.view.ExpenseDescriptionFragment;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseViewHolder> {
 
 
 
-    private final ArrayList<Expense> data;
+
+
+    private final List<ExpenseDto> data;
     private ExpenseItemBinding binding;
-    private final List<Integer> index = new ArrayList<>();
-    public ExpenseAdapter(ArrayList<Expense> data) {this.data = data;}
+
+    public ExpenseAdapter(List<ExpenseDto> data) {this.data = data;}
 
     @NonNull
     @Override
@@ -40,8 +41,8 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ExpenseAdapter.ExpenseViewHolder holder, int position) {
-        Expense item  = data.get(position);
-        index.add(item.getId());
+
+        ExpenseDto item  = data.get(position);
         switch (item.getCategory()){
             case "Топливо":
                 holder.binding.iconCategory.setImageResource(R.drawable.gasoline_pump);
@@ -70,9 +71,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
 
         holder.binding.constantLayoutExpenseItem.setOnClickListener(v -> {
             Bundle carBundle = new Bundle();
-            carBundle.putInt(ExpenseDescriptionFragment.key, index.get(position));
-            Log.d("carAssWork", "index " + position);
-            Log.d("carAssWork", "idExpense " + index.get(position));
+            carBundle.putInt(ExpenseDescriptionFragment.key, position);
             Navigation.findNavController(binding.getRoot()).navigate(R.id.action_expensesFragment_to_expenseDescriptionFragment, carBundle);
         });
 
