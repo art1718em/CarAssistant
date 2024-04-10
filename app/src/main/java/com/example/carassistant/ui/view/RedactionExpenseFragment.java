@@ -43,7 +43,6 @@ public class RedactionExpenseFragment extends Fragment {
 
     DatePickerDialog.OnDateSetListener dateSetListener;
 
-    public static final String key = "expenseIdKey";
 
     private RedactionExpenseViewModel redactionExpenseViewModel;
 
@@ -55,10 +54,11 @@ public class RedactionExpenseFragment extends Fragment {
         redactionExpenseViewModel = new ViewModelProvider(this).get(RedactionExpenseViewModel.class);
 
         Bundle expenseBundle = requireArguments();
-        int indexExpense = expenseBundle.getInt(key);
-        String idCar = requireActivity().getSharedPreferences("id", Context.MODE_PRIVATE).getString("carId", "");
+        String idExpense = expenseBundle.getString(ExpenseDescriptionFragment.expenseIdKey);
+        String idCar = expenseBundle.getString(AddCarFragment.carIdKey);
+        int indexExpense = expenseBundle.getInt(ExpenseDescriptionFragment.expenseIndexKey);
 
-        redactionExpenseViewModel.loadExpenseDescription(idCar, indexExpense);
+        redactionExpenseViewModel.loadExpenseDescription(idExpense);
 
 
         redactionExpenseViewModel.resultOfRedaction.observe(getViewLifecycleOwner(), result -> {

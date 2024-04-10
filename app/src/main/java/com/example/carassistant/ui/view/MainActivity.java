@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
             if(navController.getBackQueue().getSize() > 3) {
                 Log.d("CarAssWork", "pop " + navController.getBackQueue().getSize());
                 navController.popBackStack();
+
                 return;
             }
             else

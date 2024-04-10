@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,32 +23,42 @@ import com.example.carassistant.R;
 import com.example.carassistant.databinding.FragmentExpenseDescriptionBinding;
 import com.example.carassistant.ui.viewModels.ExpenseDescriptionViewModel;
 
+import java.util.HashMap;
 
 
 public class ExpenseDescriptionFragment extends Fragment {
     private FragmentExpenseDescriptionBinding binding;
-    public static final String key = "expenseIdKey";
+    public static final String expenseIndexKey = "expenseIndexKey";
+
+    public static final String expenseIdKey = "expenseIdKey";
 
     private ExpenseDescriptionViewModel expenseDescriptionViewModel;
+
+    private String expenseId;
 
 
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         binding = FragmentExpenseDescriptionBinding.inflate(inflater, container, false);
 
         expenseDescriptionViewModel = new ViewModelProvider(this).get(ExpenseDescriptionViewModel.class);
 
         Bundle expenseBundle = requireArguments();
-        int indexExpense = expenseBundle.getInt(key);
-        String idCar = requireActivity().getSharedPreferences("id", Context.MODE_PRIVATE).getString("carId", "");
+        int indexExpense = expenseBundle.getInt(expenseIndexKey);
+        String idCar = expenseBundle.getString(AddCarFragment.carIdKey);
+
+        Bundle idCarBundle = new Bundle();
+        idCarBundle.putString(AddCarFragment.carIdKey, expenseBundle.getString(AddCarFragment.carIdKey));
 
         expenseDescriptionViewModel.loadExpenseDescription(idCar, indexExpense);
 
         expenseDescriptionViewModel.resultOfLoadExpenseDescription.observe(getViewLifecycleOwner(), result -> {
             if (result instanceof Success){
-                Expense expense = ((Success<Expense>) result).getData();
+                Pair<String, Expense> pair = ((Success<Pair<String, Expense>>) result).getData();
+                Expense expense = pair.second;
+                expenseId = pair.first;
                 binding.tvCategoryData.setText(expense.getCategory());
                 binding.tvCostData.setText(String.valueOf(expense.getExpense()));
                 binding.tvCommentData.setText(expense.getComment());
@@ -60,7 +71,8 @@ public class ExpenseDescriptionFragment extends Fragment {
         expenseDescriptionViewModel.resultOfDeleteExpense.observe(getViewLifecycleOwner(), result -> {
             if (result instanceof Success) {
                 Toast.makeText(container.getContext(), ((Success<String>) result).getData(), Toast.LENGTH_SHORT).show();
-                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_expenseDescriptionFragment_to_expensesFragment);
+                Navigation.findNavController(binding.getRoot())
+                        .navigate(R.id.action_expenseDescriptionFragment_to_expensesFragment, idCarBundle);
             }else
                 Toast.makeText(container.getContext(), ((Error)result).getMessage(), Toast.LENGTH_SHORT).show();
         });
@@ -72,9 +84,13 @@ public class ExpenseDescriptionFragment extends Fragment {
         binding.iconDelete.setOnClickListener(v -> expenseDescriptionViewModel.deleteExpense(idCar, indexExpense));
 
 
-        binding.btnRedaction.setOnClickListener(v -> Navigation.findNavController(binding.getRoot())
-                .navigate(R.id.action_expenseDescriptionFragment_to_redactionExpenseFragment, expenseBundle));
-
+        binding.btnRedaction.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+            bundle.putString(AddCarFragment.carIdKey, expenseBundle.getString(AddCarFragment.carIdKey));
+            bundle.putString(expenseIdKey, expenseId);
+            bundle.putInt(expenseIndexKey, indexExpense);
+            Navigation.findNavController(binding.getRoot()).navigate(R.id.action_expenseDescriptionFragment_to_redactionExpenseFragment, bundle);
+        });
         return binding.getRoot();
     }
 }

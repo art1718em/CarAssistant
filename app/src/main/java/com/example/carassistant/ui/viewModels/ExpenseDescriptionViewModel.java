@@ -1,5 +1,7 @@
 package com.example.carassistant.ui.viewModels;
 
+import android.util.Pair;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -15,6 +17,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
 
 public class ExpenseDescriptionViewModel extends ViewModel {
 
@@ -46,7 +50,8 @@ public class ExpenseDescriptionViewModel extends ViewModel {
         db.collection("expenses").document(id).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()){
                 Expense expense = task.getResult().toObject(Expense.class);
-                resultOfLoadExpenseDescription.setValue(new Success<>(expense));
+                Pair<String, Expense> pair = new Pair<>(expenseId, expense);
+                resultOfLoadExpenseDescription.setValue(new Success<>(pair));
             }else
                 resultOfLoadExpenseDescription.setValue(new Error(task.getException().getMessage()));
         });

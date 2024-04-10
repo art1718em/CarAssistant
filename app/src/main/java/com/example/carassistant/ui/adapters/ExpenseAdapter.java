@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.carassistant.R;
 import com.example.carassistant.data.models.ExpenseDto;
 import com.example.carassistant.databinding.ExpenseItemBinding;
+import com.example.carassistant.ui.view.AddCarFragment;
 import com.example.carassistant.ui.view.ExpenseDescriptionFragment;
 
 import java.util.List;
@@ -28,7 +29,12 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
     private final List<ExpenseDto> data;
     private ExpenseItemBinding binding;
 
-    public ExpenseAdapter(List<ExpenseDto> data) {this.data = data;}
+    private String idCar;
+
+    public ExpenseAdapter(List<ExpenseDto> data, String idCar) {
+        this.data = data;
+        this.idCar = idCar;
+    }
 
     @NonNull
     @Override
@@ -70,9 +76,10 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
         holder.binding.tvCost.setText(item.getExpense()+ " ₽");
 
         holder.binding.constantLayoutExpenseItem.setOnClickListener(v -> {
-            Bundle carBundle = new Bundle();
-            carBundle.putInt(ExpenseDescriptionFragment.key, position);
-            Navigation.findNavController(binding.getRoot()).navigate(R.id.action_expensesFragment_to_expenseDescriptionFragment, carBundle);
+            Bundle bundle = new Bundle();
+            bundle.putInt(ExpenseDescriptionFragment.expenseIndexKey, position);
+            bundle.putString(AddCarFragment.carIdKey, idCar);
+            Navigation.findNavController(binding.getRoot()).navigate(R.id.action_expensesFragment_to_expenseDescriptionFragment, bundle);
         });
 
 

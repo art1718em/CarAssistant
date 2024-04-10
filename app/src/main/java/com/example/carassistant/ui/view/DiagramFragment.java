@@ -6,12 +6,14 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +54,11 @@ public class DiagramFragment extends Fragment {
     public static final String key = "carId";
 
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Log.d("12345", "onviewcreated");
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -59,14 +66,17 @@ public class DiagramFragment extends Fragment {
 
         DiagramViewModel diagramViewModel = new ViewModelProvider(this).get(DiagramViewModel.class);
 
-        getParentFragmentManager().setFragmentResultListener(
-                key, getViewLifecycleOwner(), (requestKey, carBundle) -> bundle = carBundle);
 
-        String s = requireActivity().getSharedPreferences("id", Context.MODE_PRIVATE).getString(key, "");
+
+
+        bundle = CarBundle.init().getBundle();
+
+
+
 
         pieChart = binding.pieChart;
 
-        diagramViewModel.getListExpenses(s);
+        diagramViewModel.getListExpenses(bundle.getString(AddCarFragment.carIdKey));
 
         diagramViewModel.resultOfExpenses.observe(getViewLifecycleOwner(), result -> {
             if (result instanceof Success){

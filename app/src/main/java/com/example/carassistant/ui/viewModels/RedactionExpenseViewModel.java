@@ -18,25 +18,13 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class RedactionExpenseViewModel extends ViewModel {
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private FirebaseAuth auth = FirebaseAuth.getInstance();
 
     public MutableLiveData<Result> resultOfRedaction = new MutableLiveData<>();
 
     public MutableLiveData<Result> resultOfLoadExpenseDescription = new MutableLiveData<>();
 
-    public void loadExpenseDescription(String idCar, int indexExpense){
-        db.collection("cars").document(idCar).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()){
-                Car car = task.getResult().toObject(Car.class);
-                ExpenseDto expenseDto = car.getListExpenses().get(indexExpense);
-                loadExpense(expenseDto.getId());
-            }else
-                resultOfLoadExpenseDescription.setValue(new Error(task.getException().getMessage()));
-        });
-    }
-
-    private void loadExpense(String id){
-        db.collection("expenses").document(id).get().addOnCompleteListener(task -> {
+    public void loadExpenseDescription(String idExpense){
+        db.collection("expenses").document(idExpense).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()){
                 Expense expense = task.getResult().toObject(Expense.class);
                 resultOfLoadExpenseDescription.setValue(new Success<>(expense));

@@ -3,7 +3,7 @@
     <item android:id="@id/static_graph"
         android:title=""
         android:icon="@drawable/bar_chart"/>
-    <item android:id="@id/expences_graph"
+    <item android:id="@id/expenses_graph"
         android:title=""
         android:icon="@drawable/pie_chart"
         />

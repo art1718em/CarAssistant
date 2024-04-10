@@ -44,13 +44,14 @@ public class ExpensesFragment extends Fragment {
         ExpensesViewModel expensesViewModel = new ViewModelProvider(this).get(ExpensesViewModel.class);
 
 
-        String idCar = requireActivity().getSharedPreferences("id", Context.MODE_PRIVATE).getString("carId", "");
+        Bundle bundle = requireArguments();
 
-        expensesViewModel.loadListExpenses(idCar);
+        expensesViewModel.loadListExpenses(bundle.getString(AddCarFragment.carIdKey));
 
         expensesViewModel.resultOfListExpenses.observe(getViewLifecycleOwner(), result -> {
             if (result instanceof Success){
-                ExpenseAdapter expenseAdapter =new ExpenseAdapter(((Success<List<ExpenseDto>>) result).getData());
+                ExpenseAdapter expenseAdapter =new ExpenseAdapter(((Success<List<ExpenseDto>>) result).getData(),
+                        bundle.getString(AddCarFragment.carIdKey));
                 binding.recyclerviewListExpenses.setLayoutManager(new LinearLayoutManager(requireContext()));
                 binding.recyclerviewListExpenses.setAdapter(expenseAdapter);
             }else
@@ -63,7 +64,7 @@ public class ExpensesFragment extends Fragment {
 
 
         binding.iconAddExpense.setOnClickListener(v -> Navigation.findNavController(binding.getRoot())
-                .navigate(R.id.action_expensesFragment_to_addExpenseFragment));
+                .navigate(R.id.action_expensesFragment_to_addExpenseFragment, bundle));
 
         binding.iconBack.setOnClickListener(v -> Navigation.findNavController(binding.getRoot()).popBackStack());
 

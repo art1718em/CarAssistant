@@ -46,6 +46,8 @@ public class AddExpenseFragment extends Fragment {
 
     private AddExpenseViewModel addExpenseViewModel;
 
+    private Bundle bundle;
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -57,6 +59,8 @@ public class AddExpenseFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentAddExpenseBinding.inflate(inflater, container, false);
+
+        bundle = requireArguments();
 
         addExpenseViewModel = new ViewModelProvider(this).get(AddExpenseViewModel.class);
 
@@ -70,7 +74,7 @@ public class AddExpenseFragment extends Fragment {
                 if(navController.getBackQueue().get(navController.getBackQueue().getSize()-2).getDestination().getId() == R.id.diagramFragment)
                     Navigation.findNavController(binding.getRoot()).navigate(R.id.action_addExpenseFragment_to_diagramFragment);
                 else
-                    Navigation.findNavController(binding.getRoot()).navigate(R.id.action_addExpenseFragment_to_expensesFragment);
+                    Navigation.findNavController(binding.getRoot()).navigate(R.id.action_addExpenseFragment_to_expensesFragment, bundle);
             }
 
             else
@@ -116,7 +120,7 @@ public class AddExpenseFragment extends Fragment {
             }
             if (flag) {
                 addExpenseViewModel.addExpense(
-                        requireActivity().getSharedPreferences("id", Context.MODE_PRIVATE).getString("carId", ""),
+                        bundle.getString(AddCarFragment.carIdKey),
                         Double.parseDouble(binding.etSumExpense.getText().toString()),
                         binding.spinnerChoiceCategory.getSelectedItem().toString(),
                         binding.etDate.getText().toString(),

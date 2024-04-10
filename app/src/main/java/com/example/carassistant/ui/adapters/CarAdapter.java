@@ -18,6 +18,7 @@ import com.example.carassistant.data.models.User;
 import com.example.carassistant.databinding.CarItemBinding;
 import com.example.carassistant.databinding.FragmentCarsBinding;
 
+import com.example.carassistant.ui.view.AddCarFragment;
 import com.google.firebase.auth.FirebaseAuth;
 
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -58,18 +59,10 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
         holder.binding.tvColor.setText(item.getColor());
 
         holder.binding.constraintLayoutCarItem.setOnClickListener(v -> {
-            Bundle carBundle = new Bundle();
-            db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(task -> {
-                if (task.isSuccessful()){
-                    User user = task.getResult().toObject(User.class);
-                    carBundle.putString("carId", user.getListCars().get(position).getId());
-                    fragment.requireActivity().getSharedPreferences("id", Context.MODE_PRIVATE).edit()
-                            .putString("carId", user.getListCars().get(position).getId()).apply();
-                    Navigation.findNavController(binding.getRoot()).navigate(R.id.action_carsFragment_to_panelFragment,
-                            carBundle);
-                }
-            });
-
+            Bundle bundle = new Bundle();
+            bundle.putString(AddCarFragment.carIdKey, data.get(position).getId());
+            Navigation.findNavController(binding.getRoot()).navigate(R.id.action_carsFragment_to_panelFragment,
+                    bundle);
         });
 
 

@@ -31,6 +31,8 @@ public class AddCarFragment extends Fragment {
 
     private AddCarViewModel addCarViewModel;
 
+    public static final String carIdKey = "carId";
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentAddCarBinding.inflate(inflater, container, false);
@@ -45,8 +47,7 @@ public class AddCarFragment extends Fragment {
             if(result instanceof Success){
                 String idCar = ((Success<String>) result).getData();
                 Bundle bundle = new Bundle();
-                bundle.putString("carId", idCar);
-                requireActivity().getSharedPreferences("id", Context.MODE_PRIVATE).edit().putString("carId",idCar).apply();
+                bundle.putString(carIdKey, idCar);
                 Navigation.findNavController(binding.getRoot()).navigate(R.id.action_addCarFragment_to_panelFragment, bundle);
             }
 
