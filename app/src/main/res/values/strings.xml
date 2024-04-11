@@ -58,6 +58,11 @@
     <string name="change_password">Сменить пароль</string>
     <string name="code_for_guest_entrance">Код для входа гостю</string>
     <string name="log_out">Выйти из аккаунта</string>
+    <string name="car_data">Даннные автомобиля</string>
+    <string name="year">Год</string>
+    <string name="cost_car">Стоимость</string>
+    <string name="gen_code">Сгенерировать код</string>
+    <string name="need_to_add_car">Необходимо добавить автомобиль</string>
 
 
 </resources>

@@ -61,6 +61,14 @@ public class AddCarViewModel extends ViewModel {
         documentReference.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()){
                 User user = task.getResult().toObject(User.class);
+                for (int i = 0; i < user.getListCars().size(); i++){
+                    CarDto car = user.getListCars().get(i);
+                    if (car.isActiveCar()) {
+                        car.setActiveCar(false);
+                        user.setCar(car, i);
+                        break;
+                    }
+                }
                 user.addCar(carDto);
                 db.collection("users").document(auth.getCurrentUser().getUid()).set(user).addOnCompleteListener(task1 -> {
                     if (task1.isSuccessful())

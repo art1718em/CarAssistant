@@ -24,4 +24,12 @@ public class User {
     public void addCar(CarDto carDto){
         listCars.add(carDto);
     }
+
+    public void setCar(CarDto carDto, int indexCar){
+        listCars.set(indexCar, carDto);
+    }
+
+    public void deleteCar(int indexCar){
+        listCars.remove(indexCar);
+    }
 }

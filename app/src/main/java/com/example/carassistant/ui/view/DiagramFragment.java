@@ -53,19 +53,20 @@ public class DiagramFragment extends Fragment {
     private FragmentDiagramBinding binding;
 
     private PieChart pieChart;
+    DiagramViewModel diagramViewModel;
+
 
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.d("12345", "onviewcreated");
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentDiagramBinding.inflate(inflater, container, false);
 
-        DiagramViewModel diagramViewModel = new ViewModelProvider(this).get(DiagramViewModel.class);
+        diagramViewModel = new ViewModelProvider(this).get(DiagramViewModel.class);
 
         Bundle bundle = new Bundle();
 
@@ -74,8 +75,14 @@ public class DiagramFragment extends Fragment {
 
         diagramViewModel.resultOfLoadActiveCar.observe(getViewLifecycleOwner(), result -> {
             if (result instanceof Success){
-                diagramViewModel.getListExpenses(((Success<String>) result).getData());
-                bundle.putString(AddCarFragment.carIdKey, ((Success<String>) result).getData());
+                if (((Success<String>) result).getData().equals("-1")){
+                    binding.tvAddCar.setVisibility(View.VISIBLE);
+                }
+                else{
+                    binding.tvAddCar.setVisibility(View.INVISIBLE);
+                    diagramViewModel.getListExpenses(((Success<String>) result).getData());
+                    bundle.putString(AddCarFragment.carIdKey, ((Success<String>) result).getData());
+                }
             }
             else
                 Toast.makeText(container.getContext(), ((Error)result).getMessage(), Toast.LENGTH_SHORT).show();
@@ -106,6 +113,11 @@ public class DiagramFragment extends Fragment {
         return binding.getRoot();
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        diagramViewModel.clearActiveCar();
+    }
 
     private void onDiagramLoaded(List<ExpenseDto> expenses) {
         HashMap<String, Double> map = new HashMap<>();

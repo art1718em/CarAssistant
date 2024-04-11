@@ -11,16 +11,18 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.carassistant.BuildConfig;
 import com.example.carassistant.R;
 import com.example.carassistant.data.models.CarDto;
 import com.example.carassistant.databinding.CarItemBinding;
 import com.example.carassistant.databinding.FragmentAccountBinding;
+import com.example.carassistant.ui.view.AccountFragment;
 import com.example.carassistant.ui.view.AddCarFragment;
 import com.example.carassistant.ui.viewModels.AccountViewModel;
 
 import java.util.List;
 
-public class CarAccountAdapter extends RecyclerView.Adapter<CarAccountAdapter.CarViewHolder>{
+public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder>{
 
 
 
@@ -31,7 +33,7 @@ public class CarAccountAdapter extends RecyclerView.Adapter<CarAccountAdapter.Ca
     private final Fragment fragment;
 
     private final AccountViewModel accountViewModel;
-    public CarAccountAdapter(
+    public CarAdapter(
             List<CarDto> data,
             int indexActiveCar,
             FragmentAccountBinding binding,
@@ -48,15 +50,15 @@ public class CarAccountAdapter extends RecyclerView.Adapter<CarAccountAdapter.Ca
 
     @NonNull
     @Override
-    public CarAccountAdapter.CarViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public CarAdapter.CarViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         CarItemBinding binding = CarItemBinding.inflate(LayoutInflater.from(parent.getContext()),
                 parent, false);
-        return new CarAccountAdapter.CarViewHolder(binding);
+        return new CarAdapter.CarViewHolder(binding);
     }
 
     @SuppressLint("ResourceAsColor")
     @Override
-    public void onBindViewHolder(@NonNull CarAccountAdapter.CarViewHolder holder, @SuppressLint("RecyclerView") int position) {
+    public void onBindViewHolder(@NonNull CarAdapter.CarViewHolder holder, @SuppressLint("RecyclerView") int position) {
         CarDto item  = data.get(position);
         holder.binding.tvMark.setText(item.getMark());
         holder.binding.tvModel.setText(item.getModel());
@@ -78,6 +80,14 @@ public class CarAccountAdapter extends RecyclerView.Adapter<CarAccountAdapter.Ca
             int color = ContextCompat.getColor(holder.itemView.getContext(), R.color.purple_200);
             holder.binding.constraintLayoutCarItem.setBackgroundColor(color);
 
+        });
+
+        holder.binding.iconInformation.setOnClickListener(view -> {
+            Bundle bundle = new Bundle();
+            bundle.putString(AddCarFragment.carIdKey, item.getId());
+            bundle.putInt(AccountFragment.indexCar, position);
+            Navigation.findNavController(binding.getRoot())
+                    .navigate(R.id.action_accountFragment_to_carDescriptionFragment, bundle);
         });
 
 

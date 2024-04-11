@@ -1,5 +1,6 @@
 package com.example.carassistant.ui.viewModels;
 
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -33,9 +34,15 @@ public class DiagramViewModel extends ViewModel {
         db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()){
                 List<CarDto> listCars = task.getResult().toObject(User.class).getListCars();
-                for (CarDto carDto: listCars){
-                    if (carDto.isActiveCar())
-                        resultOfLoadActiveCar.setValue(new Success<>(carDto.getId()));
+                if (listCars.isEmpty())
+                    resultOfLoadActiveCar.setValue(new Success<>("-1"));
+                else{
+                    for (CarDto carDto: listCars) {
+                        if (carDto.isActiveCar()) {
+                            resultOfLoadActiveCar.setValue(new Success<>(carDto.getId()));
+                            break;
+                        }
+                    }
                 }
             }else
                 resultOfLoadActiveCar.setValue(new Error(task.getException().getMessage()));
@@ -52,4 +59,10 @@ public class DiagramViewModel extends ViewModel {
                 resultOfExpenses.setValue(new Error(task.getException().getMessage()));
         });
     }
+
+    public void clearActiveCar(){
+        resultOfLoadActiveCar = new MutableLiveData<>();
+    }
+
+
 }

@@ -74,5 +74,27 @@ public class Car {
     public Car() {
     }
 
+    public void setMark(String mark) {
+        this.mark = mark;
+    }
 
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public void setMileage(int mileage) {
+        this.mileage = mileage;
+    }
+
+    public void setCost(int cost) {
+        this.cost = cost;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
 }

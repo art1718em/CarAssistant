@@ -21,13 +21,16 @@ import com.example.carassistant.core.Error;
 import com.example.carassistant.core.Success;
 import com.example.carassistant.data.models.CarDto;
 import com.example.carassistant.databinding.FragmentAccountBinding;
-import com.example.carassistant.ui.adapters.CarAccountAdapter;
+import com.example.carassistant.ui.adapters.CarAdapter;
 import com.example.carassistant.ui.viewModels.AccountViewModel;
 
 import java.util.List;
 
 
 public class AccountFragment extends Fragment {
+
+
+    public static final String indexCar = "indexCar";
 
 
 
@@ -52,7 +55,7 @@ public class AccountFragment extends Fragment {
         accountViewModel.resultOfLoadListCars.observe(getViewLifecycleOwner(), result -> {
             if (result instanceof Success){
                 Pair<List<CarDto>, Integer> pair = ((Success<Pair<List<CarDto>, Integer>>) result).getData();
-                CarAccountAdapter carAdapter = new CarAccountAdapter(pair.first, pair.second, binding, accountViewModel, this);
+                CarAdapter carAdapter = new CarAdapter(pair.first, pair.second, binding, accountViewModel, this);
                 binding.recyclerviewListCars.setLayoutManager(new LinearLayoutManager(getContext()));
                 binding.recyclerviewListCars.setAdapter(carAdapter);
             }else

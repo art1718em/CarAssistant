@@ -13,10 +13,34 @@
         <action
             android:id="@+id/action_accountFragment_to_addCarFragment"
             app:destination="@id/addCarFragment" />
+        <action
+            android:id="@+id/action_accountFragment_to_carDescriptionFragment"
+            app:destination="@id/carDescriptionFragment" />
     </fragment>
     <fragment
         android:id="@+id/addCarFragment"
         android:name="com.example.carassistant.ui.view.AddCarFragment"
         android:label="fragment_add_car"
         tools:layout="@layout/fragment_add_car" />
+    <fragment
+        android:id="@+id/carDescriptionFragment"
+        android:name="com.example.carassistant.ui.view.CarDescriptionFragment"
+        android:label="fragment_car_description"
+        tools:layout="@layout/fragment_car_description" >
+        <action
+            android:id="@+id/action_carDescriptionFragment_to_redactionCarFragment"
+            app:destination="@id/redactionCarFragment" />
+        <action
+            android:id="@+id/action_carDescriptionFragment_to_accountFragment"
+            app:destination="@id/accountFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/redactionCarFragment"
+        android:name="com.example.carassistant.ui.view.RedactionCarFragment"
+        android:label="fragment_redaction_car"
+        tools:layout="@layout/fragment_redaction_car" >
+        <action
+            android:id="@+id/action_redactionCarFragment_to_carDescriptionFragment"
+            app:destination="@id/carDescriptionFragment" />
+    </fragment>
 </navigation>
