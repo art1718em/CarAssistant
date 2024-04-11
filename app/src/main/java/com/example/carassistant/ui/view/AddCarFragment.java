@@ -44,13 +44,8 @@ public class AddCarFragment extends Fragment {
         });
 
         addCarViewModel.resultAddCarDto.observe(getViewLifecycleOwner(), result -> {
-            if(result instanceof Success){
-                String idCar = ((Success<String>) result).getData();
-                Bundle bundle = new Bundle();
-                bundle.putString(carIdKey, idCar);
-                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_addCarFragment_to_panelFragment, bundle);
-            }
-
+            if(result instanceof Success)
+                Navigation.findNavController(binding.getRoot()).popBackStack();
             else
                 Toast.makeText(container.getContext(), ((Error)result).getMessage(), Toast.LENGTH_SHORT).show();
         });

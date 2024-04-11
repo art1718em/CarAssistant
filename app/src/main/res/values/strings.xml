@@ -55,6 +55,9 @@
     <string name="input_again_password">Повторите пароль</string>
     <string name="go_back">Вернуться назад</string>
     <string name="registration">Регистрация</string>
+    <string name="change_password">Сменить пароль</string>
+    <string name="code_for_guest_entrance">Код для входа гостю</string>
+    <string name="log_out">Выйти из аккаунта</string>
 
 
 </resources>

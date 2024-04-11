@@ -41,7 +41,7 @@ public class RegistrationFragment extends Fragment {
         registrationViewModel.resultLogIn.observe(getViewLifecycleOwner(), resultLogIn -> {
             if (resultLogIn)
                 Navigation.findNavController(binding.getRoot())
-                        .navigate(R.id.action_registrationFragment_to_carsFragment);
+                        .navigate(R.id.action_registrationFragment_to_panelFragment);
         });
 
         registrationViewModel.resultOfRegistration.observe(getViewLifecycleOwner(), result -> {
@@ -54,7 +54,7 @@ public class RegistrationFragment extends Fragment {
 
         registrationViewModel.resultAddUser.observe(getViewLifecycleOwner(), result -> {
             if (result instanceof Success){
-                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_registrationFragment_to_carsFragment);
+                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_registrationFragment_to_panelFragment);
             }else
                 Toast.makeText(container.getContext(), ((Error)result).getMessage(), Toast.LENGTH_SHORT).show();
         });

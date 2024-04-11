@@ -8,15 +8,18 @@ public class CarDto {
 
     private String color;
 
+    private boolean activeCar;
+
 
     public CarDto() {
     }
 
-    public CarDto(String id, String mark, String model, String color) {
+    public CarDto(String id, String mark, String model, String color, boolean activeCar) {
         this.id = id;
         this.mark = mark;
         this.model = model;
         this.color = color;
+        this.activeCar = activeCar;
     }
 
     public String getColor() {
@@ -51,4 +54,11 @@ public class CarDto {
         this.model = model;
     }
 
+    public boolean isActiveCar() {
+        return activeCar;
+    }
+
+    public void setActiveCar(boolean activeCar) {
+        this.activeCar = activeCar;
+    }
 }

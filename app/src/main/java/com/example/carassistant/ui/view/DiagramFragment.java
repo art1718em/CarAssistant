@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 import com.example.carassistant.R;
 import com.example.carassistant.core.Error;
 
+import com.example.carassistant.core.Result;
 import com.example.carassistant.core.Success;
 
 import com.example.carassistant.data.models.ExpenseDto;
@@ -38,6 +40,8 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 
+import org.jetbrains.annotations.Async;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,9 +53,6 @@ public class DiagramFragment extends Fragment {
     private FragmentDiagramBinding binding;
 
     private PieChart pieChart;
-    private Bundle bundle;
-
-    public static final String key = "carId";
 
 
     @Override
@@ -66,17 +67,24 @@ public class DiagramFragment extends Fragment {
 
         DiagramViewModel diagramViewModel = new ViewModelProvider(this).get(DiagramViewModel.class);
 
+        Bundle bundle = new Bundle();
+
+        diagramViewModel.loadActiveCar();
 
 
-
-        bundle = CarBundle.init().getBundle();
-
-
+        diagramViewModel.resultOfLoadActiveCar.observe(getViewLifecycleOwner(), result -> {
+            if (result instanceof Success){
+                diagramViewModel.getListExpenses(((Success<String>) result).getData());
+                bundle.putString(AddCarFragment.carIdKey, ((Success<String>) result).getData());
+            }
+            else
+                Toast.makeText(container.getContext(), ((Error)result).getMessage(), Toast.LENGTH_SHORT).show();
+        });
 
 
         pieChart = binding.pieChart;
 
-        diagramViewModel.getListExpenses(bundle.getString(AddCarFragment.carIdKey));
+
 
         diagramViewModel.resultOfExpenses.observe(getViewLifecycleOwner(), result -> {
             if (result instanceof Success){

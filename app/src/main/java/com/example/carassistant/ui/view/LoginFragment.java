@@ -37,14 +37,14 @@ public class LoginFragment extends Fragment {
             binding.progressBar.setVisibility(View.INVISIBLE);
             if (result instanceof Success){
                 Navigation.findNavController(binding.getRoot())
-                        .navigate(R.id.action_loginFragment_to_carsFragment);
+                        .navigate(R.id.action_loginFragment_to_panelFragment);
             }else
                 Toast.makeText(container.getContext(), ((Error)result).getMessage(), Toast.LENGTH_SHORT).show();
         });
 
         loginViewModel.resultLogIn.observe(getViewLifecycleOwner(), isLogin -> {
             if(isLogin)
-                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_loginFragment_to_carsFragment);
+                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_loginFragment_to_panelFragment);
         });
 
 

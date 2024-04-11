@@ -13,6 +13,7 @@ public class Car {
     private int cost;
     private String color;
 
+
     private List<ExpenseDto> listExpenses;
 
 
@@ -72,4 +73,6 @@ public class Car {
 
     public Car() {
     }
+
+
 }

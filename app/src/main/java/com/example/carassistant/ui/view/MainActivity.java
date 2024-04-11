@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         if (destination == null) return false;
         NavGraph graph = destination.getParent();
         if (graph == null) return false;
-        List<Integer> startDestinations = Collections.singletonList(R.id.carsFragment);
+        List<Integer> startDestinations = Collections.singletonList(R.id.panelFragment);
         return startDestinations.contains(destination.getId());
     }
 

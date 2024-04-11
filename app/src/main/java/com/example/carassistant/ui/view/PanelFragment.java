@@ -63,14 +63,6 @@ public class PanelFragment extends Fragment {
 
         NavigationUI.setupWithNavController(binding.bottomNavigationView, navController);
 
-        Bundle bundle = requireArguments();
-
-        CarBundle carBundle = CarBundle.init();
-
-        carBundle.setBundle(bundle);
-
-
-        Log.d("12345", "panel" + carBundle);
     }
 
 }
