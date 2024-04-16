@@ -44,6 +44,8 @@ public class AddCarFragment extends Fragment {
         });
 
         addCarViewModel.resultAddCarDto.observe(getViewLifecycleOwner(), result -> {
+            binding.progressBar.setVisibility(View.GONE);
+            binding.darkOverlay.setVisibility(View.GONE);
             if(result instanceof Success)
                 Navigation.findNavController(binding.getRoot()).popBackStack();
             else
@@ -72,7 +74,9 @@ public class AddCarFragment extends Fragment {
                 } else
                     editText.setBackgroundTintList(primalColor);
             }
-            if (flag)
+            if (flag){
+                binding.darkOverlay.setVisibility(View.VISIBLE);
+                binding.progressBar.setVisibility(View.VISIBLE);
                 addCarViewModel.addCar(
                         binding.etMark.getText().toString(),
                         binding.etModel.getText().toString(),
@@ -81,6 +85,7 @@ public class AddCarFragment extends Fragment {
                         Integer.parseInt(binding.etCost.getText().toString()),
                         binding.etColor.getText().toString()
                 );
+            }
         });
 
 

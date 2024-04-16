@@ -38,6 +38,9 @@ public class RedactionCarFragment extends Fragment {
 
         binding = FragmentRedactionCarBinding.inflate(inflater, container, false);
 
+        binding.constantLayout.setVisibility(View.INVISIBLE);
+        binding.progressBar.setVisibility(View.VISIBLE);
+
 
 
         redactionCarViewModel = new ViewModelProvider(this).get(RedactionCarViewModel.class);
@@ -45,9 +48,12 @@ public class RedactionCarFragment extends Fragment {
         bundle = requireArguments();
 
 
+
+
         redactionCarViewModel.loadCar(bundle.getString(AddCarFragment.carIdKey));
 
         redactionCarViewModel.resultOfLoadCar.observe(getViewLifecycleOwner(), result -> {
+            binding.progressBar.setVisibility(View.GONE);
             if (result instanceof Success){
                 Car car = ((Success<Car>) result).getData();
                 binding.etColor.setText(car.getColor());
@@ -56,10 +62,18 @@ public class RedactionCarFragment extends Fragment {
                 binding.etMileage.setText(String.valueOf(car.getMileage()));
                 binding.etModel.setText(car.getModel());
                 binding.etYear.setText(String.valueOf(car.getYear()));
+
+                binding.constantLayout.setVisibility(View.VISIBLE);
+            }else{
+                Toast.makeText(container.getContext(), ((Error)result).getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
         redactionCarViewModel.resultOfRedactionCar.observe(getViewLifecycleOwner(), result -> {
+
+            binding.darkOverlay.setVisibility(View.GONE);
+            binding.progressBar.setVisibility(View.GONE);
+
             if (result instanceof Success)
                 Navigation.findNavController(binding.getRoot())
                         .navigate(R.id.action_redactionCarFragment_to_carDescriptionFragment, bundle);
@@ -85,6 +99,9 @@ public class RedactionCarFragment extends Fragment {
                     editText.setBackgroundTintList(primalColor);
             }
             if(flag) {
+                binding.darkOverlay.setVisibility(View.VISIBLE);
+                binding.progressBar.setVisibility(View.VISIBLE);
+
                 redactionCarViewModel.redactCar(
                         bundle.getString(AddCarFragment.carIdKey),
                         bundle.getInt(AccountFragment.indexCar),

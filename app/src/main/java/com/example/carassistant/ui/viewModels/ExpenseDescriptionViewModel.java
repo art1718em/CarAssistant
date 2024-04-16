@@ -22,7 +22,6 @@ import java.util.HashMap;
 
 public class ExpenseDescriptionViewModel extends ViewModel {
 
-    private FirebaseAuth auth = FirebaseAuth.getInstance();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 
@@ -60,26 +59,33 @@ public class ExpenseDescriptionViewModel extends ViewModel {
     public void deleteExpense(String idCar, int indexExpense) {
         db.collection("expenses").document(expenseId).delete().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                deleteExpenseInCar(idCar, indexExpense);
+                getExpenseInCar(idCar, indexExpense);
             } else
                 resultOfDeleteExpense.setValue(new Error(task.getException().getMessage()));
         });
     }
 
-    private void deleteExpenseInCar(String idCar, int indexExpense){
+    private void getExpenseInCar(String idCar, int indexExpense){
         db.collection("cars").document(idCar).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()){
                 Car car = task.getResult().toObject(Car.class);
                 car.deleteExpense(car.getListExpenses().get(indexExpense));
-                db.collection("cars").document(idCar).set(car).addOnCompleteListener(task1 -> {
-                    if (task.isSuccessful())
-                        resultOfDeleteExpense.setValue(new Success<>("Трата была успешно удалена"));
-                    else
-                        resultOfDeleteExpense.setValue(new Error(task1.getException().getMessage()));
-                });
+                deleteExpenseInCar(idCar, car);
             }
             else
                 resultOfDeleteExpense.setValue(new Error(task.getException().getMessage()));
         });
     }
+
+    private void deleteExpenseInCar(String idCar, Car car){
+        db.collection("cars").document(idCar).set(car).addOnCompleteListener(task -> {
+            if (task.isSuccessful())
+                resultOfDeleteExpense.setValue(new Success<>("Трата была успешно удалена"));
+            else
+                resultOfDeleteExpense.setValue(new Error(task.getException().getMessage()));
+        });
+    }
+
+    
+
 }

@@ -43,6 +43,9 @@ public class ExpenseDescriptionFragment extends Fragment {
 
         binding = FragmentExpenseDescriptionBinding.inflate(inflater, container, false);
 
+        binding.constantLayout.setVisibility(View.INVISIBLE);
+        binding.progressBar.setVisibility(View.VISIBLE);
+
         expenseDescriptionViewModel = new ViewModelProvider(this).get(ExpenseDescriptionViewModel.class);
 
         Bundle expenseBundle = requireArguments();
@@ -55,6 +58,7 @@ public class ExpenseDescriptionFragment extends Fragment {
         expenseDescriptionViewModel.loadExpenseDescription(idCar, indexExpense);
 
         expenseDescriptionViewModel.resultOfLoadExpenseDescription.observe(getViewLifecycleOwner(), result -> {
+            binding.progressBar.setVisibility(View.GONE);
             if (result instanceof Success){
                 Pair<String, Expense> pair = ((Success<Pair<String, Expense>>) result).getData();
                 Expense expense = pair.second;
@@ -64,11 +68,14 @@ public class ExpenseDescriptionFragment extends Fragment {
                 binding.tvCommentData.setText(expense.getComment());
                 binding.tvDateData.setText(expense.getData());
                 binding.tvMileageData.setText(String.valueOf(expense.getMileage()));
+                binding.constantLayout.setVisibility(View.VISIBLE);
             }else
                 Toast.makeText(container.getContext(), ((Error)result).getMessage(), Toast.LENGTH_SHORT).show();
         });
 
         expenseDescriptionViewModel.resultOfDeleteExpense.observe(getViewLifecycleOwner(), result -> {
+            binding.progressBar.setVisibility(View.GONE);
+            binding.darkOverlay.setVisibility(View.GONE);
             if (result instanceof Success) {
                 Toast.makeText(container.getContext(), ((Success<String>) result).getData(), Toast.LENGTH_SHORT).show();
                 Navigation.findNavController(binding.getRoot())
@@ -81,7 +88,11 @@ public class ExpenseDescriptionFragment extends Fragment {
 
         binding.iconBack.setOnClickListener(v -> Navigation.findNavController(binding.getRoot()).popBackStack());
 
-        binding.iconDelete.setOnClickListener(v -> expenseDescriptionViewModel.deleteExpense(idCar, indexExpense));
+        binding.iconDelete.setOnClickListener(v -> {
+            expenseDescriptionViewModel.deleteExpense(idCar, indexExpense);
+            binding.darkOverlay.setVisibility(View.VISIBLE);
+            binding.progressBar.setVisibility(View.VISIBLE);
+        });
 
 
         binding.btnRedaction.setOnClickListener(v -> {

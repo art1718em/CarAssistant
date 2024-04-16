@@ -54,6 +54,11 @@ public class AccountViewModel extends ViewModel {
         });
     }
 
+    public void clearResultOfChangeActiveCar(){
+        resultOfChangeActiveCar = new MutableLiveData<>();
+    }
+
+
     public void logOut(){
         auth.signOut();
     }
@@ -70,19 +75,21 @@ public class AccountViewModel extends ViewModel {
                 newCar.setActiveCar(true);
                 listCars.set(indexNewActiveCar, newCar);
                 user.setListCars(listCars);
-
-                db.collection("users").document(auth.getCurrentUser().getUid()).set(user).addOnCompleteListener(task1 -> {
-                    if (task1.isSuccessful())
-                        resultOfChangeActiveCar.setValue(new Success<>());
-                    else
-                        resultOfChangeActiveCar.setValue(new Error(task1.getException().getMessage()));
-                });
-
-
+                setActiveCar(user, indexNewActiveCar);
             }else
                 resultOfChangeActiveCar.setValue(new Error(task.getException().getMessage()));
         });
     }
+
+    private void setActiveCar(User user, int indexNewActiveCar){
+        db.collection("users").document(auth.getCurrentUser().getUid()).set(user).addOnCompleteListener(task1 -> {
+            if (task1.isSuccessful())
+                resultOfChangeActiveCar.setValue(new Success<>(indexNewActiveCar));
+            else
+                resultOfChangeActiveCar.setValue(new Error(task1.getException().getMessage()));
+        });
+    }
+
 
 
 

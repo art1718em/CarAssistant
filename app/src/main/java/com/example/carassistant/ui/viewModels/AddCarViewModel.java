@@ -57,8 +57,7 @@ public class AddCarViewModel extends ViewModel {
 
     public void addCarDto(String id, String mark, String model, String color){
         CarDto carDto = new CarDto(id, mark, model, color, true);
-        DocumentReference documentReference = db.collection("users").document(auth.getCurrentUser().getUid());
-        documentReference.get().addOnCompleteListener(task -> {
+        db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()){
                 User user = task.getResult().toObject(User.class);
                 for (int i = 0; i < user.getListCars().size(); i++){
@@ -70,18 +69,22 @@ public class AddCarViewModel extends ViewModel {
                     }
                 }
                 user.addCar(carDto);
-                db.collection("users").document(auth.getCurrentUser().getUid()).set(user).addOnCompleteListener(task1 -> {
-                    if (task1.isSuccessful())
-                        resultAddCarDto.setValue(new Success<>());
-                    else
-                        resultAddCarDto.setValue(new Error(task1.getException().getMessage()));
-                });
+                setUser(user);
             }
             else{
                 resultAddCarDto.setValue(new Error(task.getException().getMessage()));
             }
         });
-
     }
+
+    private void setUser(User user){
+        db.collection("users").document(auth.getCurrentUser().getUid()).set(user).addOnCompleteListener(task -> {
+            if (task.isSuccessful())
+                resultAddCarDto.setValue(new Success<>());
+            else
+                resultAddCarDto.setValue(new Error(task.getException().getMessage()));
+        });
+    }
+
 
 }

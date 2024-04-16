@@ -43,22 +43,25 @@ public class AddExpenseViewModel extends ViewModel {
 
     public void addExpenseDto(String idCar, String idExpense, String  category, Double expense){
         ExpenseDto expenseDto = new ExpenseDto(idExpense, category, expense);
-        DocumentReference documentReference = db.collection("cars").document(idCar);
-        documentReference.get().addOnCompleteListener(task -> {
+        db.collection("cars").document(idCar).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()){
                 Car car = task.getResult().toObject(Car.class);
                 car.addExpense(expenseDto);
-                db.collection("cars").document(idCar).set(car).addOnCompleteListener(task1 -> {
-                    if (task1.isSuccessful())
-                        resultAddExpenseDto.setValue(new Success());
-                    else
-                        resultAddExpenseDto.setValue(new Error(task1.getException().getMessage()));
-                });
+                setCar(idCar, car);
             }
             else{
                 resultAddExpenseDto.setValue(new Error(task.getException().getMessage()));
             }
         });
-
     }
+
+    private void setCar(String idCar, Car car){
+        db.collection("cars").document(idCar).set(car).addOnCompleteListener(task -> {
+            if (task.isSuccessful())
+                resultAddExpenseDto.setValue(new Success());
+            else
+                resultAddExpenseDto.setValue(new Error(task.getException().getMessage()));
+        });
+    }
+
 }

@@ -41,6 +41,9 @@ public class ExpensesFragment extends Fragment {
 
         binding = FragmentExpensesBinding.inflate(inflater, container, false);
 
+        binding.constantLayout.setVisibility(View.INVISIBLE);
+        binding.progressBar.setVisibility(View.VISIBLE);
+
         ExpensesViewModel expensesViewModel = new ViewModelProvider(this).get(ExpensesViewModel.class);
 
 
@@ -49,11 +52,14 @@ public class ExpensesFragment extends Fragment {
         expensesViewModel.loadListExpenses(bundle.getString(AddCarFragment.carIdKey));
 
         expensesViewModel.resultOfListExpenses.observe(getViewLifecycleOwner(), result -> {
+            binding.progressBar.setVisibility(View.GONE);
             if (result instanceof Success){
                 ExpenseAdapter expenseAdapter =new ExpenseAdapter(((Success<List<ExpenseDto>>) result).getData(),
                         bundle.getString(AddCarFragment.carIdKey));
                 binding.recyclerviewListExpenses.setLayoutManager(new LinearLayoutManager(requireContext()));
                 binding.recyclerviewListExpenses.setAdapter(expenseAdapter);
+
+                binding.constantLayout.setVisibility(View.VISIBLE);
             }else
                 Toast.makeText(container.getContext(), ((Error)result).getMessage(), Toast.LENGTH_SHORT).show();
         });

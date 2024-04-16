@@ -1,6 +1,5 @@
 package com.example.carassistant.ui.viewModels;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -11,15 +10,10 @@ import com.example.carassistant.data.models.Car;
 import com.example.carassistant.data.models.CarDto;
 import com.example.carassistant.data.models.ExpenseDto;
 import com.example.carassistant.data.models.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class CarDescriptionViewModel extends ViewModel {
 
@@ -41,7 +35,7 @@ public class CarDescriptionViewModel extends ViewModel {
         });
     }
 
-    public void deleteCar(String idCar, int indexCar){
+    public void getCar(String idCar, int indexCar){
         db.collection("cars").document(idCar).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()){
                 Car car = task.getResult().toObject(Car.class);
@@ -49,12 +43,7 @@ public class CarDescriptionViewModel extends ViewModel {
                     deleteCarExpenses(expenseDto.getId());
                 }
                 if (!resultOfDeleteCarExpenses.containsKey(false)){
-                    db.collection("cars").document(idCar).delete().addOnCompleteListener(task1 -> {
-                        if (task1.isSuccessful())
-                            deleteCarInUser(indexCar);
-                        else
-                            resultOfDeleteCar.setValue(new Error(task1.getException().getMessage()));
-                    });
+                    deleteCar(idCar, indexCar);
                 }else{
                     resultOfDeleteCar.setValue(resultOfDeleteCarExpenses.get(false));
                 }
@@ -63,6 +52,16 @@ public class CarDescriptionViewModel extends ViewModel {
             }
         });
     }
+
+    private void deleteCar(String idCar, int indexCar){
+        db.collection("cars").document(idCar).delete().addOnCompleteListener(task1 -> {
+            if (task1.isSuccessful())
+                deleteCarInUser(indexCar);
+            else
+                resultOfDeleteCar.setValue(new Error(task1.getException().getMessage()));
+        });
+    }
+
 
     private void deleteCarInUser(int indexCar){
         db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(task -> {
@@ -80,15 +79,19 @@ public class CarDescriptionViewModel extends ViewModel {
                     }
                 }
                 user.deleteCar(indexCar);
-                db.collection("users").document(auth.getCurrentUser().getUid()).set(user).addOnCompleteListener(task1 -> {
-                    if (task1.isSuccessful())
-                        resultOfDeleteCar.setValue(new Success<>());
-                    else
-                        resultOfDeleteCar.setValue(new Error(task1.getException().getMessage()));
-                });
+                setUser(user);
             }else
                 resultOfDeleteCar.setValue(new Error(task.getException().getMessage()));
 
+        });
+    }
+
+    private void setUser(User user){
+        db.collection("users").document(auth.getCurrentUser().getUid()).set(user).addOnCompleteListener(task1 -> {
+            if (task1.isSuccessful())
+                resultOfDeleteCar.setValue(new Success<>());
+            else
+                resultOfDeleteCar.setValue(new Error(task1.getException().getMessage()));
         });
     }
 

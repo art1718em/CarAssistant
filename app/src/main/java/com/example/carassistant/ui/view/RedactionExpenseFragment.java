@@ -51,6 +51,9 @@ public class RedactionExpenseFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentRedactionExpenseBinding.inflate(inflater, container, false);
 
+        binding.constantLayout.setVisibility(View.INVISIBLE);
+        binding.progressBar.setVisibility(View.VISIBLE);
+
         redactionExpenseViewModel = new ViewModelProvider(this).get(RedactionExpenseViewModel.class);
 
         Bundle expenseBundle = requireArguments();
@@ -62,6 +65,8 @@ public class RedactionExpenseFragment extends Fragment {
 
 
         redactionExpenseViewModel.resultOfRedaction.observe(getViewLifecycleOwner(), result -> {
+            binding.darkOverlay.setVisibility(View.GONE);
+            binding.progressBar.setVisibility(View.GONE);
             if (result instanceof Success){
                 Toast.makeText(container.getContext(), ((Success<String>) result).getData(), Toast.LENGTH_SHORT).show();
                 Navigation.findNavController(binding.getRoot())
@@ -117,6 +122,9 @@ public class RedactionExpenseFragment extends Fragment {
                     editText.setBackgroundTintList(primalColor);
             }
             if(flag) {
+                binding.darkOverlay.setVisibility(View.VISIBLE);
+                binding.progressBar.setVisibility(View.VISIBLE);
+
                 redactionExpenseViewModel.redactExpenseInCar(
                         idCar,
                         indexExpense,
@@ -161,6 +169,7 @@ public class RedactionExpenseFragment extends Fragment {
         binding.etComment.setText(expense.getComment());
         binding.etDate.setText(expense.getData());
         binding.etMileage.setText(String.valueOf(expense.getMileage()));
+
         binding.constantLayout.setVisibility(View.VISIBLE);
         binding.progressBar.setVisibility(View.GONE);
 

@@ -55,15 +55,19 @@ public class RedactionCarViewModel extends ViewModel {
                 car.setMark(mark);
                 car.setYear(year);
                 car.setMileage(mileage);
-                db.collection("cars").document(idCar).set(car).addOnCompleteListener(task1 -> {
-                    if (task1.isSuccessful()){
-                        redactCarDto(indexCar, mark, model, color);
-                    }else
-                        resultOfRedactionCar.setValue(new Error(task1.getException().getMessage()));
-                });
+                setCar(idCar, car, indexCar, mark, model, color);
             }else {
                 resultOfRedactionCar.setValue(new Error(task.getException().getMessage()));
             }
+        });
+    }
+
+    private void setCar(String idCar, Car car, int indexCar, String mark, String model, String color){
+        db.collection("cars").document(idCar).set(car).addOnCompleteListener(task1 -> {
+            if (task1.isSuccessful()){
+                redactCarDto(indexCar, mark, model, color);
+            }else
+                resultOfRedactionCar.setValue(new Error(task1.getException().getMessage()));
         });
     }
 
@@ -81,14 +85,19 @@ public class RedactionCarViewModel extends ViewModel {
                 listCars.get(indexCar).setMark(mark);
                 listCars.get(indexCar).setColor(color);
                 user.setListCars(listCars);
-                db.collection("users").document(auth.getCurrentUser().getUid()).set(user).addOnCompleteListener(task1 -> {
-                    if (task1.isSuccessful()){
-                        resultOfRedactionCar.setValue(new Success<>());
-                    }else
-                        resultOfRedactionCar.setValue(new Error(task1.getException().getMessage()));
-                });
+                setUser(user);
             }else
                 resultOfRedactionCar.setValue(new Error(task.getException().getMessage()));
         });
     }
+
+    private void setUser(User user){
+        db.collection("users").document(auth.getCurrentUser().getUid()).set(user).addOnCompleteListener(task1 -> {
+            if (task1.isSuccessful()){
+                resultOfRedactionCar.setValue(new Success<>());
+            }else
+                resultOfRedactionCar.setValue(new Error(task1.getException().getMessage()));
+        });
+    }
+
 }

@@ -42,16 +42,6 @@
         android:inputType="textPassword" />
 
     <Button
-        android:id="@+id/btn_go_back_to_login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:text="@string/go_back"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_input_password_again_registration" />
-
-    <Button
         android:id="@+id/btn_registration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -59,7 +49,26 @@
         android:text="@string/registration"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_go_back_to_login" />
+        app:layout_constraintTop_toBottomOf="@+id/et_input_password_again_registration" />
+
+    <Button
+        android:id="@+id/btn_go_back_to_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:text="@string/go_back"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_registration" />
+
+    <View
+        android:elevation="2dp"
+        android:id="@+id/dark_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:visibility="gone"
+        android:clickable="true"/>
 
     <ProgressBar
         android:id="@+id/progress_bar"
@@ -70,7 +79,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:elevation="10dp"
+        android:elevation="2dp"
         />
 
 

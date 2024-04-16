@@ -62,6 +62,7 @@ public class DiagramViewModel extends ViewModel {
 
     public void clearActiveCar(){
         resultOfLoadActiveCar = new MutableLiveData<>();
+        resultOfExpenses = new MutableLiveData<>();
     }
 
 

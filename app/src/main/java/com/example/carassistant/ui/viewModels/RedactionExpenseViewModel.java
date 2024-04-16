@@ -58,8 +58,9 @@ public class RedactionExpenseViewModel extends ViewModel {
             }else
                 resultOfRedaction.setValue(new Error(task.getException().getMessage()));
         });
-
     }
+
+    
 
     private void redactExpense(
             String idExpense,

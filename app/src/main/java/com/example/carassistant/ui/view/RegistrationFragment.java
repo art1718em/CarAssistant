@@ -45,14 +45,18 @@ public class RegistrationFragment extends Fragment {
         });
 
         registrationViewModel.resultOfRegistration.observe(getViewLifecycleOwner(), result -> {
-            binding.progressBar.setVisibility(View.INVISIBLE);
             if (result instanceof Success){
                 registrationViewModel.addUserToFirestore();
-            }else
-                Toast.makeText(container.getContext(), ((Error)result).getMessage(), Toast.LENGTH_SHORT).show();
+            }else {
+                binding.progressBar.setVisibility(View.GONE);
+                binding.darkOverlay.setVisibility(View.GONE);
+                Toast.makeText(container.getContext(), ((Error) result).getMessage(), Toast.LENGTH_SHORT).show();
+            }
         });
 
         registrationViewModel.resultAddUser.observe(getViewLifecycleOwner(), result -> {
+            binding.progressBar.setVisibility(View.GONE);
+            binding.darkOverlay.setVisibility(View.GONE);
             if (result instanceof Success){
                 Navigation.findNavController(binding.getRoot()).navigate(R.id.action_registrationFragment_to_panelFragment);
             }else
@@ -66,16 +70,16 @@ public class RegistrationFragment extends Fragment {
 
         binding.btnRegistration.setOnClickListener(v -> {
 
-            binding.progressBar.setVisibility(View.VISIBLE);
-
             if (validateAuthData(container)){
+
+                binding.progressBar.setVisibility(View.VISIBLE);
+                binding.darkOverlay.setVisibility(View.VISIBLE);
+
                 registrationViewModel.registration(
                         binding.etInputLoginRegistration.getText().toString(),
                         binding.etInputPasswordRegistration.getText().toString()
                 );
             }
-            else
-                binding.progressBar.setVisibility(View.INVISIBLE);
         });
 
 

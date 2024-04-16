@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
@@ -15,7 +14,6 @@ import android.widget.Toast;
 
 import com.example.carassistant.R;
 import com.example.carassistant.core.Error;
-import com.example.carassistant.core.Result;
 import com.example.carassistant.core.Success;
 import com.example.carassistant.data.models.Car;
 import com.example.carassistant.databinding.FragmentCarDescriptionBinding;
@@ -33,6 +31,11 @@ public class CarDescriptionFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         binding = FragmentCarDescriptionBinding.inflate(inflater, container, false);
+
+
+        binding.constantLayout.setVisibility(View.INVISIBLE);
+        binding.progressBar.setVisibility(View.VISIBLE);
+
         carDescriptionViewModel = new ViewModelProvider(this).get(CarDescriptionViewModel.class);
 
         bundle = requireArguments();
@@ -40,6 +43,7 @@ public class CarDescriptionFragment extends Fragment {
         carDescriptionViewModel.loadCarDescription(bundle.getString(AddCarFragment.carIdKey));
 
         carDescriptionViewModel.resultOfLoadCarDescription.observe(getViewLifecycleOwner(), result -> {
+            binding.progressBar.setVisibility(View.GONE);
             if (result instanceof Success){
                 Car car = ((Success<Car>) result).getData();
                 binding.tvColorData.setText(car.getColor());
@@ -48,11 +52,14 @@ public class CarDescriptionFragment extends Fragment {
                 binding.tvMarkData.setText(car.getMark());
                 binding.tvModelData.setText(car.getModel());
                 binding.tvYearData.setText(String.valueOf(car.getYear()));
+                binding.constantLayout.setVisibility(View.VISIBLE);
             } else
                 Toast.makeText(container.getContext(), ((Error)result).getMessage(), Toast.LENGTH_SHORT).show();
         });
 
         carDescriptionViewModel.resultOfDeleteCar.observe(getViewLifecycleOwner(), result -> {
+            binding.darkOverlay.setVisibility(View.GONE);
+            binding.progressBar.setVisibility(View.GONE);
             if (result instanceof Success)
                 Navigation.findNavController(binding.getRoot()).popBackStack();
             else
@@ -61,8 +68,12 @@ public class CarDescriptionFragment extends Fragment {
 
 
 
-        binding.iconDelete.setOnClickListener(view -> carDescriptionViewModel
-                .deleteCar(bundle.getString(AddCarFragment.carIdKey), bundle.getInt(AccountFragment.indexCar)));
+        binding.iconDelete.setOnClickListener(view -> {
+            carDescriptionViewModel
+                    .getCar(bundle.getString(AddCarFragment.carIdKey), bundle.getInt(AccountFragment.indexCar));
+            binding.progressBar.setVisibility(View.VISIBLE);
+            binding.darkOverlay.setVisibility(View.VISIBLE);
+        });
 
 
 

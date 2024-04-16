@@ -66,6 +66,10 @@ public class DiagramFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentDiagramBinding.inflate(inflater, container, false);
 
+        binding.constantLayout.setVisibility(View.INVISIBLE);
+        binding.progressBar.setVisibility(View.VISIBLE);
+
+
         diagramViewModel = new ViewModelProvider(this).get(DiagramViewModel.class);
 
         Bundle bundle = new Bundle();
@@ -73,19 +77,25 @@ public class DiagramFragment extends Fragment {
         diagramViewModel.loadActiveCar();
 
 
+
+
+
         diagramViewModel.resultOfLoadActiveCar.observe(getViewLifecycleOwner(), result -> {
             if (result instanceof Success){
                 if (((Success<String>) result).getData().equals("-1")){
+                    binding.progressBar.setVisibility(View.GONE);
                     binding.tvAddCar.setVisibility(View.VISIBLE);
                 }
                 else{
-                    binding.tvAddCar.setVisibility(View.INVISIBLE);
                     diagramViewModel.getListExpenses(((Success<String>) result).getData());
                     bundle.putString(AddCarFragment.carIdKey, ((Success<String>) result).getData());
                 }
             }
-            else
+            else{
+                binding.progressBar.setVisibility(View.GONE);
                 Toast.makeText(container.getContext(), ((Error)result).getMessage(), Toast.LENGTH_SHORT).show();
+
+            }
         });
 
 
@@ -94,6 +104,7 @@ public class DiagramFragment extends Fragment {
 
 
         diagramViewModel.resultOfExpenses.observe(getViewLifecycleOwner(), result -> {
+            binding.progressBar.setVisibility(View.GONE);
             if (result instanceof Success){
                 onDiagramLoaded(((Success<List<ExpenseDto>>) result).getData());
             }else
@@ -160,11 +171,6 @@ public class DiagramFragment extends Fragment {
         binding.recyclerviewListCategoryExpenses.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.recyclerviewListCategoryExpenses.setAdapter(diagramAdapter);
 
-        binding.pieChart.setVisibility(View.VISIBLE);
-        binding.recyclerviewListCategoryExpenses.setVisibility(View.VISIBLE);
-        binding.iconAddExpense.setVisibility(View.VISIBLE);
-        binding.iconGoToListExpenses.setVisibility(View.VISIBLE);
-        binding.progressBar.setVisibility(View.GONE);
-        binding.iconGoToListExpenses.setClickable(true);
+        binding.constantLayout.setVisibility(View.VISIBLE);
     }
 }

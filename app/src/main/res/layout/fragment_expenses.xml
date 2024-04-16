@@ -1,56 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.view.ExpensesFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:id="@+id/layout_header"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constantLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/icon_back"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/back"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:orientation="horizontal"
-            tools:ignore="UseCompoundDrawables">
+            android:contentDescription="@string/icon_back" />
 
-            <ImageView
-                android:id="@+id/icon_back"
-                android:layout_marginStart="16dp"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/back"
-                android:contentDescription="@string/icon_back" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/operations"
-                android:textSize="24sp"
-                android:layout_gravity="center"
-                android:layout_marginEnd="56dp"
-                android:gravity="center"
-                android:textColor="@color/black"/>
-        </LinearLayout>
-
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerview_list_expenses"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="16dp"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/operations"
+            android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layout_header"
-            tools:listitem="@layout/expense_item" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/black"/>
 
         <ImageView
             android:id="@+id/icon_add_expense"
@@ -64,12 +46,25 @@
             android:contentDescription="@string/icon_add" />
 
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_list_expenses"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/icon_add_expense"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:listitem="@layout/expense_item" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <ProgressBar
+            android:visibility="gone"
+            android:id="@+id/progress_bar"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center"/>
 
-
-
-
-
-
-</ScrollView>
+</FrameLayout>

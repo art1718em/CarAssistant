@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +35,8 @@ public class LoginFragment extends Fragment {
         loginViewModel.isLogIn();
 
         loginViewModel.resultOfLogin.observe(getViewLifecycleOwner(), result -> {
-            binding.progressBar.setVisibility(View.INVISIBLE);
+            binding.progressBar.setVisibility(View.GONE);
+            binding.darkOverlay.setVisibility(View.GONE);
             if (result instanceof Success){
                 Navigation.findNavController(binding.getRoot())
                         .navigate(R.id.action_loginFragment_to_panelFragment);
@@ -54,6 +56,7 @@ public class LoginFragment extends Fragment {
 
         binding.btnLogIn.setOnClickListener(v -> {
             binding.progressBar.setVisibility(View.VISIBLE);
+            binding.darkOverlay.setVisibility(View.VISIBLE);
             if(binding.etInputLogin.getText().toString().isEmpty() || binding.etInputPassword.getText().toString().isEmpty()){
                 Toast.makeText(container.getContext(), "Вы ввели не все данные", Toast.LENGTH_SHORT).show();
                 binding.progressBar.setVisibility(View.INVISIBLE);

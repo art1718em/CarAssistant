@@ -70,6 +70,8 @@ public class AddExpenseFragment extends Fragment {
         });
 
         addExpenseViewModel.resultAddExpenseDto.observe(getViewLifecycleOwner(), result -> {
+            binding.progressBar.setVisibility(View.GONE);
+            binding.darkOverlay.setVisibility(View.GONE);
             if(result instanceof Success){
                 if(navController.getBackQueue().get(navController.getBackQueue().getSize()-2).getDestination().getId() == R.id.diagramFragment)
                     Navigation.findNavController(binding.getRoot()).navigate(R.id.action_addExpenseFragment_to_diagramFragment);
@@ -119,6 +121,8 @@ public class AddExpenseFragment extends Fragment {
                     binding.etSumExpense.setBackgroundTintList(primalColor);
             }
             if (flag) {
+                binding.darkOverlay.setVisibility(View.VISIBLE);
+                binding.progressBar.setVisibility(View.VISIBLE);
                 addExpenseViewModel.addExpense(
                         bundle.getString(AddCarFragment.carIdKey),
                         Double.parseDouble(binding.etSumExpense.getText().toString()),
