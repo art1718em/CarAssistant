@@ -1,8 +1,5 @@
 package com.example.carassistant.ui.viewModels;
 
-import android.util.ArrayMap;
-
-import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -12,28 +9,19 @@ import com.example.carassistant.core.Success;
 import com.example.carassistant.data.models.Car;
 import com.example.carassistant.data.models.CarDto;
 import com.example.carassistant.data.models.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class AddCarViewModel extends ViewModel {
     public MutableLiveData<Result> resultAddCar = new MutableLiveData<>();
 
     public MutableLiveData<Result> resultAddCarDto = new MutableLiveData<>();
 
+    private final FirebaseAuth auth = FirebaseAuth.getInstance();
 
-
-    private FirebaseAuth auth = FirebaseAuth.getInstance();
-
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
-
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 
     public void addCar(
@@ -85,6 +73,4 @@ public class AddCarViewModel extends ViewModel {
                 resultAddCarDto.setValue(new Error(task.getException().getMessage()));
         });
     }
-
-
 }

@@ -3,6 +3,7 @@ package com.example.carassistant.ui.view;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 
@@ -22,6 +23,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.carassistant.core.Error;
+import com.example.carassistant.core.ExpenseStatus;
 import com.example.carassistant.core.Success;
 
 import com.example.carassistant.R;
@@ -32,17 +34,13 @@ import com.example.carassistant.ui.viewModels.AddExpenseViewModel;
 import java.util.Calendar;
 import java.util.Date;
 
-
-
-
-
 public class AddExpenseFragment extends Fragment {
 
     private FragmentAddExpenseBinding binding;
 
     private NavController navController;
 
-    DatePickerDialog.OnDateSetListener dateSetListener;
+    private DatePickerDialog.OnDateSetListener dateSetListener;
 
     private AddExpenseViewModel addExpenseViewModel;
 
@@ -64,9 +62,24 @@ public class AddExpenseFragment extends Fragment {
 
         addExpenseViewModel = new ViewModelProvider(this).get(AddExpenseViewModel.class);
 
+        SharedPreferences sharedPreferences = getActivity()
+                .getSharedPreferences(LoginFragment.sharedPreferencesName, Context.MODE_PRIVATE);
+
+
         addExpenseViewModel.resultAddExpense.observe(getViewLifecycleOwner(), result -> {
-            if(result instanceof Error)
+            if(result instanceof Error){
+                binding.progressBar.setVisibility(View.GONE);
+                binding.darkOverlay.setVisibility(View.GONE);
                 Toast.makeText(container.getContext(), ((Error)result).getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        addExpenseViewModel.resultAddExpenseGuest.observe(getViewLifecycleOwner(), result -> {
+            if(result instanceof Error){
+                binding.progressBar.setVisibility(View.GONE);
+                binding.darkOverlay.setVisibility(View.GONE);
+                Toast.makeText(container.getContext(), ((Error)result).getMessage(), Toast.LENGTH_SHORT).show();
+            }
         });
 
         addExpenseViewModel.resultAddExpenseDto.observe(getViewLifecycleOwner(), result -> {
@@ -83,8 +96,6 @@ public class AddExpenseFragment extends Fragment {
                 Toast.makeText(container.getContext(), ((Error)result).getMessage(), Toast.LENGTH_SHORT).show();
         });
 
-
-
         binding.iconCalendar.setOnClickListener(v -> {
             Calendar calendar = Calendar.getInstance();
             int year = calendar.get(Calendar.YEAR);
@@ -97,14 +108,10 @@ public class AddExpenseFragment extends Fragment {
 
         });
 
-
-
         dateSetListener = (view, year, month, dayOfMonth) -> {
             String selectedDate = dayOfMonth + "-" + (month + 1) + "-" + year + " ";
             binding.etDate.setText(selectedDate);
         };
-
-
 
 
         binding.btnAddExpense.setOnClickListener(v -> {
@@ -123,14 +130,29 @@ public class AddExpenseFragment extends Fragment {
             if (flag) {
                 binding.darkOverlay.setVisibility(View.VISIBLE);
                 binding.progressBar.setVisibility(View.VISIBLE);
-                addExpenseViewModel.addExpense(
-                        bundle.getString(AddCarFragment.carIdKey),
-                        Double.parseDouble(binding.etSumExpense.getText().toString()),
-                        binding.spinnerChoiceCategory.getSelectedItem().toString(),
-                        binding.etDate.getText().toString(),
-                        binding.etComment.getText().toString(),
-                        Integer.parseInt(binding.etMileage.getText().toString())
-                );
+
+                if (!sharedPreferences.getString(LoginFragment.sharedPreferencesKey, "null").equals("null")){
+                    addExpenseViewModel.addExpense(
+                            sharedPreferences.getString(LoginFragment.sharedPreferencesKey, "null"),
+                            bundle.getString(AddCarFragment.carIdKey),
+                            Double.parseDouble(binding.etSumExpense.getText().toString()),
+                            binding.spinnerChoiceCategory.getSelectedItem().toString(),
+                            binding.etDate.getText().toString(),
+                            binding.etComment.getText().toString(),
+                            Integer.parseInt(binding.etMileage.getText().toString()),
+                            ExpenseStatus.UNDER_CONSIDERATION
+                    );
+                }else
+                    addExpenseViewModel.addExpense(
+                            "",
+                            bundle.getString(AddCarFragment.carIdKey),
+                            Double.parseDouble(binding.etSumExpense.getText().toString()),
+                            binding.spinnerChoiceCategory.getSelectedItem().toString(),
+                            binding.etDate.getText().toString(),
+                            binding.etComment.getText().toString(),
+                            Integer.parseInt(binding.etMileage.getText().toString()),
+                            null
+                    );
 
             }
         });

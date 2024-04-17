@@ -1,6 +1,6 @@
 package com.example.carassistant.ui.viewModels;
 
-import androidx.annotation.NonNull;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -10,18 +10,20 @@ import com.example.carassistant.core.Success;
 import com.example.carassistant.data.models.Car;
 import com.example.carassistant.data.models.Expense;
 import com.example.carassistant.data.models.ExpenseDto;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
+import com.example.carassistant.data.models.GuestUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.List;
 
 public class RedactionExpenseViewModel extends ViewModel {
 
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public MutableLiveData<Result> resultOfRedaction = new MutableLiveData<>();
 
     public MutableLiveData<Result> resultOfLoadExpenseDescription = new MutableLiveData<>();
+
+    public MutableLiveData<Result> resultOfEditExpenseInGuestUser = new MutableLiveData<>();
 
     public void loadExpenseDescription(String idExpense){
         db.collection("expenses").document(idExpense).get().addOnCompleteListener(task -> {
@@ -33,49 +35,73 @@ public class RedactionExpenseViewModel extends ViewModel {
         });
     }
 
-
-    public void redactExpenseInCar(
-            String idCar,
-            int indexExpense,
-            double expense,
-            String category,
-            String data,
-            String comment,
-            int mileage
-    ){
+    public void redactExpenseInCar(String idCar, int indexExpense, Expense expense){
         db.collection("cars").document(idCar).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()){
                 Car car = task.getResult().toObject(Car.class);
                 ExpenseDto expenseDto = car.getListExpenses().get(indexExpense);
-                ExpenseDto newExpenseDto = new ExpenseDto(expenseDto.getId(), category, expense);
+                ExpenseDto newExpenseDto = new ExpenseDto(expenseDto.getId(), expense.getCategory(),
+                        expense.getExpense());
                 car.setExpense(newExpenseDto, indexExpense);
-                db.collection("cars").document(idCar).set(car).addOnCompleteListener(task1 -> {
-                    if (task1.isSuccessful())
-                        redactExpense(expenseDto.getId(), expense, category, data, comment, mileage);
-                    else
-                        resultOfRedaction.setValue(new Error(task1.getException().getMessage()));
-                });
+                setCar(idCar, car, expenseDto.getId(), expense);
             }else
                 resultOfRedaction.setValue(new Error(task.getException().getMessage()));
         });
     }
 
-    
+    private void setCar(String idCar, Car car, String idExpense, Expense expense){
+        db.collection("cars").document(idCar).set(car).addOnCompleteListener(task1 -> {
+            if (task1.isSuccessful())
+                setExpense(idExpense, expense);
+            else
+                resultOfRedaction.setValue(new Error(task1.getException().getMessage()));
+        });
+    }
 
-    private void redactExpense(
-            String idExpense,
-            double expense,
-            String category,
-            String data,
-            String comment,
-            int mileage
-    ){
-        Expense newExpense = new Expense(expense, category, data, comment, mileage);
-        db.collection("expenses").document(idExpense).set(newExpense).addOnCompleteListener(task -> {
+    private void setExpense(String idExpense, Expense expense){
+        db.collection("expenses").document(idExpense).set(expense).addOnCompleteListener(task -> {
             if (task.isSuccessful()){
-                resultOfRedaction.setValue(new Success<>("Трата успешно отредактирована!"));
+                resultOfRedaction.setValue(new Success<>());
             }else
                 resultOfRedaction.setValue(new Error(task.getException().getMessage()));
+        });
+    }
+
+    public void editExpenseInGuestUser(String idGuestUser, String idCar, int indexExpense,
+                                       Expense expense){
+        db.collection("guestUsers").document(idGuestUser).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()){
+                GuestUser guestUser = task.getResult().toObject(GuestUser.class);
+                ExpenseDto expenseDto = guestUser.getExpenseDtoList().get(indexExpense);
+                ExpenseDto newExpenseDto = new ExpenseDto(expenseDto.getId(), expense.getCategory(), expense.getExpense());
+                guestUser.setExpense(newExpenseDto, indexExpense);
+                setGuestUser(idGuestUser, guestUser, idCar, expenseDto.getId(), expense);
+            }else
+                resultOfEditExpenseInGuestUser.setValue(new Error(task.getException().getMessage()));
+        });
+    }
+
+    private void setGuestUser(String idGuestUser, GuestUser guestUser, String idCar, String idExpense, Expense expense){
+        db.collection("guestUsers").document(idGuestUser).set(guestUser).addOnCompleteListener(task -> {
+            if (task.isSuccessful()){
+                getExpenseIndexInMainAcc(idCar, idExpense, expense);
+            }else
+                resultOfEditExpenseInGuestUser.setValue(new Error(task.getException().getMessage()));
+        });
+    }
+
+    private void getExpenseIndexInMainAcc(String idCar, String idExpense, Expense expense){
+        db.collection("cars").document(idCar).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()){
+                List<ExpenseDto> expenseDtoList = task.getResult().toObject(Car.class).getListExpenses();
+                for (int i = 0; i < expenseDtoList.size(); i++){
+                    if (expenseDtoList.get(i).getId().equals(idExpense)){
+                        redactExpenseInCar(idCar, i, expense);
+                        break;
+                    }
+                }
+            }else
+                resultOfEditExpenseInGuestUser.setValue(new Error(task.getException().getMessage()));
         });
     }
 }

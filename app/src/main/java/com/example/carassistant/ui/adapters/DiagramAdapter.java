@@ -19,7 +19,6 @@ import java.util.Set;
 
 public class DiagramAdapter extends RecyclerView.Adapter<DiagramAdapter.DiagramViewHolder> {
 
-
     private final HashMap<String, Double> map;
     private final Set<String> keys;
     public DiagramAdapter(ArrayList<ExpenseDto> data) {

@@ -31,10 +31,6 @@ public class Car {
         return listExpenses;
     }
 
-    public void setListExpenses(List<ExpenseDto> listExpenses) {
-        this.listExpenses = listExpenses;
-    }
-
     public String getMark() {
         return mark;
     }

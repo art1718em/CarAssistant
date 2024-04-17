@@ -63,6 +63,18 @@
     <string name="cost_car">Стоимость</string>
     <string name="gen_code">Сгенерировать код</string>
     <string name="need_to_add_car">Необходимо добавить автомобиль</string>
+    <string name="code_description">Вы можете сгенерировать код для гостевого входа в расходы данного автомобиля</string>
+    <string name="code_for_guest_log_in">Код для гостевого доступа:</string>
+    <string name="text_log_in_with_code">Или вы можете войти в гостевой аккаунт по коду</string>
+    <string name="input_code">Введите код</string>
+    <string name="log_in_with_code">Войти по коду</string>
+    <string name="status">Статус</string>
+    <string name="approve">Одобрить</string>
+    <string name="reject">Отклонить</string>
+    <string name="delete_account">Удалить аккаунт</string>
+    <string name="input_old_password">Введите старый пароль</string>
+    <string name="input_new_password">Введите новый пароль</string>
+    <string name="input_new_password_again">Повторите новый пароль </string>
 
 
 </resources>

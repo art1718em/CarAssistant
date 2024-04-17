@@ -1,6 +1,5 @@
 package com.example.carassistant.ui.view;
 
-import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 
@@ -52,9 +51,6 @@ public class AddCarFragment extends Fragment {
                 Toast.makeText(container.getContext(), ((Error)result).getMessage(), Toast.LENGTH_SHORT).show();
         });
 
-
-
-
         binding.btnAddCar.setOnClickListener(view -> {
             boolean flag = true;
             ColorStateList colorStateList = ColorStateList.valueOf(
@@ -87,9 +83,6 @@ public class AddCarFragment extends Fragment {
                 );
             }
         });
-
-
-
 
         return binding.getRoot();
     }

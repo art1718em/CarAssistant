@@ -1,9 +1,7 @@
 package com.example.carassistant.ui.viewModels;
 
-import android.speech.RecognitionService;
 import android.util.Pair;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -11,27 +9,33 @@ import com.example.carassistant.core.Error;
 import com.example.carassistant.core.Result;
 import com.example.carassistant.core.Success;
 import com.example.carassistant.data.models.CarDto;
+import com.example.carassistant.data.models.GuestUser;
 import com.example.carassistant.data.models.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.Firebase;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
 public class AccountViewModel extends ViewModel {
 
-    private FirebaseAuth auth = FirebaseAuth.getInstance();
+    private final FirebaseAuth auth = FirebaseAuth.getInstance();
 
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public MutableLiveData<String> resultOfLoadEmail = new MutableLiveData<>();
 
     public MutableLiveData<Result> resultOfLoadListCars = new MutableLiveData<>();
 
+    public MutableLiveData<Result> resultOfLoadCarGuest = new MutableLiveData<>();
+
     public MutableLiveData<Result> resultOfChangeActiveCar = new MutableLiveData<>();
+
+    public MutableLiveData<Result> resultOfCheckOldPassword = new MutableLiveData<>();
+
+    public MutableLiveData<Result> resultOfChangePassword = new MutableLiveData<>();
+
+    public MutableLiveData<Result> resultOfDeleteAccount = new MutableLiveData<>();
 
     public void loadUserEmail(){
         resultOfLoadEmail.setValue(auth.getCurrentUser().getEmail());
@@ -51,6 +55,15 @@ public class AccountViewModel extends ViewModel {
                 resultOfLoadListCars.setValue(new Success<>(pair));
             }else
                 resultOfLoadListCars.setValue(new Error(task.getException().getMessage()));
+        });
+    }
+
+    public void loadCarGuest(String idGuestUser){
+        db.collection("guestUsers").document(idGuestUser).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful())
+                resultOfLoadCarGuest.setValue(new Success<>(task.getResult().toObject(GuestUser.class).getCarDto()));
+            else
+                resultOfLoadCarGuest.setValue(new Error(task.getException().getMessage()));
         });
     }
 
@@ -90,8 +103,33 @@ public class AccountViewModel extends ViewModel {
         });
     }
 
+    public void checkOldPassword(String oldPassword){
+        auth.getCurrentUser().reauthenticate(EmailAuthProvider
+                .getCredential(auth.getCurrentUser().getEmail(), oldPassword)).addOnCompleteListener(task -> {
+            if (task.isSuccessful())
+                resultOfCheckOldPassword.setValue(new Success<>());
+            else
+                resultOfCheckOldPassword.setValue(new Error(task.getException().getMessage()));
+        });
+    }
 
 
+    public void changePassword(String newPassword){
+        auth.getCurrentUser().updatePassword(newPassword).addOnCompleteListener(task -> {
+            if (task.isSuccessful())
+                resultOfChangePassword.setValue(new Success<>());
+            else
+                resultOfChangePassword.setValue(new Error(task.getException().getMessage()));
+        });
+    }
 
+    public void deleteAccount(){
+        auth.getCurrentUser().delete().addOnCompleteListener(task -> {
+            if (task.isSuccessful())
+                resultOfDeleteAccount.setValue(new Success<>());
+            else
+                resultOfDeleteAccount.setValue(new Error(task.getException().getMessage()));
+        });
 
+    }
 }

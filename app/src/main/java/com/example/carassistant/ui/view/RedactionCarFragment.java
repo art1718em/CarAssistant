@@ -6,7 +6,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
@@ -18,7 +17,6 @@ import android.widget.Toast;
 
 import com.example.carassistant.R;
 import com.example.carassistant.core.Error;
-import com.example.carassistant.core.Result;
 import com.example.carassistant.core.Success;
 import com.example.carassistant.data.models.Car;
 import com.example.carassistant.databinding.FragmentRedactionCarBinding;
@@ -41,14 +39,9 @@ public class RedactionCarFragment extends Fragment {
         binding.constantLayout.setVisibility(View.INVISIBLE);
         binding.progressBar.setVisibility(View.VISIBLE);
 
-
-
         redactionCarViewModel = new ViewModelProvider(this).get(RedactionCarViewModel.class);
 
         bundle = requireArguments();
-
-
-
 
         redactionCarViewModel.loadCar(bundle.getString(AddCarFragment.carIdKey));
 
@@ -80,8 +73,6 @@ public class RedactionCarFragment extends Fragment {
             else
                 Toast.makeText(container.getContext(), ((Error)result).getMessage(), Toast.LENGTH_SHORT).show();
         });
-
-
 
         binding.btnRedactionCar.setOnClickListener(view -> {
 

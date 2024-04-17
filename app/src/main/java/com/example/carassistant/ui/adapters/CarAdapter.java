@@ -2,22 +2,16 @@ package com.example.carassistant.ui.adapters;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.carassistant.BuildConfig;
 import com.example.carassistant.R;
-import com.example.carassistant.core.Result;
-import com.example.carassistant.core.Success;
 import com.example.carassistant.data.models.CarDto;
 import com.example.carassistant.databinding.CarItemBinding;
 import com.example.carassistant.databinding.FragmentAccountBinding;
@@ -35,19 +29,16 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder>{
     private final FragmentAccountBinding binding;
 
     private int indexActiveCar;
-    private final Fragment fragment;
 
     private final AccountViewModel accountViewModel;
     public CarAdapter(
             List<CarDto> data,
             int indexActiveCar,
             FragmentAccountBinding binding,
-            AccountViewModel accountViewModel,
-            Fragment fragment
+            AccountViewModel accountViewModel
     ) {
         this.data = data;
         this.binding=binding;
-        this.fragment = fragment;
         this.indexActiveCar = indexActiveCar;
         this.accountViewModel = accountViewModel;
     }
@@ -77,10 +68,11 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder>{
         }
 
         holder.binding.constraintLayoutCarItem.setOnClickListener(v -> {
-            binding.darkOverlay.setVisibility(View.VISIBLE);
-            binding.progressBar.setVisibility(View.VISIBLE);
-            accountViewModel.changeActiveCar(indexActiveCar, position);
-
+            if (indexActiveCar != position){
+                binding.darkOverlay.setVisibility(View.VISIBLE);
+                binding.progressBar.setVisibility(View.VISIBLE);
+                accountViewModel.changeActiveCar(indexActiveCar, position);
+            }
         });
 
         holder.binding.iconInformation.setOnClickListener(view -> {

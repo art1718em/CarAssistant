@@ -5,7 +5,6 @@
     app:startDestination="@id/expenses_graph">
 
     <include app:graph="@navigation/expences_graph" />
-    <include app:graph="@navigation/static_graph" />
     <include app:graph="@navigation/account_graph" />
 
 </navigation>

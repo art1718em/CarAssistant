@@ -1,5 +1,6 @@
 package com.example.carassistant.ui.viewModels;
 
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -9,6 +10,7 @@ import com.example.carassistant.core.Success;
 import com.example.carassistant.data.models.Car;
 import com.example.carassistant.data.models.CarDto;
 import com.example.carassistant.data.models.ExpenseDto;
+import com.example.carassistant.data.models.GuestUser;
 import com.example.carassistant.data.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -17,14 +19,16 @@ import java.util.HashMap;
 
 public class CarDescriptionViewModel extends ViewModel {
 
-    private FirebaseAuth auth = FirebaseAuth.getInstance();
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final FirebaseAuth auth = FirebaseAuth.getInstance();
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public MutableLiveData<Result> resultOfLoadCarDescription = new MutableLiveData<>();
 
     public MutableLiveData<Result> resultOfDeleteCar = new MutableLiveData<>();
 
     public HashMap<Boolean, Result> resultOfDeleteCarExpenses = new HashMap<>();
+
+    public MutableLiveData<Result> resultOfGetIdCarGuest = new MutableLiveData<>();
 
     public void loadCarDescription(String idCar){
         db.collection("cars").document(idCar).get().addOnCompleteListener(task -> {
@@ -101,6 +105,15 @@ public class CarDescriptionViewModel extends ViewModel {
                 resultOfDeleteCarExpenses.put(true, new Success<>());
             else
                 resultOfDeleteCarExpenses.put(false, new Error(task.getException().getMessage()));
+        });
+    }
+
+    public void getIdCarGuest(String idGuestUser){
+        db.collection("guestUsers").document(idGuestUser).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful())
+                resultOfGetIdCarGuest.setValue(new Success<>(task.getResult().toObject(GuestUser.class).getIdCar()));
+            else
+                resultOfGetIdCarGuest.setValue(new Error(task.getException().getMessage()));
         });
     }
 

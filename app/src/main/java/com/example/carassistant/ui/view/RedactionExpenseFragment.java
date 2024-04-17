@@ -3,6 +3,7 @@ package com.example.carassistant.ui.view;
 import android.app.DatePickerDialog;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 
@@ -23,6 +24,7 @@ import android.widget.Toast;
 
 import com.example.carassistant.core.Error;
 
+import com.example.carassistant.core.ExpenseStatus;
 import com.example.carassistant.core.Success;
 import com.example.carassistant.data.models.Expense;
 import com.example.carassistant.R;
@@ -35,14 +37,13 @@ import java.util.Calendar;
 import java.util.Date;
 
 
-
-
 public class RedactionExpenseFragment extends Fragment {
 
     private FragmentRedactionExpenseBinding binding;
 
-    DatePickerDialog.OnDateSetListener dateSetListener;
+    private DatePickerDialog.OnDateSetListener dateSetListener;
 
+    private  Expense expense;
 
     private RedactionExpenseViewModel redactionExpenseViewModel;
 
@@ -63,28 +64,35 @@ public class RedactionExpenseFragment extends Fragment {
 
         redactionExpenseViewModel.loadExpenseDescription(idExpense);
 
+        redactionExpenseViewModel.resultOfLoadExpenseDescription.observe(getViewLifecycleOwner(), result -> {
+            if (result instanceof Success){
+                expense = ((Success<Expense>) result).getData();
+                onExpensesLoaded(expense);
+            }else
+                Toast.makeText(container.getContext(), ((Error)result).getMessage(), Toast.LENGTH_SHORT).show();
+        });
 
         redactionExpenseViewModel.resultOfRedaction.observe(getViewLifecycleOwner(), result -> {
             binding.darkOverlay.setVisibility(View.GONE);
             binding.progressBar.setVisibility(View.GONE);
             if (result instanceof Success){
-                Toast.makeText(container.getContext(), ((Success<String>) result).getData(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(container.getContext(), "Трата успешно отредактирована!", Toast.LENGTH_SHORT).show();
                 Navigation.findNavController(binding.getRoot())
                         .navigate(R.id.action_redactionExpenseFragment_to_expenseDescriptionFragment, expenseBundle);
             }else
                 Toast.makeText(container.getContext(), ((Success<String>) result).getData(), Toast.LENGTH_SHORT).show();
         });
 
-        redactionExpenseViewModel.resultOfLoadExpenseDescription.observe(getViewLifecycleOwner(), result -> {
+        redactionExpenseViewModel.resultOfEditExpenseInGuestUser.observe(getViewLifecycleOwner(), result -> {
+            binding.darkOverlay.setVisibility(View.GONE);
+            binding.progressBar.setVisibility(View.GONE);
             if (result instanceof Success){
-                Expense expense = ((Success<Expense>) result).getData();
-                onExpensesLoaded(expense);
+                Toast.makeText(container.getContext(), "Трата успешно отредактирована!", Toast.LENGTH_SHORT).show();
+                Navigation.findNavController(binding.getRoot())
+                        .navigate(R.id.action_redactionExpenseFragment_to_expenseDescriptionFragment, expenseBundle);
             }else
-                Toast.makeText(container.getContext(), ((Error)result).getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(container.getContext(), ((Success<String>) result).getData(), Toast.LENGTH_SHORT).show();
         });
-
-
-
 
         binding.iconCalendar.setOnClickListener(v -> {
             Calendar calendar = Calendar.getInstance();
@@ -104,9 +112,6 @@ public class RedactionExpenseFragment extends Fragment {
             binding.etDate.setText(selectedDate);
         };
 
-
-
-
         binding.btnRedaction.setOnClickListener(v -> {
             boolean flag = true;
             ColorStateList colorStateList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.red));
@@ -125,18 +130,33 @@ public class RedactionExpenseFragment extends Fragment {
                 binding.darkOverlay.setVisibility(View.VISIBLE);
                 binding.progressBar.setVisibility(View.VISIBLE);
 
-                redactionExpenseViewModel.redactExpenseInCar(
-                        idCar,
-                        indexExpense,
-                        Double.parseDouble(binding.etSumOfExpense.getText().toString()),
-                        binding.spinnerChoiceCategory.getSelectedItem().toString(),
-                        binding.etDate.getText().toString(),
-                        binding.etComment.getText().toString(),
-                        Integer.parseInt(binding.etMileage.getText().toString())
-                );
+                SharedPreferences sharedPreferences = getContext()
+                        .getSharedPreferences(LoginFragment.sharedPreferencesName, Context.MODE_PRIVATE);
+                String idGuestUser = sharedPreferences.getString(LoginFragment.sharedPreferencesKey, "null");
+
+                if (!idGuestUser.equals("null")){
+                    Expense expense = new Expense(
+                            Double.parseDouble(binding.etSumOfExpense.getText().toString()),
+                            binding.spinnerChoiceCategory.getSelectedItem().toString(),
+                            binding.etDate.getText().toString(),
+                            binding.etComment.getText().toString(),
+                            Integer.parseInt(binding.etMileage.getText().toString()),
+                            ExpenseStatus.UNDER_CONSIDERATION
+                    );
+                    redactionExpenseViewModel.editExpenseInGuestUser(idGuestUser, idCar, indexExpense, expense);
+                }else {
+                    Expense expense = new Expense(
+                            Double.parseDouble(binding.etSumOfExpense.getText().toString()),
+                            binding.spinnerChoiceCategory.getSelectedItem().toString(),
+                            binding.etDate.getText().toString(),
+                            binding.etComment.getText().toString(),
+                            Integer.parseInt(binding.etMileage.getText().toString()),
+                            null
+                    );
+                    redactionExpenseViewModel.redactExpenseInCar(idCar, indexExpense, expense);
+                }
             }
         });
-
 
         return binding.getRoot();
     }

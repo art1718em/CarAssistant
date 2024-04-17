@@ -22,14 +22,10 @@ import java.util.List;
 
 public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseViewHolder> {
 
-
-
-
-
     private final List<ExpenseDto> data;
     private ExpenseItemBinding binding;
 
-    private String idCar;
+    private final String idCar;
 
     public ExpenseAdapter(List<ExpenseDto> data, String idCar) {
         this.data = data;
@@ -81,7 +77,6 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
             bundle.putString(AddCarFragment.carIdKey, idCar);
             Navigation.findNavController(binding.getRoot()).navigate(R.id.action_expensesFragment_to_expenseDescriptionFragment, bundle);
         });
-
 
     }
 

@@ -1,6 +1,7 @@
 package com.example.carassistant.ui.view;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -9,23 +10,19 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-
-
 import com.example.carassistant.R;
 import com.example.carassistant.core.Error;
 
-import com.example.carassistant.core.Result;
 import com.example.carassistant.core.Success;
 
 import com.example.carassistant.data.models.ExpenseDto;
@@ -39,9 +36,6 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
-
-import org.jetbrains.annotations.Async;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -53,8 +47,7 @@ public class DiagramFragment extends Fragment {
     private FragmentDiagramBinding binding;
 
     private PieChart pieChart;
-    DiagramViewModel diagramViewModel;
-
+    private DiagramViewModel diagramViewModel;
 
 
     @Override
@@ -64,21 +57,53 @@ public class DiagramFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         binding = FragmentDiagramBinding.inflate(inflater, container, false);
+
+        diagramViewModel = new ViewModelProvider(this).get(DiagramViewModel.class);
+
 
         binding.constantLayout.setVisibility(View.INVISIBLE);
         binding.progressBar.setVisibility(View.VISIBLE);
 
-
-        diagramViewModel = new ViewModelProvider(this).get(DiagramViewModel.class);
-
         Bundle bundle = new Bundle();
 
-        diagramViewModel.loadActiveCar();
+        SharedPreferences sharedPreferences = getActivity()
+                .getSharedPreferences(LoginFragment.sharedPreferencesName, Context.MODE_PRIVATE);
 
+        String idGuestUser = sharedPreferences.getString(LoginFragment.sharedPreferencesKey, "null");
 
+        if (!idGuestUser.equals("null")){
+            diagramViewModel.checkIsDeleteCar(idGuestUser);
+        }else{
+            diagramViewModel.loadActiveCar();
+        }
 
+        diagramViewModel.resultOfLoadExpensesGuest.observe(getViewLifecycleOwner(), result -> {
+            binding.progressBar.setVisibility(View.GONE);
+            if (result instanceof Success){
+                Pair<String, List<ExpenseDto>> pair = ((Success<Pair<String, List<ExpenseDto>>>) result).getData();
+                bundle.putString(AddCarFragment.carIdKey, pair.first);
+                onDiagramLoaded(pair.second);
+            }
+        });
 
+        diagramViewModel.resultOfCheckCar.observe(getViewLifecycleOwner(), result -> {
+            if (result instanceof Error)
+                Toast.makeText(container.getContext(), ((Error)result).getMessage(), Toast.LENGTH_SHORT).show();
+        });
+
+        diagramViewModel.resultOfExistCar.observe(getViewLifecycleOwner(), result -> {
+            if (result instanceof Success)
+                diagramViewModel.getListExpensesGuest(idGuestUser);
+            else{
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.remove(LoginFragment.sharedPreferencesKey);
+                editor.apply();
+                Toast.makeText(container.getContext(), "Машина была удалена основным пользователем", Toast.LENGTH_SHORT).show();
+                ((MainActivity)getActivity()).navRestart();
+            }
+        });
 
         diagramViewModel.resultOfLoadActiveCar.observe(getViewLifecycleOwner(), result -> {
             if (result instanceof Success){
@@ -98,10 +123,7 @@ public class DiagramFragment extends Fragment {
             }
         });
 
-
         pieChart = binding.pieChart;
-
-
 
         diagramViewModel.resultOfExpenses.observe(getViewLifecycleOwner(), result -> {
             binding.progressBar.setVisibility(View.GONE);
@@ -110,9 +132,6 @@ public class DiagramFragment extends Fragment {
             }else
                 Toast.makeText(container.getContext(), ((Error)result).getMessage(), Toast.LENGTH_SHORT).show();
         });
-
-
-
 
         binding.iconAddExpense.setOnClickListener(v -> Navigation.findNavController(binding.getRoot())
                 .navigate(R.id.action_diagramFragment_to_addExpenseFragment, bundle));

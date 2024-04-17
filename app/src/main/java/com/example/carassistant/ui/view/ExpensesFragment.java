@@ -1,6 +1,7 @@
 package com.example.carassistant.ui.view;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -8,7 +9,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
-
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,9 +47,20 @@ public class ExpensesFragment extends Fragment {
         ExpensesViewModel expensesViewModel = new ViewModelProvider(this).get(ExpensesViewModel.class);
 
 
+        SharedPreferences sharedPreferences = getContext()
+                .getSharedPreferences(LoginFragment.sharedPreferencesName, Context.MODE_PRIVATE);
+
+
         Bundle bundle = requireArguments();
 
-        expensesViewModel.loadListExpenses(bundle.getString(AddCarFragment.carIdKey));
+        if (!sharedPreferences.getString(LoginFragment.sharedPreferencesKey, "null").equals("null")){
+            expensesViewModel
+                    .loadListExpensesGuest(sharedPreferences.getString(LoginFragment.sharedPreferencesKey, "null"));
+        }
+        else{
+            expensesViewModel.loadListExpenses(bundle.getString(AddCarFragment.carIdKey));
+        }
+
 
         expensesViewModel.resultOfListExpenses.observe(getViewLifecycleOwner(), result -> {
             binding.progressBar.setVisibility(View.GONE);
@@ -64,11 +75,6 @@ public class ExpensesFragment extends Fragment {
                 Toast.makeText(container.getContext(), ((Error)result).getMessage(), Toast.LENGTH_SHORT).show();
         });
 
-
-
-
-
-
         binding.iconAddExpense.setOnClickListener(v -> Navigation.findNavController(binding.getRoot())
                 .navigate(R.id.action_expensesFragment_to_addExpenseFragment, bundle));
 
@@ -76,7 +82,4 @@ public class ExpensesFragment extends Fragment {
 
         return binding.getRoot();
     }
-
-
-
 }

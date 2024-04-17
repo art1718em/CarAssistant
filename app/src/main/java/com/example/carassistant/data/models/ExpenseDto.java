@@ -26,15 +26,8 @@ public class ExpenseDto {
         return category;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
     public Double getExpense() {
         return expense;
     }
 
-    public void setExpense(Double expense) {
-        this.expense = expense;
-    }
 }

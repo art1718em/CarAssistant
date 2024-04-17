@@ -6,19 +6,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.NavGraph;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.example.carassistant.R;
+import com.example.carassistant.core.Success;
 import com.example.carassistant.databinding.ActivityMainBinding;
+import com.example.carassistant.ui.viewModels.LoginViewModel;
 
 
 import java.util.Collections;
@@ -36,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         getSupportFragmentManager().registerFragmentLifecycleCallbacks(fragmentListener, true);
+
     }
 
     @Override
@@ -77,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
         }
         else{
             if(navController.getBackQueue().getSize() > 3) {
-                Log.d("CarAssWork", "pop " + navController.getBackQueue().getSize());
                 navController.popBackStack();
 
                 return;
@@ -89,5 +93,34 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    public void navRestart(){
+        navController = ((NavHostFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.nav_host_fragment))
+                .getNavController();
+        NavGraph navGraph = navController.getNavInflater().inflate(R.navigation.nav_graph);
+        isLogin();
+        navController.setGraph(navGraph);
+    }
+
+    private void isLogin(){
+        LoginViewModel viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
+        viewModel.isLogIn();
+
+        SharedPreferences sharedPreferences = getSharedPreferences(LoginFragment.sharedPreferencesName, MODE_PRIVATE);
+        String idGuestUser = sharedPreferences.getString(LoginFragment.sharedPreferencesKey, "null");
+
+        viewModel.resultOfLogin.observe(this, result -> {
+            if (result instanceof Success || !idGuestUser.equals("null")){
+                ifLogin();
+            }
+        });
+    }
+
+    private void ifLogin(){
+        NavGraph navGraph = navController.getNavInflater().inflate(R.navigation.nav_graph);
+        navGraph.setStartDestination(R.id.panelFragment);
+        navController.setGraph(navGraph);
     }
 }
